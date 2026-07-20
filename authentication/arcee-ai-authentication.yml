@@ -1,0 +1,24 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/arcee-ai-afm-openapi.json
+docs: https://docs.arcee.ai/api-reference/your-first-api-call
+summary:
+  types:
+  - http
+  http_schemes:
+  - bearer
+  api_key_delivery: Authorization header, "Bearer [example key]"
+  key_management: https://docs.arcee.ai/other/platform-walkthrough/api-key-management
+notes: >-
+  The Arcee Platform API uses bearer API keys. A key is created in the Arcee Platform dashboard
+  (API Keys management page) and passed on every request as an Authorization: Bearer header. The
+  inference surface is OpenAI-compatible, so the standard OpenAI client libraries authenticate by
+  setting this key. Interactive/platform login also supports GitHub and Google OAuth and a device
+  authorization flow (see /app/v1/oauth/* and /app/v1/device/* operations), but programmatic API
+  access is bearer-key only. No OAuth2 scope surface is documented.
+schemes:
+- name: HTTPBearer
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/arcee-ai-afm-openapi.json
