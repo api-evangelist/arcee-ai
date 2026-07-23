@@ -1,0 +1,380 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles API
+  version: 0.1.0
+tags:
+- name: Access Profiles
+paths:
+  /app/v1/access_profiles:
+    get:
+      tags:
+      - Access Profiles
+      summary: Get All Access Profiles
+      description: Get all access profiles
+      operationId: get_all_access_profiles_app_v1_access_profiles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AccessProfileResponse'
+                type: array
+                title: Response Get All Access Profiles App V1 Access Profiles Get
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Access Profiles
+      summary: Create Access Profile
+      description: Create a new access profile
+      operationId: create_access_profile_app_v1_access_profiles_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccessProfileRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessProfileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/access_profiles/{profile_id}:
+    get:
+      tags:
+      - Access Profiles
+      summary: Get Access Profile
+      description: Get an access profile by ID
+      operationId: get_access_profile_app_v1_access_profiles__profile_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessProfileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Access Profiles
+      summary: Update Access Profile
+      description: Update an access profile
+      operationId: update_access_profile_app_v1_access_profiles__profile_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAccessProfileRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessProfileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Access Profiles
+      summary: Delete Access Profile
+      description: Delete an access profile
+      operationId: delete_access_profile_app_v1_access_profiles__profile_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/access_profiles/{profile_id}/models/{model_id}:
+    post:
+      tags:
+      - Access Profiles
+      summary: Add Model To Access Profile
+      description: Add a model to an access profile
+      operationId: add_model_to_access_profile_app_v1_access_profiles__profile_id__models__model_id__post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Model Id
+      - name: rate_limit_profile_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+          title: Rate Limit Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Access Profiles
+      summary: Remove Model From Access Profile
+      description: Remove a model from an access profile
+      operationId: remove_model_from_access_profile_app_v1_access_profiles__profile_id__models__model_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Model Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateAccessProfileRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      title: UpdateAccessProfileRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AccessProfileResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        is_external_default:
+          type: boolean
+          title: Is External Default
+        is_internal_default:
+          type: boolean
+          title: Is Internal Default
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
+        model_joins:
+          items:
+            $ref: '#/components/schemas/AccessProfileModelJoinResponse'
+          type: array
+          title: Model Joins
+          default: []
+      type: object
+      required:
+      - id
+      - name
+      - is_external_default
+      - is_internal_default
+      title: AccessProfileResponse
+    AccessProfileModelJoinResponse:
+      properties:
+        access_profile_id:
+          type: string
+          format: uuid
+          title: Access Profile Id
+        model_id:
+          type: string
+          format: uuid
+          title: Model Id
+        rate_limit_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Rate Limit Profile Id
+      type: object
+      required:
+      - access_profile_id
+      - model_id
+      title: AccessProfileModelJoinResponse
+    CreateAccessProfileRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        model_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Model Ids
+      type: object
+      required:
+      - name
+      title: CreateAccessProfileRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

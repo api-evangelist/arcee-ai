@@ -1,0 +1,394 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Rate Limit Profiles API
+  version: 0.1.0
+tags:
+- name: Rate Limit Profiles
+paths:
+  /app/v1/rate_limit_profiles:
+    get:
+      tags:
+      - Rate Limit Profiles
+      summary: Get All Rate Limit Profiles
+      description: Get all rate limit profiles
+      operationId: get_all_rate_limit_profiles_app_v1_rate_limit_profiles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RateLimitProfileResponse'
+                type: array
+                title: Response Get All Rate Limit Profiles App V1 Rate Limit Profiles Get
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Rate Limit Profiles
+      summary: Create Rate Limit Profile
+      description: Create a new rate limit profile
+      operationId: create_rate_limit_profile_app_v1_rate_limit_profiles_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRateLimitProfileRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitProfileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/rate_limit_profiles/{profile_id}:
+    get:
+      tags:
+      - Rate Limit Profiles
+      summary: Get Rate Limit Profile
+      description: Get a rate limit profile by ID
+      operationId: get_rate_limit_profile_app_v1_rate_limit_profiles__profile_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitProfileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Rate Limit Profiles
+      summary: Update Rate Limit Profile
+      description: Update a rate limit profile
+      operationId: update_rate_limit_profile_app_v1_rate_limit_profiles__profile_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRateLimitProfileRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitProfileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Rate Limit Profiles
+      summary: Delete Rate Limit Profile
+      description: Delete a rate limit profile
+      operationId: delete_rate_limit_profile_app_v1_rate_limit_profiles__profile_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateRateLimitProfileRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        requests_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Minute
+        requests_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Day
+        requests_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Week
+        requests_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Month
+        tokens_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Minute
+        tokens_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Week
+        tokens_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Day
+        tokens_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Month
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        is_default:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Default
+      type: object
+      title: UpdateRateLimitProfileRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateRateLimitProfileRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        requests_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Minute
+        requests_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Day
+        requests_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Week
+        requests_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Month
+        tokens_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Minute
+        tokens_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Week
+        tokens_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Day
+        tokens_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Month
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        is_default:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Default
+          default: false
+      type: object
+      required:
+      - name
+      title: CreateRateLimitProfileRequest
+    RateLimitProfileResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        requests_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Minute
+        requests_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Day
+        requests_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Week
+        requests_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Month
+        tokens_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Minute
+        tokens_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Week
+        tokens_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Day
+        tokens_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Month
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        is_default:
+          type: boolean
+          title: Is Default
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
+      type: object
+      required:
+      - id
+      - name
+      - is_default
+      title: RateLimitProfileResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

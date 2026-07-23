@@ -1,0 +1,37 @@
+generated: '2026-07-18'
+method: searched
+status: published
+source: https://mcp.arcee.ai/ ; https://dev.to/juliensimon/announcing-arcee-ai-anymcp-4nl9
+server:
+  name: Arcee AnyMCP
+  transport: http
+  url: https://mcp.arcee.ai/
+  description: >-
+    Arcee AnyMCP is Arcee AI's hosted Model Context Protocol platform. It lets you remotely deploy
+    and manage MCP servers (one-click deployment, thousands of servers) that any MCP-compatible
+    client (Claude Desktop, etc.) can connect to. It is a hosting/management surface for MCP
+    servers rather than a single MCP server that wraps the Arcee inference API. Free to use.
+notes: >-
+  No official MCP server that exposes the Arcee Platform inference API as MCP tools was found. The
+  tools[] below are DERIVED candidates from the public OpenAI-compatible operations in
+  openapi/arcee-ai-afm-openapi.json (status: candidate) — a starting point for a wrapper, not a
+  published Arcee server.
+candidate_tools_method: derived
+candidate_tools_source: openapi/arcee-ai-afm-openapi.json
+tools:
+- name: create_chat_completion
+  description: Create an OpenAI-compatible chat completion with an Arcee model.
+  status: candidate
+  source_operation: openapi/arcee-ai-afm-openapi.json#create_chat_completion_v1_chat_completions_post
+- name: list_models
+  description: List models available to the API key.
+  status: candidate
+  source_operation: openapi/arcee-ai-afm-openapi.json#get_models_v1_models_get
+- name: get_credits
+  description: Get remaining usage credits for the API key.
+  status: candidate
+  source_operation: openapi/arcee-ai-afm-openapi.json#get_user_credits_v1_usage_credits_get
+- name: get_usage_stats
+  description: Retrieve usage statistics for the API key.
+  status: candidate
+  source_operation: openapi/arcee-ai-afm-openapi.json#get_usage_stats_v1_usage_stats_get

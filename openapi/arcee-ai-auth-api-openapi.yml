@@ -1,0 +1,808 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Auth API
+  version: 0.1.0
+tags:
+- name: Auth
+paths:
+  /app/v1/signup:
+    post:
+      tags:
+      - Auth
+      summary: Signup
+      operationId: signup_app_v1_signup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/login:
+    post:
+      tags:
+      - Auth
+      summary: Login
+      operationId: login_app_v1_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/refresh:
+    post:
+      tags:
+      - Auth
+      summary: Refresh Token
+      description: 'Refresh the access token using either:
+
+        1. Refresh token (if user selected "stay signed in")
+
+        2. Current access token (for active users without refresh token)'
+      operationId: refresh_token_app_v1_refresh_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /app/v1/logout:
+    post:
+      tags:
+      - Auth
+      summary: Logout
+      description: Logout the current user by clearing cookies and revoking refresh token
+      operationId: logout_app_v1_logout_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/verify-email/{token}:
+    get:
+      tags:
+      - Auth
+      summary: Verify Email
+      description: Verify email address using verification token and redirect to frontend
+      operationId: verify_email_app_v1_verify_email__token__get
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/request-email-change:
+    post:
+      tags:
+      - Auth
+      summary: Request Email Change
+      description: 'Request email change: check uniqueness, store pending_email, generate token, send email.
+
+        Only available for users who signed up with email or GitHub (not Google).'
+      operationId: request_email_change_app_v1_request_email_change_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailChangeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/verify-email-change/{token}:
+    get:
+      tags:
+      - Auth
+      summary: Verify Email Change
+      description: Verify email change token and redirect to frontend
+      operationId: verify_email_change_app_v1_verify_email_change__token__get
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/resend-verification:
+    post:
+      tags:
+      - Auth
+      summary: Resend Verification
+      description: Resend verification email for a user
+      operationId: resend_verification_app_v1_resend_verification_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendVerificationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/invites/{org_id}:
+    post:
+      tags:
+      - Auth
+      summary: Invite User
+      operationId: invite_user_app_v1_invites__org_id__post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/complete-invite:
+    post:
+      tags:
+      - Auth
+      summary: Update Invited User
+      operationId: update_invited_user_app_v1_complete_invite_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInvitedUserRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/password-reset/validate:
+    get:
+      tags:
+      - Auth
+      summary: Validate Password Reset Token
+      description: Validate password reset token and return reset_token for password change
+      operationId: validate_password_reset_token_app_v1_password_reset_validate_get
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Userid
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/password-reset:
+    put:
+      tags:
+      - Auth
+      summary: Password Reset
+      description: Reset password for a user using reset_token (no authentication required)
+      operationId: password_reset_app_v1_password_reset_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequestModel'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Auth
+      summary: Send Password Reset Email
+      description: Send password reset email to user
+      operationId: send_password_reset_email_app_v1_password_reset_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetEmailRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/change-password:
+    put:
+      tags:
+      - Auth
+      summary: Change Password
+      description: Change password for authenticated user (authentication required)
+      operationId: change_password_app_v1_change_password_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequestModel'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/oauth/google/{org_id}:
+    post:
+      tags:
+      - Auth
+      summary: Google Oauth Login With Org
+      description: Handle Google OAuth login/signup with specific organization
+      operationId: google_oauth_login_with_org_app_v1_oauth_google__org_id__post
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleOAuthRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/oauth/google:
+    post:
+      tags:
+      - Auth
+      summary: Google Oauth Login
+      description: Handle Google OAuth login/signup with default organization
+      operationId: google_oauth_login_app_v1_oauth_google_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleOAuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/oauth/github:
+    post:
+      tags:
+      - Auth
+      summary: Github Oauth Login
+      description: Handle GitHub OAuth login/signup. Optional invite_token for invitation flow.
+      operationId: github_oauth_login_app_v1_oauth_github_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GitHubOAuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/invitations/data/{token}:
+    get:
+      tags:
+      - Auth
+      summary: Get Invitations Data By Token
+      description: Get invitation data by token and check if user exists
+      operationId: get_invitations_data_by_token_app_v1_invitations_data__token__get
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/invitations/validate/{token}:
+    post:
+      tags:
+      - Auth
+      summary: Validate Invitation Token
+      description: Validate invitation token and create/update user based on validation type
+      operationId: validate_invitation_token_app_v1_invitations_validate__token__post
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Request Data
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/heartbeat:
+    post:
+      tags:
+      - Auth
+      summary: Heartbeat
+      description: 'Heartbeat endpoint to verify if token is valid and not expired.
+
+        Returns 200 if token is valid, 401 if invalid/expired.
+
+        Publishes heartbeat to SNS/worker for asynchronous logging.'
+      operationId: heartbeat_app_v1_heartbeat_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HeartbeatRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/parameters:
+    get:
+      tags:
+      - Auth
+      summary: Get Parameters
+      description: 'Get environment variables for frontend configuration.
+
+        Only accessible from FRONTEND_URL origin.
+
+        Values are retrieved from database (SystemSettings) instead of environment variables.
+
+        This endpoint is public and does not require authentication.
+
+        User-specific permissions should be checked via /user-permissions endpoint.'
+      operationId: get_parameters_app_v1_parameters_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /app/v1/user-permissions:
+    get:
+      tags:
+      - Auth
+      summary: Get User Permissions
+      description: 'Get user-specific permissions and feature flags.
+
+        Returns permissions based on the authenticated user''s role.
+
+        If user is not authenticated, returns all permissions as False.'
+      operationId: get_user_permissions_app_v1_user_permissions_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPermissionsResponse'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    SignupRequest:
+      properties:
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        email:
+          type: string
+          title: Email
+        password:
+          type: string
+          title: Password
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        waitlist_token:
+          type: string
+          title: Waitlist Token
+      type: object
+      required:
+      - first_name
+      - last_name
+      - email
+      - password
+      title: SignupRequest
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          type: string
+          title: Password
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - email
+      - password
+      title: LoginRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserPermissionsResponse:
+      properties:
+        can_use_provider_switching:
+          type: boolean
+          title: Can Use Provider Switching
+      type: object
+      required:
+      - can_use_provider_switching
+      title: UserPermissionsResponse
+    HeartbeatRequest:
+      properties:
+        route:
+          type: string
+          title: Route
+      type: object
+      required:
+      - route
+      title: HeartbeatRequest
+    GoogleOAuthRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - token
+      title: GoogleOAuthRequest
+    PasswordResetEmailRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: PasswordResetEmailRequest
+    EmailChangeRequest:
+      properties:
+        new_email:
+          type: string
+          title: New Email
+      type: object
+      required:
+      - new_email
+      title: EmailChangeRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PasswordResetRequestModel:
+      properties:
+        userId:
+          type: string
+          title: Userid
+        password:
+          type: string
+          title: Password
+        reset_token:
+          type: string
+          title: Reset Token
+      type: object
+      required:
+      - userId
+      - password
+      - reset_token
+      title: PasswordResetRequestModel
+    ResendVerificationRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: ResendVerificationRequest
+    InviteRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+      type: object
+      required:
+      - email
+      - role
+      title: InviteRequest
+    PasswordChangeRequestModel:
+      properties:
+        password:
+          type: string
+          title: Password
+        old_password:
+          type: string
+          title: Old Password
+      type: object
+      required:
+      - password
+      - old_password
+      title: PasswordChangeRequestModel
+    GitHubOAuthRequest:
+      properties:
+        code:
+          type: string
+          title: Code
+        redirect_uri:
+          type: string
+          title: Redirect Uri
+        invite_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Invite Token
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - code
+      - redirect_uri
+      title: GitHubOAuthRequest
+    UpdateInvitedUserRequest:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        new_password:
+          type: string
+          title: New Password
+      type: object
+      required:
+      - user_id
+      - first_name
+      - last_name
+      - new_password
+      title: UpdateInvitedUserRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,62 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/arcee-ai-afm-openapi.json
+notes: >-
+  Entity graph derived from OpenAPI paths, schemas, and id-reference parameters. The public
+  inference surface is stateless (chat completions), but the Arcee Platform app API models a full
+  workspace: organizations own users and API keys, keys carry access + rate-limit profiles, and
+  users own chats, prompts, data groups, and files.
+entities:
+- name: Organization
+  paths: ['/app/v1/orgs', '/app/v1/orgs/{org_id}']
+  relationships:
+  - {type: has_many, target: User, via: org_id}
+  - {type: has_many, target: ApiKey, via: org_id}
+  - {type: has_many, target: DataGroup, via: org_id}
+- name: User
+  paths: ['/app/v1/me', '/app/v1/users', '/app/v1/users/{user_id}']
+  relationships:
+  - {type: belongs_to, target: Organization, via: org_id}
+  - {type: has_many, target: Chat, via: user_id}
+  - {type: has_many, target: Prompt, via: user_id}
+- name: ApiKey
+  paths: ['/app/v1/keys', '/app/v1/keys/{key_id}']
+  relationships:
+  - {type: belongs_to, target: Organization, via: org_id}
+  - {type: has_one, target: AccessProfile, via: profile_id}
+  - {type: has_one, target: RateLimitProfile, via: profile_id}
+- name: Model
+  paths: ['/v1/models', '/app/v1/models', '/app/v1/models/{model_id}']
+  relationships:
+  - {type: has_many, target: AccessProfile, via: model_id}
+- name: AccessProfile
+  paths: ['/app/v1/access_profiles', '/app/v1/access_profiles/{profile_id}']
+  relationships:
+  - {type: has_many, target: Model, via: model_id}
+- name: RateLimitProfile
+  paths: ['/app/v1/rate_limit_profiles', '/app/v1/rate_limit_profiles/{profile_id}']
+  relationships:
+  - {type: belongs_to, target: ApiKey, via: profile_id}
+- name: Chat
+  paths: ['/app/v1/chats', '/app/v1/chat/{id}', '/app/v1/chat/{session_id}/messages']
+  relationships:
+  - {type: belongs_to, target: User, via: user_id}
+  - {type: has_many, target: Message, via: session_id}
+- name: Message
+  paths: ['/app/v1/chat/{session_id}/messages', '/app/v1/chat/{session_id}/message/{message_id}']
+  relationships:
+  - {type: belongs_to, target: Chat, via: session_id}
+- name: Prompt
+  paths: ['/app/v1/prompts', '/app/v1/prompts/{prompt_id}', '/app/v1/system-prompts']
+  relationships:
+  - {type: belongs_to, target: User, via: user_id}
+- name: DataGroup
+  paths: ['/app/v1/data-groups', '/app/v1/data-groups/{group_id}']
+  relationships:
+  - {type: belongs_to, target: Organization, via: org_id}
+  - {type: has_many, target: File, via: data_group_id}
+  - {type: has_many, target: User, via: data_group_id}
+- name: File
+  paths: ['/app/v1/files/{data_group_id}', '/app/v1/files/{data_id}/{data_group_id}']
+  relationships:
+  - {type: belongs_to, target: DataGroup, via: data_group_id}

@@ -1,0 +1,454 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Completions API
+  version: 0.1.0
+tags:
+- name: Completions
+paths:
+  /app/v1/completions/{session_id}/stream:
+    post:
+      tags:
+      - Completions
+      summary: Stream Message Completion
+      description: Send a message and get a streaming completion response.
+      operationId: stream_message_completion_app_v1_completions__session_id__stream_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatInput'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/completions/create-chat:
+    post:
+      tags:
+      - Completions
+      summary: Create Chat With First Message
+      description: 'Create new chat and stream first message response in one request.
+
+        Optimized: streams immediately, saves to DB asynchronously at the end.'
+      operationId: create_chat_with_first_message_app_v1_completions_create_chat_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatWithMessageRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/completions/{session_id}/regenerate:
+    post:
+      tags:
+      - Completions
+      summary: Regenerate Last Response
+      description: 'Regenerate the last assistant response for a chat session.
+
+
+        This endpoint:
+
+        1. Gets the last user message and its paired assistant response
+
+        2. Deletes only the assistant message (preserving the user message and its files)
+
+        3. Streams a new response using the same user message content and settings'
+      operationId: regenerate_last_response_app_v1_completions__session_id__regenerate_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/completions/messages/{message_id}/stop:
+    post:
+      tags:
+      - Completions
+      summary: Stop Message Stream
+      description: 'Signal the backend to stop an in-progress stream for the given assistant message.
+
+        Works across pods by setting a Valkey key that the streaming generator polls per chunk.'
+      operationId: stop_message_stream_app_v1_completions_messages__message_id__stop_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Message Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/completions/generate-title:
+    post:
+      tags:
+      - Completions
+      summary: Generate Chat Title
+      description: Generate a title for a chat session based on the initial message.
+      operationId: generate_chat_title_app_v1_completions_generate_title_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateTitleRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateTitleResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /api/v1/chat/completions:
+    post:
+      tags:
+      - Completions
+      summary: Create Chat Completion
+      description: Chat completion endpoint using the shared LiteLLM-backed external service.
+      operationId: create_chat_completion_api_v1_chat_completions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/chat/completions:
+    post:
+      tags:
+      - Completions
+      summary: Create Chat Completion
+      description: Chat completion endpoint using the shared LiteLLM-backed external service.
+      operationId: create_chat_completion_v1_chat_completions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CreateChatWithMessageRequest:
+      properties:
+        message:
+          type: string
+          maxLength: 50000
+          title: Message
+          description: First message content
+        title:
+          anyOf:
+          - type: string
+            maxLength: 600
+          - type: 'null'
+          title: Title
+          description: Optional chat title override
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+          description: Base model name (e.g., 'trinity-mini-26b', 'gpt-4o')
+        chat_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Id
+          description: Pre-generated chat ID (for file upload path consistency)
+        files:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Files
+        fileReferences:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Filereferences
+        tool:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool
+        systemPrompt:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Systemprompt
+          description: System prompt object for the chat
+        enabledTools:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Enabledtools
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Model temperature
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+          description: Top-p (nucleus) sampling
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+          description: Top-k sampling
+        min_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min P
+          description: Min-p sampling threshold
+        provider_preference:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Preference
+          description: Preferred provider name for model selection
+      type: object
+      required:
+      - message
+      title: CreateChatWithMessageRequest
+      description: Model for creating chat and sending first message in one request.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    GenerateTitleRequest:
+      properties:
+        initial_message:
+          type: string
+          maxLength: 50000
+          title: Initial Message
+          description: Initial message to generate title from
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+          description: Chat session ID to update with generated title
+      type: object
+      required:
+      - initial_message
+      - chat_session_id
+      title: GenerateTitleRequest
+      description: Request to generate a chat title. The backend uses a pinned title-generation model.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GenerateTitleResponse:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: Generated chat title
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+          description: Chat session ID that was updated
+      type: object
+      required:
+      - title
+      - chat_session_id
+      title: GenerateTitleResponse
+      description: Response with generated title.
+    ChatInput:
+      properties:
+        content:
+          type: string
+          maxLength: 50000
+          title: Content
+          description: Message content (max 50,000 characters)
+        session_id:
+          type: string
+          format: uuid
+          title: Session Id
+        data_group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Data Group Id
+        system_prompt:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: System Prompt
+          description: System prompt (string or object)
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        tool:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool
+          description: Tool to use (e.g., 'search')
+        provider_preference:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Preference
+          description: Preferred provider name for model selection
+      type: object
+      required:
+      - content
+      - session_id
+      title: ChatInput
+    ChatCompletionRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        messages:
+          items: {}
+          type: array
+          title: Messages
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - messages
+      title: ChatCompletionRequest
+      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
+
+        to litellm without validation so schema maintenance is not required.'
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

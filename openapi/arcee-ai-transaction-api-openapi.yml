@@ -1,0 +1,600 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Transaction API
+  version: 0.1.0
+tags:
+- name: Transaction
+paths:
+  /app/v1/chat-transactions:
+    get:
+      tags:
+      - Transaction
+      summary: Get Chat Transactions
+      description: Get all chat transactions for the organization with detailed user info
+      operationId: get_chat_transactions_app_v1_chat_transactions_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Number of transactions to return
+          default: 100
+          title: Limit
+        description: Number of transactions to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Number of transactions to skip
+          default: 0
+          title: Offset
+        description: Number of transactions to skip
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/chat-transactions/export:
+    get:
+      tags:
+      - Transaction
+      summary: Export Chat Transactions
+      description: Export chat transactions for the organization
+      operationId: export_chat_transactions_app_v1_chat_transactions_export_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/usage-stats:
+    get:
+      tags:
+      - Transaction
+      summary: Get Usage Stats
+      description: Get daily usage statistics for the organization
+      operationId: get_usage_stats_app_v1_usage_stats_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: model
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filter by specific model
+          title: Model
+        description: Filter by specific model
+      - name: model_provider
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filter by model provider
+          title: Model Provider
+        description: Filter by model provider
+      - name: source
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filter by source (api or app)
+          title: Source
+        description: Filter by source (api or app)
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Number of records to return
+          default: 100
+          title: Limit
+        description: Number of records to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Number of records to skip
+          default: 0
+          title: Offset
+        description: Number of records to skip
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DailyUsageStatsResponse'
+                title: Response Get Usage Stats App V1 Usage Stats Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/usage-stats/summary:
+    get:
+      tags:
+      - Transaction
+      summary: Get Usage Summary
+      description: Get aggregated usage summary statistics for the organization
+      operationId: get_usage_summary_app_v1_usage_stats_summary_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for summary
+          title: Start Date
+        description: Start date for summary
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for summary
+          title: End Date
+        description: End date for summary
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transactions__models__UsageSummaryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/usage-stats/export:
+    get:
+      tags:
+      - Transaction
+      summary: Export Usage Stats
+      description: Export daily usage statistics for the organization
+      operationId: export_usage_stats_app_v1_usage_stats_export_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for export
+          title: Start Date
+        description: Start date for export
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for export
+          title: End Date
+        description: End date for export
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/api-calls-volume:
+    get:
+      tags:
+      - Transaction
+      summary: Get Api Calls Volume
+      description: 'Get API call volume (chat transactions with API keys) for the current user''s organization.
+
+        Only accessible by users with ''admin'' or ''owner'' role.'
+      operationId: get_api_calls_volume_app_v1_api_calls_volume_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: from_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for API calls filter
+          title: From Date
+        description: Start date for API calls filter
+      - name: to_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for API calls filter
+          title: To Date
+        description: End date for API calls filter
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Number of API calls to return
+          default: 100
+          title: Limit
+        description: Number of API calls to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Number of API calls to skip
+          default: 0
+          title: Offset
+        description: Number of API calls to skip
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCallVolumeListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    transactions__models__UsageSummaryResponse:
+      properties:
+        total_input_tokens:
+          type: integer
+          title: Total Input Tokens
+        total_output_tokens:
+          type: integer
+          title: Total Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_requests:
+          type: integer
+          title: Total Requests
+        unique_users:
+          type: integer
+          title: Unique Users
+        unique_models:
+          type: integer
+          title: Unique Models
+        unique_providers:
+          type: integer
+          title: Unique Providers
+        api_usage:
+          type: integer
+          title: Api Usage
+        app_usage:
+          type: integer
+          title: App Usage
+        date_range_days:
+          type: integer
+          title: Date Range Days
+      type: object
+      required:
+      - total_input_tokens
+      - total_output_tokens
+      - total_tokens
+      - total_requests
+      - unique_users
+      - unique_models
+      - unique_providers
+      - api_usage
+      - app_usage
+      - date_range_days
+      title: UsageSummaryResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DailyUsageStatsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        org_id:
+          type: string
+          format: uuid
+          title: Org Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        model:
+          type: string
+          title: Model
+        model_provider:
+          type: string
+          title: Model Provider
+        source:
+          type: string
+          title: Source
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_requests:
+          type: integer
+          title: Total Requests
+        date:
+          type: string
+          format: date-time
+          title: Date
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - user_id
+      - org_id
+      - email
+      - model
+      - model_provider
+      - source
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - total_requests
+      - date
+      - created_at
+      title: DailyUsageStatsResponse
+    ApiCallVolumeResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        user:
+          additionalProperties: true
+          type: object
+          title: User
+        api_key:
+          additionalProperties: true
+          type: object
+          title: Api Key
+        tokens:
+          additionalProperties: true
+          type: object
+          title: Tokens
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        model_provider:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Provider
+        route:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Route
+        status:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Status
+        duration:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Duration
+        credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Credits
+        is_rag:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Rag
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+        ip_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ip Address
+        request_data:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Data
+        response_data:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Data
+      type: object
+      required:
+      - id
+      - user
+      - api_key
+      - tokens
+      - model
+      - model_provider
+      - route
+      - status
+      - duration
+      - credits
+      - is_rag
+      - created_at
+      title: ApiCallVolumeResponse
+      description: Single API call volume entry response.
+    ApiCallVolumeListResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+        offset:
+          type: integer
+          title: Offset
+        limit:
+          type: integer
+          title: Limit
+        content:
+          items:
+            $ref: '#/components/schemas/ApiCallVolumeResponse'
+          type: array
+          title: Content
+      type: object
+      required:
+      - total
+      - offset
+      - limit
+      - content
+      title: ApiCallVolumeListResponse
+      description: Paginated API call volume list response.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

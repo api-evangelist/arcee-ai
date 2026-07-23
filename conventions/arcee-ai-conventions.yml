@@ -1,0 +1,62 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.arcee.ai/api-reference/ ; openapi/arcee-ai-afm-openapi.json
+summary: >-
+  Cross-cutting request/response semantics for the Arcee Platform API. The public inference surface
+  is OpenAI-compatible, so most conventions mirror the OpenAI Chat Completions contract.
+authentication:
+  style: bearer-api-key
+  header: 'Authorization: Bearer <API_KEY>'
+  ref: authentication/arcee-ai-authentication.yml
+base_url: https://api.arcee.ai/api/v1
+openai_compatible: true
+compatibility_note: >-
+  Works with the OpenAI SDKs by overriding base_url. Endpoints, request bodies (model, messages,
+  temperature, top_p, tools, tool_choice, stream, max_tokens, seed, logprobs, response_format) and
+  responses (id, object, created, model, choices, usage) follow the OpenAI schema.
+streaming:
+  supported: true
+  mechanism: Server-Sent Events (text/event-stream) when stream=true
+  docs: https://docs.arcee.ai/capabilities/streaming-messages
+function_calling:
+  supported: true
+  params: [tools, tool_choice]
+  docs: https://docs.arcee.ai/capabilities/function-calling
+structured_outputs:
+  supported: true
+  param: response_format
+  docs: https://docs.arcee.ai/capabilities/structured-outputs
+reasoning_traces:
+  supported: true
+  field: choices[].message.reasoning
+  docs: https://docs.arcee.ai/capabilities/reasoning-traces
+idempotency:
+  supported: false
+  notes: >-
+    No idempotency-key header or parameter is documented for the inference API. Chat completions
+    are non-idempotent generative calls; the OpenAI-compatible surface does not expose an
+    Idempotency-Key. No Idempotency pointer is emitted for this provider.
+pagination:
+  supported: partial
+  notes: >-
+    The public inference endpoints are not paginated. Some Arcee Platform app endpoints (chats,
+    transactions, usage) accept limit/offset-style query parameters; no cursor pagination contract
+    is published.
+versioning:
+  scheme: uri-path
+  current: v1
+  path_prefixes: [/v1, /api/v1]
+error_envelope:
+  shape: '{"detail": "<human-readable message>"}'
+  validation_shape: '{"detail":[{"loc":[...],"msg":"...","type":"..."}]}  (422, FastAPI HTTPValidationError)'
+  ref: errors/arcee-ai-problem-types.yml
+  rfc9457: false
+rate_limit_signaling:
+  status_code: 429
+  notes: >-
+    A 429 "Rate Limit Reached" is returned when limits are exceeded. The platform manages limits
+    via rate-limit profiles server-side; published numeric per-key rate limits were not found in
+    the docs.
+usage_metering:
+  endpoints: [/v1/usage/credits, /v1/usage/stats, /v1/usage/summary]
+  notes: Credit/usage balance and per-model usage are queryable via the usage endpoints.

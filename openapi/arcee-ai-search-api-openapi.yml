@@ -1,0 +1,108 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Search API
+  version: 0.1.0
+tags:
+- name: Search
+paths:
+  /app/v1/search/exa/ai:
+    post:
+      tags:
+      - Search
+      summary: Perform Exa Ai Search
+      description: Perform a web search using Exa and return AI-processed summary
+      operationId: perform_exa_ai_search_app_v1_search_exa_ai_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AISearchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    AISearchResponse:
+      properties:
+        query:
+          type: string
+          title: Query
+        summary:
+          type: string
+          title: Summary
+        sources:
+          items:
+            type: string
+          type: array
+          title: Sources
+        search_time:
+          type: number
+          title: Search Time
+      type: object
+      required:
+      - query
+      - summary
+      - sources
+      - search_time
+      title: AISearchResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SearchRequest:
+      properties:
+        query:
+          type: string
+          title: Query
+        recency_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Recency Days
+      type: object
+      required:
+      - query
+      title: SearchRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

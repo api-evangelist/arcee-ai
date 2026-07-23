@@ -1,0 +1,400 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles RAG API
+  version: 0.1.0
+tags:
+- name: RAG
+paths:
+  /app/v1/rag:
+    post:
+      tags:
+      - RAG
+      summary: Rag
+      operationId: rag_app_v1_rag_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /app/v1/data-groups:
+    get:
+      tags:
+      - RAG
+      summary: Get Data Group
+      operationId: get_data_group_app_v1_data_groups_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - RAG
+      summary: Create Data Group
+      operationId: create_data_group_app_v1_data_groups_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDataGroupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/data-groups/{group_id}:
+    delete:
+      tags:
+      - RAG
+      summary: Delete Data Group
+      operationId: delete_data_group_app_v1_data_groups__group_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/data-groups/{data_group_id}/users:
+    get:
+      tags:
+      - RAG
+      summary: Get Data Group Users
+      operationId: get_data_group_users_app_v1_data_groups__data_group_id__users_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: data_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Data Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/data-groups/add-users:
+    post:
+      tags:
+      - RAG
+      summary: Add Users To Data Group
+      operationId: add_users_to_data_group_app_v1_data_groups_add_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUsersToGroupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/data-groups/{data_group_id}/users/{user_org_profile_id}:
+    delete:
+      tags:
+      - RAG
+      summary: Remove User From Data Group
+      operationId: remove_user_from_data_group_app_v1_data_groups__data_group_id__users__user_org_profile_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: data_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Data Group Id
+      - name: user_org_profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Org Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/files/{data_group_id}:
+    post:
+      tags:
+      - RAG
+      summary: Upload Files
+      operationId: upload_files_app_v1_files__data_group_id__post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: data_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Data Group Id
+      - name: purpose
+        in: query
+        required: false
+        schema:
+          type: string
+          default: user_data
+          title: Purpose
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_files_app_v1_files__data_group_id__post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - RAG
+      summary: Get Files
+      operationId: get_files_app_v1_files__data_group_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: data_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Data Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/files/{data_id}/{data_group_id}:
+    delete:
+      tags:
+      - RAG
+      summary: Delete Files
+      operationId: delete_files_app_v1_files__data_id___data_group_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: data_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Data Id
+      - name: data_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Data Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/v1/top-k/{data_group_id}:
+    get:
+      tags:
+      - RAG
+      summary: Get Top K
+      description: Get top-k results for a query using API key authentication
+      operationId: get_top_k_app_v1_v1_top_k__data_group_id__get
+      parameters:
+      - name: data_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Data Group Id
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+          description: The query to search for
+          title: Query
+        description: The query to search for
+      - name: k
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Number of top results to return
+          default: 10
+          title: K
+        description: Number of top results to return
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AddUsersToGroupRequest:
+      properties:
+        user_org_profile_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Org Profile Ids
+        data_group_id:
+          type: string
+          format: uuid
+          title: Data Group Id
+      type: object
+      required:
+      - user_org_profile_ids
+      - data_group_id
+      title: AddUsersToGroupRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Body_upload_files_app_v1_files__data_group_id__post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+      type: object
+      required:
+      - files
+      title: Body_upload_files_app_v1_files__data_group_id__post
+    CreateDataGroupRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_public:
+          type: boolean
+          title: Is Public
+          default: false
+      type: object
+      required:
+      - name
+      title: CreateDataGroupRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

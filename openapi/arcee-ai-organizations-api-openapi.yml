@@ -1,0 +1,1109 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Organizations API
+  version: 0.1.0
+tags:
+- name: Organizations
+paths:
+  /app/v1/orgs:
+    get:
+      tags:
+      - Organizations
+      summary: Get User Organizations
+      description: Get organizations where current user has user_in_org records in Workspace format
+      operationId: get_user_organizations_app_v1_orgs_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response Get User Organizations App V1 Orgs Get
+      security:
+      - HTTPBearer: []
+    put:
+      tags:
+      - Organizations
+      summary: Update Organization
+      description: Update an organization. If organization_id is provided, update that organization. Otherwise update current user's active organization.
+      operationId: update_organization_app_v1_orgs_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Update Organization App V1 Orgs Put
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Organizations
+      summary: Create Organization
+      description: Create a new organization with full workspace setup
+      operationId: create_organization_app_v1_orgs_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_organization_app_v1_orgs_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Create Organization App V1 Orgs Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/orgs/profiles:
+    get:
+      tags:
+      - Organizations
+      summary: Get Organizations With Profiles
+      description: Get all organizations with their rate limit and access profiles (admin only)
+      operationId: get_organizations_with_profiles_app_v1_orgs_profiles_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Page number
+          default: 1
+          title: Page
+        description: Page number
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Number of items per page
+          default: 20
+          title: Page Size
+        description: Number of items per page
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Search by organization name
+          title: Search
+        description: Search by organization name
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrgProfilesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/{org_id}/users:
+    get:
+      tags:
+      - Organizations
+      summary: Get Organization Users
+      description: Get users in a specific organization
+      operationId: get_organization_users_app_v1_orgs__org_id__users_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Organization Users App V1 Orgs  Org Id  Users Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Organizations
+      summary: Change Users Organization
+      description: Change users' organization. Only admin and owner can perform this operation.
+      operationId: change_users_organization_app_v1_orgs__org_id__users_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeUserOrgRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Change Users Organization App V1 Orgs  Org Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/related-users:
+    get:
+      tags:
+      - Organizations
+      summary: Get Related Users
+      description: Get all users from organizations where current user is owner, excluding current user
+      operationId: get_related_users_app_v1_related_users_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response Get Related Users App V1 Related Users Get
+      security:
+      - HTTPBearer: []
+  /app/v1/orgs/{org_id}:
+    get:
+      tags:
+      - Organizations
+      summary: Get Organization By Id
+      description: Get a single organization by ID
+      operationId: get_organization_by_id_app_v1_orgs__org_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Organization By Id App V1 Orgs  Org Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Organizations
+      summary: Delete Organization
+      description: Delete an organization by ID. Only the owner can delete their organization.
+      operationId: delete_organization_app_v1_orgs__org_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Delete Organization App V1 Orgs  Org Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/{org_id}/status:
+    patch:
+      tags:
+      - Organizations
+      summary: Change Organization Status
+      description: Change organization status. Only owner can change status.
+      operationId: change_organization_status_app_v1_orgs__org_id__status_patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeOrganizationStatusRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Change Organization Status App V1 Orgs  Org Id  Status Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/switch-current-org:
+    post:
+      tags:
+      - Organizations
+      summary: Switch User Current Org
+      description: Switch user's active profile to a different organization
+      operationId: switch_user_current_org_app_v1_switch_current_org_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SwitchUserCurrentOrgRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Switch User Current Org App V1 Switch Current Org Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/orgs/status:
+    post:
+      tags:
+      - Organizations
+      summary: Update Organization Status
+      description: Update an organization's status, requires owner privileges
+      operationId: update_organization_status_app_v1_orgs_status_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationStatusUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/invitations:
+    get:
+      tags:
+      - Organizations
+      summary: Get Organization Invitations
+      description: Get invitations for current user's active organization
+      operationId: get_organization_invitations_app_v1_invitations_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response Get Organization Invitations App V1 Invitations Get
+      security:
+      - HTTPBearer: []
+  /app/v1/invitations/{invitation_id}:
+    delete:
+      tags:
+      - Organizations
+      summary: Remove Invitation
+      description: Remove an invitation (cancel it)
+      operationId: remove_invitation_app_v1_invitations__invitation_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: invitation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Invitation ID
+          title: Invitation Id
+        description: Invitation ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/invitations/{invitation_id}/status:
+    patch:
+      tags:
+      - Organizations
+      summary: Update Invitation Status
+      description: Update invitation status
+      operationId: update_invitation_status_app_v1_invitations__invitation_id__status_patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: invitation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Invitation ID
+          title: Invitation Id
+        description: Invitation ID
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/users/{user_id}/role:
+    patch:
+      tags:
+      - Organizations
+      summary: Update User Role
+      description: Update user role in organization
+      operationId: update_user_role_app_v1_users__user_id__role_patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: User ID
+          title: User Id
+        description: User ID
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_update_user_role_app_v1_users__user_id__role_patch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/users/{user_id}:
+    delete:
+      tags:
+      - Organizations
+      summary: Remove User From Organization
+      description: Remove user from organization
+      operationId: remove_user_from_organization_app_v1_users__user_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: User ID
+          title: User Id
+        description: User ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/remove_my_self_from_org/{org_id}:
+    delete:
+      tags:
+      - Organizations
+      summary: Remove Myself From Organization
+      description: Remove myself from specific organization
+      operationId: remove_myself_from_organization_app_v1_remove_my_self_from_org__org_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID to remove myself from
+          title: Org Id
+        description: Organization ID to remove myself from
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/users/{user_id}/status:
+    patch:
+      tags:
+      - Organizations
+      summary: Update User Status
+      description: Update user status in organization
+      operationId: update_user_status_app_v1_users__user_id__status_patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: User ID
+          title: User Id
+        description: User ID
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_update_user_status_app_v1_users__user_id__status_patch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/members/add:
+    post:
+      tags:
+      - Organizations
+      summary: Add Members
+      description: Add members to organization by sending invitations
+      operationId: add_members_app_v1_members_add_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_add_members_app_v1_members_add_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/heartbeats:
+    get:
+      tags:
+      - Organizations
+      summary: Get Members Heartbeats
+      description: 'Get all heartbeats from members of the current user''s organization.
+
+        Only accessible by users with ''admin'' or ''owner'' role.'
+      operationId: get_members_heartbeats_app_v1_heartbeats_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: from_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for heartbeats filter
+          title: From Date
+        description: Start date for heartbeats filter
+      - name: to_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for heartbeats filter
+          title: To Date
+        description: End date for heartbeats filter
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Number of heartbeats to return
+          default: 100
+          title: Limit
+        description: Number of heartbeats to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Number of heartbeats to skip
+          default: 0
+          title: Offset
+        description: Number of heartbeats to skip
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Members Heartbeats App V1 Heartbeats Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/member-logs:
+    get:
+      tags:
+      - Organizations
+      summary: Get Member Logs
+      description: 'Get combined member logs (heartbeats + chat transactions) for the specified or active organization.
+
+        Only accessible by users with ''admin'' or ''owner'' role in the target organization.'
+      operationId: get_member_logs_app_v1_member_logs_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: Organization ID (optional, defaults to active organization)
+          title: Org Id
+        description: Organization ID (optional, defaults to active organization)
+      - name: from_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for logs filter
+          title: From Date
+        description: Start date for logs filter
+      - name: to_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for logs filter
+          title: To Date
+        description: End date for logs filter
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Number of logs to return
+          default: 100
+          title: Limit
+        description: Number of logs to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Number of logs to skip
+          default: 0
+          title: Offset
+        description: Number of logs to skip
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Member Logs App V1 Member Logs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/details/{org_id}:
+    get:
+      tags:
+      - Organizations
+      summary: Get Organization Details
+      operationId: get_organization_details_app_v1_orgs_details__org_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Organization Details App V1 Orgs Details  Org Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/profiles/{org_id}:
+    patch:
+      tags:
+      - Organizations
+      summary: Update Organization Profiles
+      operationId: update_organization_profiles_app_v1_orgs_profiles__org_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgProfilesRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Organization Profiles App V1 Orgs Profiles  Org Id  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    Body_add_members_app_v1_members_add_post:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+          title: Emails
+          description: List of email addresses to invite
+      type: object
+      required:
+      - emails
+      title: Body_add_members_app_v1_members_add_post
+    Body_update_user_status_app_v1_users__user_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (active, deactivated)
+      type: object
+      required:
+      - status
+      title: Body_update_user_status_app_v1_users__user_id__status_patch
+    UpdateOrgRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logo
+        limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Limits
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+      type: object
+      title: UpdateOrgRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_update_user_role_app_v1_users__user_id__role_patch:
+      properties:
+        role:
+          type: string
+          title: Role
+          description: New role (user, admin)
+      type: object
+      required:
+      - role
+      title: Body_update_user_role_app_v1_users__user_id__role_patch
+    PaginatedOrgProfilesResponse:
+      properties:
+        entries:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedOrgProfilesResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OrganizationStatusUpdateRequest:
+      properties:
+        org_id:
+          type: string
+          title: Org Id
+        new_status:
+          type: string
+          title: New Status
+      type: object
+      required:
+      - org_id
+      - new_status
+      title: OrganizationStatusUpdateRequest
+    UpdateOrgProfilesRequest:
+      properties:
+        rate_limit_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Rate Limit Profile Id
+        access_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Access Profile Id
+        no_retention:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: No Retention
+      type: object
+      title: UpdateOrgProfilesRequest
+    ChangeOrganizationStatusRequest:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: ChangeOrganizationStatusRequest
+    SwitchUserCurrentOrgRequest:
+      properties:
+        organization_id:
+          type: string
+          title: Organization Id
+      type: object
+      required:
+      - organization_id
+      title: SwitchUserCurrentOrgRequest
+    Body_create_organization_app_v1_orgs_post:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: Logo
+        members:
+          type: string
+          title: Members
+          default: '[]'
+        importSettings:
+          type: string
+          title: Importsettings
+          default: 'null'
+      type: object
+      required:
+      - name
+      title: Body_create_organization_app_v1_orgs_post
+    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (pending, accepted, cancelled)
+      type: object
+      required:
+      - status
+      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
+    ChangeUserOrgRequest:
+      properties:
+        user_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Ids
+      type: object
+      required:
+      - user_ids
+      title: ChangeUserOrgRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

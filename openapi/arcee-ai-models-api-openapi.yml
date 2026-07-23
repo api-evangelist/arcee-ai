@@ -1,0 +1,213 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Models API
+  version: 0.1.0
+tags:
+- name: Models
+paths:
+  /api/v1/models:
+    get:
+      tags:
+      - Models
+      summary: Get Models
+      description: Get all models according to OpenRouter provider spec.
+      operationId: get_models_api_v1_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsListResponse'
+        '401':
+          description: Authentication Fails
+          content:
+            application/json:
+              example:
+                detail: Authentication failed due to invalid or missing API key
+        '422':
+          description: Invalid Parameters
+          content:
+            application/json:
+              example:
+                detail: One or more request parameters are invalid or out of range
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              example:
+                detail: An internal server error occurred while processing the request
+  /v1/models:
+    get:
+      tags:
+      - Models
+      summary: Get Models
+      description: Get all models according to OpenRouter provider spec.
+      operationId: get_models_v1_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsListResponse'
+        '401':
+          description: Authentication Fails
+          content:
+            application/json:
+              example:
+                detail: Authentication failed due to invalid or missing API key
+        '422':
+          description: Invalid Parameters
+          content:
+            application/json:
+              example:
+                detail: One or more request parameters are invalid or out of range
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              example:
+                detail: An internal server error occurred while processing the request
+components:
+  schemas:
+    PricingResponse:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        completion:
+          type: string
+          title: Completion
+        image:
+          type: string
+          title: Image
+        request:
+          type: string
+          title: Request
+        input_cache_read:
+          type: string
+          title: Input Cache Read
+      type: object
+      required:
+      - prompt
+      - completion
+      - image
+      - request
+      - input_cache_read
+      title: PricingResponse
+    DatacenterResponse:
+      properties:
+        country_code:
+          type: string
+          title: Country Code
+      type: object
+      required:
+      - country_code
+      title: DatacenterResponse
+    ModelsListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/APIModelResponse'
+          type: array
+          title: Data
+      type: object
+      required:
+      - data
+      title: ModelsListResponse
+    OpenRouterMetadata:
+      properties:
+        slug:
+          type: string
+          title: Slug
+      type: object
+      required:
+      - slug
+      title: OpenRouterMetadata
+    APIModelResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        hugging_face_id:
+          type: string
+          title: Hugging Face Id
+        name:
+          type: string
+          title: Name
+        created:
+          type: integer
+          title: Created
+        context_length:
+          type: integer
+          title: Context Length
+        pricing:
+          $ref: '#/components/schemas/PricingResponse'
+        input_modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Input Modalities
+        output_modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Output Modalities
+        quantization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quantization
+        max_output_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Length
+        supported_sampling_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Sampling Parameters
+        supported_features:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Features
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        openrouter:
+          anyOf:
+          - $ref: '#/components/schemas/OpenRouterMetadata'
+          - type: 'null'
+        datacenters:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DatacenterResponse'
+            type: array
+          - type: 'null'
+          title: Datacenters
+      type: object
+      required:
+      - id
+      - hugging_face_id
+      - name
+      - created
+      - context_length
+      - pricing
+      title: APIModelResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,797 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Arcee-Admin API
+  version: 0.1.0
+tags:
+- name: Arcee-Admin
+paths:
+  /app/v1/waitlist-status:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Waitlist Status
+      operationId: get_waitlist_status_app_v1_waitlist_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /app/v1/waitlist-status/{status}:
+    post:
+      tags:
+      - Arcee-Admin
+      summary: Set Waitlist Status
+      operationId: set_waitlist_status_app_v1_waitlist_status__status__post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: status
+        in: path
+        required: true
+        schema:
+          type: boolean
+          title: Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/join-waitlist:
+    post:
+      tags:
+      - Arcee-Admin
+      summary: Join Waitlist
+      operationId: join_waitlist_app_v1_join_waitlist_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinWaitlistRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/waitlist:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Waitlist Entries
+      operationId: get_waitlist_entries_app_v1_waitlist_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Page Size
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWaitlistResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Arcee-Admin
+      summary: Update Waitlist Entry Status
+      operationId: update_waitlist_entry_status_app_v1_waitlist_patch
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWaitlistEntryStatusRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/WaitlistEntryResponse'
+                - type: 'null'
+                title: Response Update Waitlist Entry Status App V1 Waitlist Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/app-settings:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get App Settings
+      operationId: get_app_settings_app_v1_app_settings_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Get App Settings App V1 App Settings Get
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Arcee-Admin
+      summary: Toggle App Setting
+      operationId: toggle_app_setting_app_v1_app_settings_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToggleAppSettingRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/app-settings/text:
+    post:
+      tags:
+      - Arcee-Admin
+      summary: Update Text Setting
+      operationId: update_text_setting_app_v1_app_settings_text_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTextSettingRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/app-settings/int:
+    post:
+      tags:
+      - Arcee-Admin
+      summary: Update Int Setting
+      operationId: update_int_setting_app_v1_app_settings_int_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIntSettingRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/tools:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Available Tools
+      operationId: get_available_tools_app_v1_tools_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ToolInfoResponse'
+                type: array
+                title: Response Get Available Tools App V1 Tools Get
+      security:
+      - HTTPBearer: []
+  /app/v1/flagged-responses:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Flagged Responses
+      operationId: get_flagged_responses_app_v1_flagged_responses_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Page Size
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFlaggedResponsesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/flagged-responses/{flagged_id}:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Flagged Response
+      operationId: get_flagged_response_app_v1_flagged_responses__flagged_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: flagged_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Flagged Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlaggedResponseEntry'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Arcee-Admin
+      summary: Delete Flagged Response
+      operationId: delete_flagged_response_app_v1_flagged_responses__flagged_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: flagged_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Flagged Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Arcee-Admin
+      summary: Update Flagged Response Status
+      operationId: update_flagged_response_status_app_v1_flagged_responses__flagged_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: flagged_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Flagged Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFlaggedResponseStatusRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/flagged-responses/{flagged_id}/messages:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Flagged Response Messages
+      operationId: get_flagged_response_messages_app_v1_flagged_responses__flagged_id__messages_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: flagged_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Flagged Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminChatMessageResponse'
+                title: Response Get Flagged Response Messages App V1 Flagged Responses  Flagged Id  Messages Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/toggle-free-key:
+    post:
+      tags:
+      - Arcee-Admin
+      summary: Toggle Free Key
+      operationId: toggle_free_key_app_v1_toggle_free_key_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToggleFreeKeyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PaginatedFlaggedResponsesResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/FlaggedResponseEntry'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedFlaggedResponsesResponse
+    JoinWaitlistRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: JoinWaitlistRequest
+    PaginatedWaitlistResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/WaitlistEntryResponse'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedWaitlistResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UpdateFlaggedResponseStatusRequest:
+      properties:
+        admin_review:
+          type: string
+          title: Admin Review
+      type: object
+      required:
+      - admin_review
+      title: UpdateFlaggedResponseStatusRequest
+    WaitlistEntryResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        email:
+          type: string
+          title: Email
+        created_at:
+          type: string
+          title: Created At
+        status:
+          $ref: '#/components/schemas/WaitlistStatus'
+        token_expiration:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Expiration
+        approved_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Approved Date
+      type: object
+      required:
+      - id
+      - email
+      - created_at
+      - status
+      title: WaitlistEntryResponse
+    UpdateIntSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: integer
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateIntSettingRequest
+    ToggleFreeKeyRequest:
+      properties:
+        key_id:
+          type: string
+          format: uuid
+          title: Key Id
+      type: object
+      required:
+      - key_id
+      title: ToggleFreeKeyRequest
+    AdminChatMessageResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        session_id:
+          type: string
+          format: uuid
+          title: Session Id
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+        created_at:
+          type: string
+          title: Created At
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      required:
+      - id
+      - session_id
+      - role
+      - content
+      - created_at
+      title: AdminChatMessageResponse
+    UpdateTextSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: string
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateTextSettingRequest
+    UpdateWaitlistEntryStatusRequest:
+      properties:
+        entry_id:
+          type: string
+          title: Entry Id
+        email:
+          type: string
+          title: Email
+        new_status:
+          $ref: '#/components/schemas/WaitlistStatus'
+      type: object
+      required:
+      - entry_id
+      - email
+      - new_status
+      title: UpdateWaitlistEntryStatusRequest
+    FlaggedResponseEntry:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        chat_message_id:
+          type: string
+          format: uuid
+          title: Chat Message Id
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+        user_org_profile_id:
+          type: string
+          format: uuid
+          title: User Org Profile Id
+        reason:
+          type: string
+          title: Reason
+        user_feedback:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Feedback
+        created_at:
+          type: string
+          title: Created At
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        admin_review:
+          type: string
+          title: Admin Review
+      type: object
+      required:
+      - id
+      - chat_message_id
+      - chat_session_id
+      - user_org_profile_id
+      - reason
+      - created_at
+      - admin_review
+      title: FlaggedResponseEntry
+    ToggleAppSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: boolean
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: ToggleAppSettingRequest
+    WaitlistStatus:
+      type: string
+      enum:
+      - pending
+      - approved
+      - rejected
+      - completed
+      title: WaitlistStatus
+    ToolInfoResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        icon_name:
+          type: string
+          title: Icon Name
+        active_state_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Active State Label
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - icon_name
+      title: ToolInfoResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

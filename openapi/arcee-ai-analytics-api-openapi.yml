@@ -1,0 +1,2521 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Analytics API
+  version: 0.1.0
+tags:
+- name: Analytics
+paths:
+  /app/v1/arcee-admin/analytics/platform/overview:
+    get:
+      tags:
+      - Analytics
+      summary: Get Platform Overview
+      description: Get combined platform overview with summary metrics and top users/keys.
+      operationId: get_platform_overview_app_v1_arcee_admin_analytics_platform_overview_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/usage-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Usage Timeline
+      description: Get combined app + API usage timeline aggregated by date.
+      operationId: get_usage_timeline_app_v1_arcee_admin_analytics_platform_usage_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: hour, day, week, month'
+          default: day
+        description: 'Time granularity: hour, day, week, month'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UsageTimelineItem'
+                title: Response Get Usage Timeline App V1 Arcee Admin Analytics Platform Usage Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/app-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get App Timeline
+      description: Get app-specific usage timeline.
+      operationId: get_app_timeline_app_v1_arcee_admin_analytics_platform_app_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: hour, day, week, month'
+          default: day
+        description: 'Time granularity: hour, day, week, month'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppTimelineItem'
+                title: Response Get App Timeline App V1 Arcee Admin Analytics Platform App Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Timeline
+      description: Get API-specific usage timeline.
+      operationId: get_api_timeline_app_v1_arcee_admin_analytics_platform_api_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: hour, day, week, month'
+          default: day
+        description: 'Time granularity: hour, day, week, month'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiTimelineItem'
+                title: Response Get Api Timeline App V1 Arcee Admin Analytics Platform Api Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/revenue-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Revenue Timeline
+      description: Get revenue/credits timeline aggregated by date.
+      operationId: get_revenue_timeline_app_v1_arcee_admin_analytics_platform_revenue_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RevenueTimelineItem'
+                title: Response Get Revenue Timeline App V1 Arcee Admin Analytics Platform Revenue Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/revenue-summary:
+    get:
+      tags:
+      - Analytics
+      summary: Get Revenue Summary
+      description: Get aggregated revenue summary statistics.
+      operationId: get_revenue_summary_app_v1_arcee_admin_analytics_platform_revenue_summary_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueSummary'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/top-users:
+    get:
+      tags:
+      - Analytics
+      summary: Get Top Users
+      description: Get top app users by usage.
+      operationId: get_top_users_app_v1_arcee_admin_analytics_platform_top_users_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Number of top users to return
+          default: 10
+          title: Limit
+        description: Number of top users to return
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TopUserItem'
+                title: Response Get Top Users App V1 Arcee Admin Analytics Platform Top Users Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/top-api-keys:
+    get:
+      tags:
+      - Analytics
+      summary: Get Top Api Keys
+      description: Get top API keys by usage.
+      operationId: get_top_api_keys_app_v1_arcee_admin_analytics_platform_top_api_keys_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Number of top API keys to return
+          default: 10
+          title: Limit
+        description: Number of top API keys to return
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          enum:
+          - calls
+          - tokens
+          type: string
+          description: 'Ranking metric: ''calls'' or ''tokens'''
+          default: calls
+          title: Sort By
+        description: 'Ranking metric: ''calls'' or ''tokens'''
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TopApiKeyItem'
+                title: Response Get Top Api Keys App V1 Arcee Admin Analytics Platform Top Api Keys Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/users-for-date:
+    get:
+      tags:
+      - Analytics
+      summary: Get Users For Date
+      description: Get detailed app user data for a specific date or date range (drill-down).
+      operationId: get_users_for_date_app_v1_arcee_admin_analytics_platform_users_for_date_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Date in YYYY-MM-DD format
+          title: Date
+        description: Date in YYYY-MM-DD format
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: End date in YYYY-MM-DD format (inclusive range)
+          title: End Date
+        description: End date in YYYY-MM-DD format (inclusive range)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppUserForDateItem'
+                title: Response Get Users For Date App V1 Arcee Admin Analytics Platform Users For Date Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-keys-for-date:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Keys For Date
+      description: Get detailed API key data for a specific date or date range (drill-down).
+      operationId: get_api_keys_for_date_app_v1_arcee_admin_analytics_platform_api_keys_for_date_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Date in YYYY-MM-DD format
+          title: Date
+        description: Date in YYYY-MM-DD format
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: End date in YYYY-MM-DD format (inclusive range)
+          title: End Date
+        description: End date in YYYY-MM-DD format (inclusive range)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKeyForDateItem'
+                title: Response Get Api Keys For Date App V1 Arcee Admin Analytics Platform Api Keys For Date Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/model-usage:
+    get:
+      tags:
+      - Analytics
+      summary: Get Model Usage
+      description: Get usage breakdown by model.
+      operationId: get_model_usage_app_v1_arcee_admin_analytics_platform_model_usage_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModelUsageItem'
+                title: Response Get Model Usage App V1 Arcee Admin Analytics Platform Model Usage Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-key-usage-per-model:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Key Usage Per Model
+      description: Get usage aggregated per (api_key, model) pair — powers the admin stacked chart.
+      operationId: get_api_key_usage_per_model_app_v1_arcee_admin_analytics_platform_api_key_usage_per_model_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Max (api_key, model) rows
+          default: 200
+          title: Limit
+        description: Max (api_key, model) rows
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKeyModelUsageItem'
+                title: Response Get Api Key Usage Per Model App V1 Arcee Admin Analytics Platform Api Key Usage Per Model Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/new-users-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get New Users Timeline
+      description: Get new user signups over time.
+      operationId: get_new_users_timeline_app_v1_arcee_admin_analytics_platform_new_users_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: week, month, year'
+          default: month
+        description: 'Time granularity: week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewUsersTimelineItem'
+                title: Response Get New Users Timeline App V1 Arcee Admin Analytics Platform New Users Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/retention-cohorts:
+    get:
+      tags:
+      - Analytics
+      summary: Get Retention Cohorts
+      description: Get retention cohort data at the specified granularity.
+      operationId: get_retention_cohorts_app_v1_arcee_admin_analytics_platform_retention_cohorts_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: week, month, year'
+          default: month
+        description: 'Time granularity: week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetentionCohortItem'
+                title: Response Get Retention Cohorts App V1 Arcee Admin Analytics Platform Retention Cohorts Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/user-type-breakdown:
+    get:
+      tags:
+      - Analytics
+      summary: Get User Type Breakdown
+      description: Get breakdown of users by platform type.
+      operationId: get_user_type_breakdown_app_v1_arcee_admin_analytics_platform_user_type_breakdown_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTypeBreakdown'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/chat-dau-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Chat Dau Timeline
+      description: Get chat (platform) daily/monthly active users timeline.
+      operationId: get_chat_dau_timeline_app_v1_arcee_admin_analytics_platform_chat_dau_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: week, month, year'
+          default: month
+        description: 'Time granularity: week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DAUTimelineItem'
+                title: Response Get Chat Dau Timeline App V1 Arcee Admin Analytics Platform Chat Dau Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-dau-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Dau Timeline
+      description: Get API daily/monthly active users timeline.
+      operationId: get_api_dau_timeline_app_v1_arcee_admin_analytics_platform_api_dau_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: week, month, year'
+          default: month
+        description: 'Time granularity: week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DAUTimelineItem'
+                title: Response Get Api Dau Timeline App V1 Arcee Admin Analytics Platform Api Dau Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/new-api-keys-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get New Api Keys Timeline
+      description: Get new API keys created timeline.
+      operationId: get_new_api_keys_timeline_app_v1_arcee_admin_analytics_platform_new_api_keys_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: day, week, month, year'
+          default: day
+        description: 'Time granularity: day, week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewApiKeysTimelineItem'
+                title: Response Get New Api Keys Timeline App V1 Arcee Admin Analytics Platform New Api Keys Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-key-activation-rate:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Key Activation Rate
+      description: Get API key activation rate - percentage of keys with at least one transaction.
+      operationId: get_api_key_activation_rate_app_v1_arcee_admin_analytics_platform_api_key_activation_rate_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyActivationRate'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-key-activation-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Key Activation Timeline
+      description: Get timeline of new API keys created vs keys with first usage.
+      operationId: get_api_key_activation_timeline_app_v1_arcee_admin_analytics_platform_api_key_activation_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: day, week, month, year'
+          default: day
+        description: 'Time granularity: day, week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKeyActivationTimelineItem'
+                title: Response Get Api Key Activation Timeline App V1 Arcee Admin Analytics Platform Api Key Activation Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/chat-user-activation-rate:
+    get:
+      tags:
+      - Analytics
+      summary: Get Chat User Activation Rate
+      description: Get chat user activation rate - percentage of users with at least one chat.
+      operationId: get_chat_user_activation_rate_app_v1_arcee_admin_analytics_platform_chat_user_activation_rate_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatUserActivationRate'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/chat-user-activation-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Chat User Activation Timeline
+      description: Get timeline of new users vs users who sent their first chat.
+      operationId: get_chat_user_activation_timeline_app_v1_arcee_admin_analytics_platform_chat_user_activation_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: hour, day, week, month, year'
+          default: day
+        description: 'Time granularity: hour, day, week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatUserActivationTimelineItem'
+                title: Response Get Chat User Activation Timeline App V1 Arcee Admin Analytics Platform Chat User Activation Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/users-for-activation-period:
+    get:
+      tags:
+      - Analytics
+      summary: Get Users For Activation Period
+      description: Get users who signed up in a period with their activation status.
+      operationId: get_users_for_activation_period_app_v1_arcee_admin_analytics_platform_users_for_activation_period_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Date in YYYY-MM-DD format
+          title: Date
+        description: Date in YYYY-MM-DD format
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: End date in YYYY-MM-DD format (inclusive range)
+          title: End Date
+        description: End date in YYYY-MM-DD format (inclusive range)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserActivationForDateItem'
+                title: Response Get Users For Activation Period App V1 Arcee Admin Analytics Platform Users For Activation Period Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/api-keys-for-activation-period:
+    get:
+      tags:
+      - Analytics
+      summary: Get Api Keys For Activation Period
+      description: Get API keys created in a period with their activation status.
+      operationId: get_api_keys_for_activation_period_app_v1_arcee_admin_analytics_platform_api_keys_for_activation_period_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Date in YYYY-MM-DD format
+          title: Date
+        description: Date in YYYY-MM-DD format
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: End date in YYYY-MM-DD format (inclusive range)
+          title: End Date
+        description: End date in YYYY-MM-DD format (inclusive range)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKeyActivationForDateItem'
+                title: Response Get Api Keys For Activation Period App V1 Arcee Admin Analytics Platform Api Keys For Activation Period Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/dev-mode-summary:
+    get:
+      tags:
+      - Analytics
+      summary: Get Dev Mode Summary
+      description: Get aggregated Dev Mode usage summary statistics.
+      operationId: get_dev_mode_summary_app_v1_arcee_admin_analytics_platform_dev_mode_summary_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevModeSummary'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/dev-mode-timeline:
+    get:
+      tags:
+      - Analytics
+      summary: Get Dev Mode Timeline
+      description: Get Dev Mode usage timeline aggregated by date.
+      operationId: get_dev_mode_timeline_app_v1_arcee_admin_analytics_platform_dev_mode_timeline_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: granularity
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/Granularity'
+          description: 'Time granularity: hour, day, week, month, year'
+          default: day
+        description: 'Time granularity: hour, day, week, month, year'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DevModeTimelineItem'
+                title: Response Get Dev Mode Timeline App V1 Arcee Admin Analytics Platform Dev Mode Timeline Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/dev-mode-top-users:
+    get:
+      tags:
+      - Analytics
+      summary: Get Dev Mode Top Users
+      description: Get top Dev Mode users by the chosen metric.
+      operationId: get_dev_mode_top_users_app_v1_arcee_admin_analytics_platform_dev_mode_top_users_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Number of top users to return
+          default: 10
+          title: Limit
+        description: Number of top users to return
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          enum:
+          - requests
+          - tokens
+          - credits
+          type: string
+          description: 'Ranking metric: ''requests'', ''tokens'', or ''credits'''
+          default: requests
+          title: Sort By
+        description: 'Ranking metric: ''requests'', ''tokens'', or ''credits'''
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DevModeTopUser'
+                title: Response Get Dev Mode Top Users App V1 Arcee Admin Analytics Platform Dev Mode Top Users Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/dev-mode-model-breakdown:
+    get:
+      tags:
+      - Analytics
+      summary: Get Dev Mode Model Breakdown
+      description: Get Dev Mode usage breakdown by model.
+      operationId: get_dev_mode_model_breakdown_app_v1_arcee_admin_analytics_platform_dev_mode_model_breakdown_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Start date for filtering
+          title: Start Date
+        description: Start date for filtering
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: End date for filtering
+          title: End Date
+        description: End date for filtering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DevModeModelUsage'
+                title: Response Get Dev Mode Model Breakdown App V1 Arcee Admin Analytics Platform Dev Mode Model Breakdown Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/analytics/platform/dev-mode-users-for-date:
+    get:
+      tags:
+      - Analytics
+      summary: Get Dev Mode Users For Date
+      description: Get Dev Mode user data for a specific date or range (drill-down from requests timeline).
+      operationId: get_dev_mode_users_for_date_app_v1_arcee_admin_analytics_platform_dev_mode_users_for_date_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Date in YYYY-MM-DD format
+          title: Date
+        description: Date in YYYY-MM-DD format
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: End date in YYYY-MM-DD format (inclusive range)
+          title: End Date
+        description: End date in YYYY-MM-DD format (inclusive range)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DevModeUserForDateItem'
+                title: Response Get Dev Mode Users For Date App V1 Arcee Admin Analytics Platform Dev Mode Users For Date Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    UserActivationForDateItem:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        signup_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Date
+        first_chat_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Chat Date
+        activated:
+          type: boolean
+          title: Activated
+      type: object
+      required:
+      - user_id
+      - activated
+      title: UserActivationForDateItem
+      description: User signup and activation detail for a specific date/period.
+    ApiTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        total_calls:
+          type: integer
+          title: Total Calls
+        unique_keys:
+          type: integer
+          title: Unique Keys
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - date
+      - total_calls
+      - unique_keys
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      title: ApiTimelineItem
+      description: Single data point in API usage timeline.
+    DevModeModelUsage:
+      properties:
+        model:
+          type: string
+          title: Model
+        requests:
+          type: integer
+          title: Requests
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        credits:
+          type: number
+          title: Credits
+      type: object
+      required:
+      - model
+      - requests
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - credits
+      title: DevModeModelUsage
+      description: Dev Mode usage breakdown by model.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RevenueSummary:
+      properties:
+        total_credits:
+          type: number
+          title: Total Credits
+        app_credits:
+          type: number
+          title: App Credits
+        api_credits:
+          type: number
+          title: Api Credits
+        total_calls:
+          type: integer
+          title: Total Calls
+        average_credits_per_call:
+          type: number
+          title: Average Credits Per Call
+        average_credits_per_user:
+          type: number
+          title: Average Credits Per User
+        average_credits_per_api_key:
+          type: number
+          title: Average Credits Per Api Key
+      type: object
+      required:
+      - total_credits
+      - app_credits
+      - api_credits
+      - total_calls
+      - average_credits_per_call
+      - average_credits_per_user
+      - average_credits_per_api_key
+      title: RevenueSummary
+      description: Aggregated revenue summary statistics.
+    DevModeUserForDateItem:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        requests:
+          type: integer
+          title: Requests
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_input_tokens:
+          type: integer
+          title: Cached Input Tokens
+        credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Credits
+      type: object
+      required:
+      - user_id
+      - requests
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_input_tokens
+      title: DevModeUserForDateItem
+      description: Detailed Dev Mode user data for a specific date or range (drill-down).
+    ModelUsageItem:
+      properties:
+        model:
+          type: string
+          title: Model
+        model_provider:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Provider
+        total_calls:
+          type: integer
+          title: Total Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - model
+      - total_calls
+      - total_tokens
+      - cached_tokens
+      title: ModelUsageItem
+      description: Usage breakdown by model.
+    DevModeTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        requests:
+          type: integer
+          title: Requests
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        cached_input_tokens:
+          type: integer
+          title: Cached Input Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        credits:
+          type: number
+          title: Credits
+      type: object
+      required:
+      - date
+      - requests
+      - input_tokens
+      - output_tokens
+      - cached_input_tokens
+      - total_tokens
+      - credits
+      title: DevModeTimelineItem
+      description: Single data point in Dev Mode usage timeline.
+    TopApiKeyItem:
+      properties:
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        label_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label Key
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        total_calls:
+          type: integer
+          title: Total Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - api_key_id
+      - api_key_name
+      - total_calls
+      - total_tokens
+      - cached_tokens
+      title: TopApiKeyItem
+      description: Top API key by usage.
+    NewUsersTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        new_users:
+          type: integer
+          title: New Users
+      type: object
+      required:
+      - period
+      - new_users
+      title: NewUsersTimelineItem
+      description: Single data point in new users timeline.
+    OverviewResponse:
+      properties:
+        summary:
+          $ref: '#/components/schemas/UsageSummary'
+        revenue_summary:
+          $ref: '#/components/schemas/RevenueSummary'
+        top_users:
+          items:
+            $ref: '#/components/schemas/TopUserItem'
+          type: array
+          title: Top Users
+        top_api_keys:
+          items:
+            $ref: '#/components/schemas/TopApiKeyItem'
+          type: array
+          title: Top Api Keys
+      type: object
+      required:
+      - summary
+      - revenue_summary
+      - top_users
+      - top_api_keys
+      title: OverviewResponse
+      description: Combined platform overview metrics.
+    UsageTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        total_calls:
+          type: integer
+          title: Total Calls
+        app_calls:
+          type: integer
+          title: App Calls
+        api_calls:
+          type: integer
+          title: Api Calls
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        unique_app_users:
+          type: integer
+          title: Unique App Users
+        unique_api_keys:
+          type: integer
+          title: Unique Api Keys
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - date
+      - total_calls
+      - app_calls
+      - api_calls
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      - unique_app_users
+      - unique_api_keys
+      title: UsageTimelineItem
+      description: Single data point in usage timeline.
+    AppTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        total_calls:
+          type: integer
+          title: Total Calls
+        unique_users:
+          type: integer
+          title: Unique Users
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - date
+      - total_calls
+      - unique_users
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      title: AppTimelineItem
+      description: Single data point in app usage timeline.
+    NewApiKeysTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        new_keys:
+          type: integer
+          title: New Keys
+      type: object
+      required:
+      - period
+      - new_keys
+      title: NewApiKeysTimelineItem
+      description: Single data point in new API keys timeline.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ApiKeyActivationForDateItem:
+      properties:
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        created_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created Date
+        first_usage_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Usage Date
+        activated:
+          type: boolean
+          title: Activated
+      type: object
+      required:
+      - api_key_id
+      - api_key_name
+      - activated
+      title: ApiKeyActivationForDateItem
+      description: API key creation and activation detail for a specific date/period.
+    ApiKeyModelUsageItem:
+      properties:
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        label_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label Key
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        model:
+          type: string
+          title: Model
+        model_provider:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Provider
+        total_calls:
+          type: integer
+          title: Total Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - api_key_id
+      - api_key_name
+      - model
+      - total_calls
+      - total_tokens
+      - cached_tokens
+      title: ApiKeyModelUsageItem
+      description: Usage for a single (api_key, model) pair.
+    UserTypeBreakdown:
+      properties:
+        platform_only:
+          type: integer
+          title: Platform Only
+        api_only:
+          type: integer
+          title: Api Only
+        both:
+          type: integer
+          title: Both
+      type: object
+      required:
+      - platform_only
+      - api_only
+      - both
+      title: UserTypeBreakdown
+      description: Breakdown of users by access type.
+    RevenueTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        total_credits:
+          type: number
+          title: Total Credits
+        app_credits:
+          type: number
+          title: App Credits
+        api_credits:
+          type: number
+          title: Api Credits
+        total_calls:
+          type: integer
+          title: Total Calls
+      type: object
+      required:
+      - date
+      - total_credits
+      - app_credits
+      - api_credits
+      - total_calls
+      title: RevenueTimelineItem
+      description: Single data point in revenue timeline.
+    ChatUserActivationTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        new_users:
+          type: integer
+          title: New Users
+        activated_users:
+          type: integer
+          title: Activated Users
+      type: object
+      required:
+      - period
+      - new_users
+      - activated_users
+      title: ChatUserActivationTimelineItem
+      description: Single data point in chat user activation timeline.
+    DevModeSummary:
+      properties:
+        total_requests:
+          type: integer
+          title: Total Requests
+        active_users:
+          type: integer
+          title: Active Users
+        total_sessions:
+          type: integer
+          title: Total Sessions
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        cached_input_tokens:
+          type: integer
+          title: Cached Input Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_credits:
+          type: number
+          title: Total Credits
+        success_rate:
+          type: number
+          title: Success Rate
+      type: object
+      required:
+      - total_requests
+      - active_users
+      - total_sessions
+      - input_tokens
+      - output_tokens
+      - cached_input_tokens
+      - total_tokens
+      - total_credits
+      - success_rate
+      title: DevModeSummary
+      description: Aggregated Dev Mode usage summary statistics.
+    UsageSummary:
+      properties:
+        total_calls:
+          type: integer
+          title: Total Calls
+        app_calls:
+          type: integer
+          title: App Calls
+        api_calls:
+          type: integer
+          title: Api Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_input_tokens:
+          type: integer
+          title: Total Input Tokens
+        total_output_tokens:
+          type: integer
+          title: Total Output Tokens
+        total_cached_tokens:
+          type: integer
+          title: Total Cached Tokens
+        average_tokens_per_call:
+          type: number
+          title: Average Tokens Per Call
+        unique_app_users:
+          type: integer
+          title: Unique App Users
+        unique_api_keys:
+          type: integer
+          title: Unique Api Keys
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - total_calls
+      - app_calls
+      - api_calls
+      - total_tokens
+      - total_input_tokens
+      - total_output_tokens
+      - total_cached_tokens
+      - average_tokens_per_call
+      - unique_app_users
+      - unique_api_keys
+      title: UsageSummary
+      description: Aggregated usage summary statistics.
+    TopUserItem:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        total_calls:
+          type: integer
+          title: Total Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - user_id
+      - total_calls
+      - total_tokens
+      - cached_tokens
+      title: TopUserItem
+      description: Top user by usage.
+    ApiKeyActivationRate:
+      properties:
+        total_keys:
+          type: integer
+          title: Total Keys
+        keys_with_usage:
+          type: integer
+          title: Keys With Usage
+        keys_unused:
+          type: integer
+          title: Keys Unused
+        activation_rate:
+          type: number
+          title: Activation Rate
+      type: object
+      required:
+      - total_keys
+      - keys_with_usage
+      - keys_unused
+      - activation_rate
+      title: ApiKeyActivationRate
+      description: API key activation rate stats.
+    AppUserForDateItem:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        calls:
+          type: integer
+          title: Calls
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Credits
+      type: object
+      required:
+      - user_id
+      - calls
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      title: AppUserForDateItem
+      description: Detailed app user data for a specific date.
+    ApiKeyForDateItem:
+      properties:
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        label_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label Key
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        calls:
+          type: integer
+          title: Calls
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Credits
+      type: object
+      required:
+      - api_key_id
+      - api_key_name
+      - calls
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      title: ApiKeyForDateItem
+      description: Detailed API key data for a specific date.
+    ChatUserActivationRate:
+      properties:
+        total_users:
+          type: integer
+          title: Total Users
+        users_with_chat:
+          type: integer
+          title: Users With Chat
+        users_no_chat:
+          type: integer
+          title: Users No Chat
+        activation_rate:
+          type: number
+          title: Activation Rate
+      type: object
+      required:
+      - total_users
+      - users_with_chat
+      - users_no_chat
+      - activation_rate
+      title: ChatUserActivationRate
+      description: Chat user activation rate stats.
+    Granularity:
+      type: string
+      enum:
+      - hour
+      - day
+      - week
+      - month
+      - year
+      title: Granularity
+      description: Time granularity options for analytics queries.
+    ApiKeyActivationTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        new_keys:
+          type: integer
+          title: New Keys
+        activated_keys:
+          type: integer
+          title: Activated Keys
+      type: object
+      required:
+      - period
+      - new_keys
+      - activated_keys
+      title: ApiKeyActivationTimelineItem
+      description: Single data point in API key activation timeline.
+    RetentionCohortItem:
+      properties:
+        cohort_period:
+          type: string
+          title: Cohort Period
+        cohort_size:
+          type: integer
+          title: Cohort Size
+        returned_count:
+          type: integer
+          title: Returned Count
+        retention_rate:
+          type: number
+          title: Retention Rate
+      type: object
+      required:
+      - cohort_period
+      - cohort_size
+      - returned_count
+      - retention_rate
+      title: RetentionCohortItem
+      description: Cohort retention data.
+    DevModeTopUser:
+      properties:
+        user_org_profile_id:
+          type: string
+          title: User Org Profile Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        requests:
+          type: integer
+          title: Requests
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        credits:
+          type: number
+          title: Credits
+      type: object
+      required:
+      - user_org_profile_id
+      - requests
+      - total_tokens
+      - credits
+      title: DevModeTopUser
+      description: Top Dev Mode user by chosen usage metric.
+    DAUTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        active_count:
+          type: integer
+          title: Active Count
+        total_calls:
+          type: integer
+          title: Total Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_credits:
+          type: number
+          title: Total Credits
+      type: object
+      required:
+      - period
+      - active_count
+      - total_calls
+      - total_tokens
+      - total_credits
+      title: DAUTimelineItem
+      description: Single data point in daily active users timeline.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,356 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Device Auth API
+  version: 0.1.0
+tags:
+- name: Device Auth
+paths:
+  /app/v1/device/code:
+    post:
+      tags:
+      - Device Auth
+      summary: Create Device Code
+      description: 'Start a device authorization: issue a device_code + human user_code.'
+      operationId: create_device_code_app_v1_device_code_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCodeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCodeResponse'
+        '400':
+          description: OAuth-style error (e.g. authorization_pending, slow_down, access_denied).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAuthErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/device/token:
+    post:
+      tags:
+      - Device Auth
+      summary: Poll Device Token
+      description: Poll for the authorization result. Returns the API key once approved.
+      operationId: poll_device_token_app_v1_device_token_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceTokenRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTokenSuccess'
+        '400':
+          description: OAuth-style error (e.g. authorization_pending, slow_down, access_denied).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAuthErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/device/info:
+    get:
+      tags:
+      - Device Auth
+      summary: Device Info
+      description: Return the requesting client's display name + status for the consent screen.
+      operationId: device_info_app_v1_device_info_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_code
+        in: query
+        required: true
+        schema:
+          type: string
+          title: User Code
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceInfoResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/device/approve:
+    post:
+      tags:
+      - Device Auth
+      summary: Approve Device
+      description: 'Approve a device authorization: mint an API key scoped to the chosen workspace.'
+      operationId: approve_device_app_v1_device_approve_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceApproveRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceApproveResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/device/deny:
+    post:
+      tags:
+      - Device Auth
+      summary: Deny Device
+      description: Deny a device authorization so the polling client stops with access_denied.
+      operationId: deny_device_app_v1_device_deny_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceDenyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceDenyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    DeviceApproveRequest:
+      properties:
+        user_code:
+          type: string
+          title: User Code
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+      type: object
+      required:
+      - user_code
+      - organization_id
+      title: DeviceApproveRequest
+    DeviceDenyResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          default: denied
+      type: object
+      title: DeviceDenyResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DeviceTokenSuccess:
+      properties:
+        api_key:
+          type: string
+          title: Api Key
+        base_url:
+          type: string
+          title: Base Url
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+        workspace_name:
+          type: string
+          title: Workspace Name
+        token_type:
+          type: string
+          title: Token Type
+          default: api_key
+      type: object
+      required:
+      - api_key
+      - base_url
+      - organization_id
+      - workspace_name
+      title: DeviceTokenSuccess
+    DeviceCodeRequest:
+      properties:
+        client_id:
+          type: string
+          title: Client Id
+      type: object
+      required:
+      - client_id
+      title: DeviceCodeRequest
+    DeviceCodeResponse:
+      properties:
+        device_code:
+          type: string
+          title: Device Code
+        user_code:
+          type: string
+          title: User Code
+        verification_uri:
+          type: string
+          title: Verification Uri
+        verification_uri_complete:
+          type: string
+          title: Verification Uri Complete
+        interval:
+          type: integer
+          title: Interval
+        expires_in:
+          type: integer
+          title: Expires In
+      type: object
+      required:
+      - device_code
+      - user_code
+      - verification_uri
+      - verification_uri_complete
+      - interval
+      - expires_in
+      title: DeviceCodeResponse
+    DeviceTokenRequest:
+      properties:
+        device_code:
+          type: string
+          title: Device Code
+        client_id:
+          type: string
+          title: Client Id
+      type: object
+      required:
+      - device_code
+      - client_id
+      title: DeviceTokenRequest
+    DeviceInfoResponse:
+      properties:
+        client_id:
+          type: string
+          title: Client Id
+        client_display_name:
+          type: string
+          title: Client Display Name
+        status:
+          type: string
+          title: Status
+        expires_in:
+          type: integer
+          title: Expires In
+      type: object
+      required:
+      - client_id
+      - client_display_name
+      - status
+      - expires_in
+      title: DeviceInfoResponse
+    DeviceDenyRequest:
+      properties:
+        user_code:
+          type: string
+          title: User Code
+      type: object
+      required:
+      - user_code
+      title: DeviceDenyRequest
+    DeviceApproveResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          default: approved
+        workspace_name:
+          type: string
+          title: Workspace Name
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+      type: object
+      required:
+      - workspace_name
+      - organization_id
+      title: DeviceApproveResponse
+    DeviceAuthErrorResponse:
+      properties:
+        error:
+          type: string
+          title: Error
+        error_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Description
+      type: object
+      required:
+      - error
+      title: DeviceAuthErrorResponse
+      description: 'RFC 8628 OAuth-style error body returned (with HTTP 400) by the
+
+        unauthenticated device endpoints.'
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

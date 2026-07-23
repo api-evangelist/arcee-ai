@@ -1,8 +1,13 @@
 aid: arcee-ai
 name: Arcee AI
-description: 'Arcee AI is a company surfaced as a portfolio company of emergence-capital and added to
-  the API Evangelist network as a stub for enrichment. Sector: ai. This profile is a lead awaiting the
-  enrichment pipeline.'
+description: 'Arcee AI is an American open-intelligence research lab that builds and releases small,
+  efficient open-weight language models (the Trinity family, AFM-4.5B, and Virtuoso/Maestro derivatives)
+  along with a developer platform for running them. The Arcee Platform exposes an OpenAI-compatible
+  inference API at api.arcee.ai (chat completions, model listing, and usage/credits endpoints) secured
+  with bearer API keys, plus Arcee Conductor (model routing), Arcee Orchestra (agentic workflows with
+  their own invocation API), and AnyMCP for hosting Model Context Protocol servers. Arcee also maintains
+  widely used open-source model tooling including mergekit, DistillKit, and DALM. Models can be consumed
+  through the hosted API or self-deployed on vLLM, SGLang, llama.cpp, and Ollama.'
 url: https://raw.githubusercontent.com/api-evangelist/arcee-ai/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,18 +15,664 @@ x-backed-by:
 - emergence-capital
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
+image: https://avatars.githubusercontent.com/u/126496414?v=4
 tags:
 - Company
 - Ai
-apis: []
+- Artificial Intelligence
+- Machine Learning
+- Large Language Models
+- Small Language Models
+- Inference
+- Model Context Protocol
+- Open Source
+- Developer Platform
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: arcee-ai:arcee-ai-access-profiles-api
+  name: Arcee AI Access Profiles API
+  description: The Access Profiles API from Arcee AI — 3 operation(s) for access profiles.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Access Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-access-profiles-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-afm-api-api
+  name: Arcee AI AFM API API
+  description: The AFM API API from Arcee AI — 1 operation(s) for afm api.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - AFM API
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-afm-api-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-analytics-api
+  name: Arcee AI Analytics API
+  description: The Analytics API from Arcee AI — 29 operation(s) for analytics.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-analytics-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-arcee-admin-api
+  name: Arcee AI Arcee-Admin API
+  description: The Arcee-Admin API from Arcee AI — 12 operation(s) for arcee-admin.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Arcee-Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-arcee-admin-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-auth-api
+  name: Arcee AI Auth API
+  description: The Auth API from Arcee AI — 21 operation(s) for auth.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-auth-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-automated-reports-api
+  name: Arcee AI Automated Reports API
+  description: The Automated Reports API from Arcee AI — 7 operation(s) for automated reports.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Automated Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-automated-reports-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-billing-api
+  name: Arcee AI Billing API
+  description: The Billing API from Arcee AI — 4 operation(s) for billing.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-billing-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-chat-api
+  name: Arcee AI Chat API
+  description: The Chat API from Arcee AI — 12 operation(s) for chat.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-chat-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-completions-api
+  name: Arcee AI Completions API
+  description: The Completions API from Arcee AI — 7 operation(s) for completions.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Completions
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-completions-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-demo-mode-api
+  name: Arcee AI Demo Mode API
+  description: The Demo Mode API from Arcee AI — 5 operation(s) for demo mode.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Demo Mode
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-demo-mode-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-dev-mode-api
+  name: Arcee AI Dev Mode API
+  description: The Dev Mode API from Arcee AI — 4 operation(s) for dev mode.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Dev Mode
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-dev-mode-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-device-auth-api
+  name: Arcee AI Device Auth API
+  description: The Device Auth API from Arcee AI — 5 operation(s) for device auth.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Device Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-device-auth-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-feedback-api
+  name: Arcee AI Feedback API
+  description: The Feedback API from Arcee AI — 3 operation(s) for feedback.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Feedback
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-feedback-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-health-api
+  name: Arcee AI Health API
+  description: The Health API from Arcee AI — 1 operation(s) for health.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-health-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-keys-api
+  name: Arcee AI Keys API
+  description: The Keys API from Arcee AI — 7 operation(s) for keys.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-keys-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-metrics-api
+  name: Arcee AI Metrics API
+  description: The Metrics API from Arcee AI — 1 operation(s) for metrics.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-metrics-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-models-api
+  name: Arcee AI Models API
+  description: The Models API from Arcee AI — 2 operation(s) for models.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-models-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-organizations-api
+  name: Arcee AI Organizations API
+  description: The Organizations API from Arcee AI — 20 operation(s) for organizations.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-organizations-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-partners-api
+  name: Arcee AI Partners API
+  description: The Partners API from Arcee AI — 2 operation(s) for partners.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Partners
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-partners-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-rag-api
+  name: Arcee AI RAG API
+  description: The RAG API from Arcee AI — 9 operation(s) for rag.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - RAG
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-rag-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-rate-limit-profiles-api
+  name: Arcee AI Rate Limit Profiles API
+  description: The Rate Limit Profiles API from Arcee AI — 2 operation(s) for rate limit profiles.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Rate Limit Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-rate-limit-profiles-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-registry-api
+  name: Arcee AI Registry API
+  description: The Registry API from Arcee AI — 6 operation(s) for registry.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Registry
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-registry-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-s3-api
+  name: Arcee AI S3 API
+  description: The S3 API from Arcee AI — 8 operation(s) for s3.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - S3
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-s3-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-search-api
+  name: Arcee AI Search API
+  description: The Search API from Arcee AI — 1 operation(s) for search.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-system-prompts-api
+  name: Arcee AI System Prompts API
+  description: The System Prompts API from Arcee AI — 3 operation(s) for system prompts.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - System Prompts
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-system-prompts-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-transaction-api
+  name: Arcee AI Transaction API
+  description: The Transaction API from Arcee AI — 6 operation(s) for transaction.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Transaction
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-transaction-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-usage-api
+  name: Arcee AI Usage API
+  description: The Usage API from Arcee AI — 6 operation(s) for usage.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-usage-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-user-api
+  name: Arcee AI User API
+  description: The User API from Arcee AI — 12 operation(s) for user.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-user-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-webhooks-api
+  name: Arcee AI Webhooks API
+  description: The Webhooks API from Arcee AI — 1 operation(s) for webhooks.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-webhooks-api-openapi.yml
+  - type: Authentication
+    url: authentication/arcee-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/arcee-ai-problem-types.yml
+  - type: Conventions
+    url: conventions/arcee-ai-conventions.yml
+  - type: DataModel
+    url: data-model/arcee-ai-data-model.yml
+  - type: AgenticAccess
+    url: agentic-access/arcee-ai-agentic-access.yml
 common:
 - type: Website
   url: https://www.arcee.ai
+- type: DeveloperPortal
+  url: https://docs.arcee.ai/
+- type: Documentation
+  url: https://docs.arcee.ai/
+- type: APIReference
+  url: https://docs.arcee.ai/api-reference/your-first-api-call
+- type: GettingStarted
+  url: https://docs.arcee.ai/get-started/quick-start
+- type: Pricing
+  url: https://docs.arcee.ai/get-started/pricing
+- type: SignUp
+  url: https://chat.arcee.ai
+- type: Blog
+  url: https://www.arcee.ai/blog
+- type: Support
+  url: https://www.arcee.ai/work-with-us
+- type: TermsOfService
+  url: https://www.arcee.ai/terms-and-conditions
+- type: GitHubOrganization
+  url: https://github.com/arcee-ai
+- type: StatusPage
+  url: https://status.arcee.ai
+- type: Deprecation
+  url: https://docs.arcee.ai/policies/deprecation-policy
+- type: Lifecycle
+  url: lifecycle/arcee-ai-lifecycle.yml
+- type: LLMsTxt
+  url: llms/arcee-ai-llms.txt
+- type: Packages
+  url: packages/arcee-ai-packages.yml
+- type: SDKs
+  url: packages/arcee-ai-packages.yml
+- type: MCPServer
+  url: mcp/arcee-ai-mcp.yml
+- type: Conformance
+  url: conformance/arcee-ai-conformance.yml
+- type: DomainSecurity
+  url: security/arcee-ai-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

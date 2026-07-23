@@ -1,0 +1,12 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/arcee-ai-afm-openapi.json
+skills:
+- file: arcee-ai-chat-completion.md
+  name: Run a chat completion with an Arcee model
+  api: openapi/arcee-ai-afm-openapi.json
+  operations: [get_models_v1_models_get, create_chat_completion_v1_chat_completions_post, get_user_credits_v1_usage_credits_get]
+- file: arcee-ai-rag-over-data-group.md
+  name: Retrieval-augmented answering over an uploaded data group
+  api: openapi/arcee-ai-afm-openapi.json
+  operations: [create_data_group_app_v1_data_groups_post, upload_files_app_v1_files__data_group_id__post, rag_app_v1_rag_post]

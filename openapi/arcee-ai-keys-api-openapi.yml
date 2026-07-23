@@ -1,0 +1,500 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Keys API
+  version: 0.1.0
+tags:
+- name: Keys
+paths:
+  /app/v1/keys:
+    post:
+      tags:
+      - Keys
+      summary: Create Api Key
+      description: Create a new API key
+      operationId: create_api_key_app_v1_keys_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAPIKeyRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKeyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Keys
+      summary: Get Api Keys
+      description: Get all API keys for the current user's organization
+      operationId: get_api_keys_app_v1_keys_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: include_usage
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Include per-key requests and consumed tokens usage
+          default: false
+          title: Include Usage
+        description: Include per-key requests and consumed tokens usage
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/APIKeyResponse'
+                title: Response Get Api Keys App V1 Keys Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/keys/settings:
+    get:
+      tags:
+      - Keys
+      summary: Get Keys Settings
+      description: 'Get settings related to API keys for the current organization.
+
+
+        Currently exposes:
+
+        - max_org_api_keys: maximum number of API keys allowed per organization'
+      operationId: get_keys_settings_app_v1_keys_settings_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/keys/{key_id}:
+    get:
+      tags:
+      - Keys
+      summary: Get Api Key
+      description: Get a specific API key
+      operationId: get_api_key_app_v1_keys__key_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKeyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Keys
+      summary: Update Api Key
+      description: Update an API key
+      operationId: update_api_key_app_v1_keys__key_id__put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Key Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAPIKeyRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKeyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Keys
+      summary: Delete Api Key
+      description: Delete an API key
+      operationId: delete_api_key_app_v1_keys__key_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/assigned-keys:
+    get:
+      tags:
+      - Keys
+      summary: Get Assigned Keys
+      operationId: get_assigned_keys_app_v1_assigned_keys_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/APIKeyResponse'
+                type: array
+                title: Response Get Assigned Keys App V1 Assigned Keys Get
+      security:
+      - HTTPBearer: []
+  /app/v1/keys/{key_id}/deactivate:
+    post:
+      tags:
+      - Keys
+      summary: Deactivate Api Key
+      description: Deactivate an API key
+      operationId: deactivate_api_key_app_v1_keys__key_id__deactivate_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/keys/{key_id}/reactivate:
+    post:
+      tags:
+      - Keys
+      summary: Reactivate Api Key
+      description: Reactivate an API key
+      operationId: reactivate_api_key_app_v1_keys__key_id__reactivate_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/keys/{key_id}/rotate:
+    post:
+      tags:
+      - Keys
+      summary: Rotate Api Key
+      description: Rotate an API key - creates a new key value for an existing api key
+      operationId: rotate_api_key_app_v1_keys__key_id__rotate_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKeyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    APIKeyResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        created_by:
+          type: string
+          format: uuid
+          title: Created By
+        created_by_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created By Name
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        status:
+          type: string
+          title: Status
+        key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Key
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        label_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label Key
+        owner:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Owner
+        consumed_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Consumed Tokens
+        requests_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Count
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - created_at
+      - created_by
+      - expires_at
+      - status
+      title: APIKeyResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateAPIKeyRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+      type: object
+      required:
+      - name
+      title: CreateAPIKeyRequest
+    UpdateAPIKeyRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/APIKeyStatus'
+          - type: 'null'
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+      type: object
+      title: UpdateAPIKeyRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIKeyStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - deactivated
+      - expired
+      - cooldown
+      title: APIKeyStatus
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

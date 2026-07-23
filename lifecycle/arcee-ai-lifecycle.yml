@@ -1,0 +1,25 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.arcee.ai/policies/deprecation-policy ; https://status.arcee.ai
+versioning:
+  scheme: uri-path
+  current: v1
+  path_prefixes: [/v1, /api/v1]
+deprecation:
+  policy_url: https://docs.arcee.ai/policies/deprecation-policy
+  notice_period:
+    standard_cloud_models: up to 5 business days
+    widely_adopted_models: 30 days
+  channels: [email, API dashboard, changelog]
+  triggers:
+  - Release of a new or improved version
+  - Security or reliability concerns
+  notes: >-
+    Cloud-hosted model versions may be retired as part of regular updates, but all released models
+    remain downloadable on Hugging Face for independent use. Migration guidance accompanies notices.
+  sunset_header: unknown
+status_page: https://status.arcee.ai
+sla:
+  url: null
+  uptime_target: null
+deprecated_operations: []

@@ -1,0 +1,24 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Webhooks API
+  version: 0.1.0
+tags:
+- name: Webhooks
+paths:
+  /webhooks/lago:
+    post:
+      tags:
+      - Webhooks
+      summary: Lago Webhook
+      operationId: lago_webhook_webhooks_lago_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

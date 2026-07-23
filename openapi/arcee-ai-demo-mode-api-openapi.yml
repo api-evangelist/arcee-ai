@@ -1,0 +1,302 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Demo Mode API
+  version: 0.1.0
+tags:
+- name: Demo Mode
+paths:
+  /app/v1/demo/chat/create:
+    post:
+      tags:
+      - Demo Mode
+      summary: Demo Create Chat
+      description: 'Create a new demo chat session and stream the first assistant response.
+
+
+        No per-session message-limit check here (unlike demo_stream_message)
+
+        because this endpoint creates a brand-new session with zero messages.
+
+        Cross-session abuse (cookie clearing) is mitigated by Caddy''s
+
+        per-IP rate limiter at the infrastructure layer.'
+      operationId: demo_create_chat_app_v1_demo_chat_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemoCreateChatRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/demo/chat/{session_id}/stream:
+    post:
+      tags:
+      - Demo Mode
+      summary: Demo Stream Message
+      description: Send a message to an existing demo chat session and stream the response.
+      operationId: demo_stream_message_app_v1_demo_chat__session_id__stream_post
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemoStreamMessageRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/demo/chat/messages/{message_id}/stop:
+    post:
+      tags:
+      - Demo Mode
+      summary: Demo Stop Stream
+      description: Stop an in-progress demo stream by setting the Valkey stop key.
+      operationId: demo_stop_stream_app_v1_demo_chat_messages__message_id__stop_post
+      parameters:
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Message Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/demo/chat/session:
+    get:
+      tags:
+      - Demo Mode
+      summary: Demo Get Session
+      description: Get the current demo session with messages, identified by the signed cookie token.
+      operationId: demo_get_session_app_v1_demo_chat_session_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /app/v1/demo/chat-models:
+    get:
+      tags:
+      - Demo Mode
+      summary: Demo Get Chat Models
+      description: Get available models for demo mode (no auth required).
+      operationId: demo_get_chat_models_app_v1_demo_chat_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatModelsResponse'
+components:
+  schemas:
+    ChatToolResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        icon:
+          type: string
+          title: Icon
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        activeStateLabel:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Activestatelabel
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - icon
+      title: ChatToolResponse
+      description: Tool response for chat models endpoint.
+    DemoStreamMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 50000
+          title: Content
+          description: Message content
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      required:
+      - content
+      title: DemoStreamMessageRequest
+      description: Subsequent message in an existing demo chat session.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DemoCreateChatRequest:
+      properties:
+        message:
+          type: string
+          maxLength: 50000
+          title: Message
+          description: First message content
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+          description: Base model name
+      type: object
+      required:
+      - message
+      title: DemoCreateChatRequest
+      description: First message to start a demo chat session.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatModelsResponse:
+      properties:
+        models:
+          items:
+            $ref: '#/components/schemas/ChatModelResponse'
+          type: array
+          title: Models
+        tools:
+          items:
+            $ref: '#/components/schemas/ChatToolResponse'
+          type: array
+          title: Tools
+      type: object
+      required:
+      - models
+      - tools
+      title: ChatModelsResponse
+      description: Response model for chat models and tools endpoint.
+    ChatModelResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        model_id:
+          type: string
+          title: Model Id
+        base_model_name:
+          type: string
+          title: Base Model Name
+        model_icon:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Icon
+        provider_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Name
+        availableTools:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Availabletools
+        is_default:
+          type: boolean
+          title: Is Default
+          default: false
+        is_healthy:
+          type: boolean
+          title: Is Healthy
+          default: true
+        default_params:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Default Params
+      type: object
+      required:
+      - id
+      - display_name
+      - model_id
+      - base_model_name
+      title: ChatModelResponse
+      description: Model response for chat models endpoint.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

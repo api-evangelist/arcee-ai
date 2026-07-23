@@ -1,0 +1,21 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Arcee Platform API (AFM API)
+  version: 1.0.0
+extends: openapi/arcee-ai-afm-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: arcee-ai
+    x-apievangelist-openai-compatible: true
+    x-apievangelist-base-url: https://api.arcee.ai/api/v1
+    x-apievangelist-docs: https://docs.arcee.ai/
+    x-apievangelist-auth: bearer-api-key
+    x-apievangelist-status-page: https://status.arcee.ai
+    x-apievangelist-deprecation-policy: https://docs.arcee.ai/policies/deprecation-policy
+- target: $.info
+  update:
+    x-apievangelist-rating-notes: >-
+      OpenAI-compatible inference API secured with bearer API keys. Streaming (SSE), function
+      calling, structured outputs, and reasoning traces supported. Errors use a {detail} envelope
+      (not RFC 9457). No documented idempotency-key or OAuth2 scope surface.

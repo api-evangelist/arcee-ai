@@ -1,0 +1,730 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Registry API
+  version: 0.1.0
+tags:
+- name: Registry
+paths:
+  /app/v1/models/sync:
+    post:
+      tags:
+      - Registry
+      summary: Sync Models
+      description: Sync Arcee AI models from Together AI API to the database.
+      operationId: sync_models_app_v1_models_sync_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+      security:
+      - HTTPBearer: []
+  /app/v1/models/sync-from-providers:
+    post:
+      tags:
+      - Registry
+      summary: Sync From Providers
+      description: 'Sync models from providers (Together AI, Clarifai) to the database.
+
+        - Adds new models with pricing = 0.0
+
+        - Updates existing models (only context_length, type, hugging_face_url)
+
+        - Preserves pricing, base_model_name, display_name
+
+        - Does NOT sync to Lago'
+      operationId: sync_from_providers_app_v1_models_sync_from_providers_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+      security:
+      - HTTPBearer: []
+  /app/v1/models/sync-to-lago:
+    post:
+      tags:
+      - Registry
+      summary: Sync To Lago
+      description: 'Sync all models from the database to Lago.
+
+        - Adds models to billable metrics
+
+        - Creates/updates plan charges with pricing'
+      operationId: sync_to_lago_app_v1_models_sync_to_lago_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/models:
+    get:
+      tags:
+      - Registry
+      summary: Get All Models
+      description: Get all Arcee AI models from the database.
+      operationId: get_all_models_app_v1_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ModelResponse'
+                type: array
+                title: Response Get All Models App V1 Models Get
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Registry
+      summary: Create Model
+      description: Create a new Arcee AI model in the database.
+      operationId: create_model_app_v1_models_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/models/{model_id}:
+    get:
+      tags:
+      - Registry
+      summary: Get Model
+      description: Get a single Arcee AI model by ID from the database.
+      operationId: get_model_app_v1_models__model_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/models/{id}:
+    put:
+      tags:
+      - Registry
+      summary: Update Model
+      description: Update a single Arcee AI model in the database.
+      operationId: update_model_app_v1_models__id__put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Registry
+      summary: Delete Model
+      description: 'Delete a single Arcee AI model from the database. Invalidates the
+
+        LiteLLM router cache so all pods rebuild on their next request.'
+      operationId: delete_model_app_v1_models__id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ModelResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        model_id:
+          type: string
+          title: Model Id
+        display_name:
+          type: string
+          title: Display Name
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+        provider_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Name
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        context_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Context Length
+        pricing:
+          $ref: '#/components/schemas/PricingModel'
+        status:
+          type: boolean
+          title: Status
+          default: true
+        is_public:
+          type: boolean
+          title: Is Public
+          default: false
+        is_active:
+          type: boolean
+          title: Is Active
+          default: true
+        is_app_enabled:
+          type: boolean
+          title: Is App Enabled
+          default: false
+        is_api_enabled:
+          type: boolean
+          title: Is Api Enabled
+          default: false
+        hugging_face_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Url
+        model_provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Model Provider Id
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+        min_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min P
+        routing_weight:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Routing Weight
+        quantization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quantization
+        max_output_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Length
+        supported_sampling_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Sampling Parameters
+        supported_features:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Features
+        input_modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Input Modalities
+        output_modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Output Modalities
+        datacenters:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Datacenters
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+      type: object
+      required:
+      - id
+      - model_id
+      - display_name
+      - pricing
+      - created_at
+      title: ModelResponse
+      description: Response model for Arcee AI model data.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ModelUpdateRequest:
+      properties:
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        context_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Context Length
+        status:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Status
+        is_public:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Public
+        is_active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Active
+        is_app_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is App Enabled
+        is_api_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Api Enabled
+        hugging_face_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Url
+        pricing:
+          anyOf:
+          - $ref: '#/components/schemas/PricingModel'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: 0.0
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Top K
+        min_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Min P
+        routing_weight:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Routing Weight
+        quantization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quantization
+        max_output_length:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Max Output Length
+        supported_sampling_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Sampling Parameters
+        supported_features:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Features
+        input_modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Input Modalities
+        output_modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Output Modalities
+        datacenters:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Datacenters
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      title: ModelUpdateRequest
+      description: Request model for updating an Arcee AI model.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ModelCreateRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+          default: Arcee AI
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        context_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Context Length
+        status:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Status
+          default: true
+        is_public:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Public
+          default: false
+        is_active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Active
+          default: true
+        is_app_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is App Enabled
+          default: false
+        is_api_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Api Enabled
+          default: false
+        hugging_face_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Url
+        pricing:
+          anyOf:
+          - $ref: '#/components/schemas/PricingModel'
+          - type: 'null'
+          default: {}
+        model_provider_id:
+          type: string
+          format: uuid
+          title: Model Provider Id
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: 0.0
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Top K
+        min_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Min P
+        routing_weight:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Routing Weight
+      type: object
+      required:
+      - id
+      - display_name
+      - model_provider_id
+      title: ModelCreateRequest
+      description: Request model for creating an Arcee AI model.
+    PricingModel:
+      properties:
+        input:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Input
+        cached_input:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cached Input
+        output:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Output
+      type: object
+      title: PricingModel
+      description: Pricing information for a model.
+    SyncResponse:
+      properties:
+        synced:
+          type: integer
+          title: Synced
+          description: Number of new models synced
+        updated:
+          type: integer
+          title: Updated
+          description: Number of existing models updated
+        deactivated:
+          type: integer
+          title: Deactivated
+          description: Number of models deactivated (not found in Together AI)
+        available_models:
+          items:
+            type: string
+          type: array
+          title: Available Models
+          description: List of available model IDs after sync
+      type: object
+      required:
+      - synced
+      - updated
+      - deactivated
+      - available_models
+      title: SyncResponse
+      description: Response model for sync operation.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

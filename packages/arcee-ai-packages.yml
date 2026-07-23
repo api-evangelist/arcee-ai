@@ -1,0 +1,47 @@
+generated: '2026-07-18'
+method: searched
+source: https://pypi.org/project/arcee-py/ ; https://github.com/arcee-ai
+notes: >-
+  The Arcee Platform inference API is OpenAI-compatible, so it is commonly consumed with the
+  standard OpenAI SDKs (openai-python, openai-node) pointed at https://api.arcee.ai/api/v1 — those
+  are third-party clients and are not listed here as official. arcee-py is Arcee's first-party
+  Python SDK. Arcee also publishes widely used open-source model tooling (mergekit, DistillKit,
+  DALM) which are training/merging tools rather than API client libraries.
+packages:
+- language: python
+  registry: pypi
+  name: arcee-py
+  url: https://pypi.org/project/arcee-py/
+  install: pip install arcee-py
+  source: https://github.com/arcee-ai/arcee-python
+  version: 2.0.1
+  official: true
+  role: sdk
+- language: python
+  registry: pypi
+  name: mergekit
+  url: https://pypi.org/project/mergekit/
+  install: pip install mergekit
+  source: https://github.com/arcee-ai/mergekit
+  version: 0.1.4
+  official: true
+  role: tooling
+  description: Tools for merging pre-trained large language models.
+- language: python
+  registry: github
+  name: DistillKit
+  url: https://github.com/arcee-ai/DistillKit
+  install: pip install git+https://github.com/arcee-ai/DistillKit
+  source: https://github.com/arcee-ai/DistillKit
+  official: true
+  role: tooling
+  description: Open-source toolkit for model distillation.
+- language: python
+  registry: github
+  name: DALM
+  url: https://github.com/arcee-ai/DALM
+  install: pip install git+https://github.com/arcee-ai/DALM
+  source: https://github.com/arcee-ai/DALM
+  official: true
+  role: tooling
+  description: Domain Adapted Language Modeling toolkit (retrieval-augmented training).

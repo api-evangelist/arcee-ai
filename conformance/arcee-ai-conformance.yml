@@ -1,0 +1,31 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/arcee-ai-afm-openapi.json ; https://docs.arcee.ai/
+standards:
+- id: openai-chat-completions
+  conforms: true
+  evidence: >-
+    Documented as OpenAI-compatible; /v1/chat/completions and /v1/models mirror the OpenAI schema
+    and work with the OpenAI SDKs by overriding base_url.
+- id: openapi-3.1
+  conforms: true
+  evidence: openapi/arcee-ai-afm-openapi.json declares openapi 3.1.0.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    Programmatic access is bearer API key (HTTPBearer). GitHub/Google OAuth and a device flow exist
+    for interactive login only; no oauth2 securityScheme with scopes is declared.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors use a {"detail": ...} envelope, not application/problem+json.'
+- id: server-sent-events
+  conforms: true
+  evidence: Streaming chat completions returned as text/event-stream when stream=true.
+- id: json-schema-structured-outputs
+  conforms: true
+  evidence: response_format supports JSON-schema-constrained structured outputs.
+compliance_program:
+  published: false
+  notes: >-
+    No public trust center, SOC 2 / ISO 27001 / HIPAA / FedRAMP certification page was found on
+    arcee.ai or via security-program probing. No Compliance pointer is emitted.

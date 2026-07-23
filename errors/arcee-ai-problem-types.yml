@@ -1,0 +1,52 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.arcee.ai/api-reference/chat-completion ; openapi/arcee-ai-afm-openapi.json
+format: detail-envelope
+envelope:
+  field: detail
+  shape: '{"detail": "<human-readable message>"}'
+  validation_shape: '{"detail":[{"loc":[...],"msg":"...","type":"..."}]}'
+rfc9457: false
+notes: >-
+  Errors use a simple JSON envelope with a single "detail" field (string for handled errors, or an
+  array of FastAPI validation items on 422). Status codes below are documented on the chat
+  completion reference; 4xx/5xx coverage in the OpenAPI is: 400 (3 ops), 401 (9), 402 (1),
+  422 (199, HTTPValidationError), 500 (8).
+problems:
+- status: 400
+  title: Invalid Format
+  meaning: The request body or parameters are malformed.
+  remediation: Validate the JSON body and Content-Type before retrying.
+- status: 401
+  title: Authentication Fails
+  meaning: Missing or invalid API key.
+  remediation: Send a valid Authorization Bearer key created in the Arcee Platform dashboard.
+- status: 402
+  title: Insufficient Balance
+  meaning: The account/API key has run out of usage credits.
+  remediation: Top up the wallet (billing) and check /v1/usage/credits.
+- status: 403
+  title: Permission Denied
+  meaning: The key lacks permission for the requested model or operation.
+  remediation: Check the model access profile assigned to the key.
+- status: 404
+  title: Not Found
+  meaning: The requested resource or model does not exist.
+  remediation: Verify the model id via /v1/models and the request path.
+- status: 422
+  title: Invalid Parameters
+  meaning: Request failed schema validation (FastAPI HTTPValidationError).
+  remediation: Inspect detail[].loc/msg to fix the offending field.
+  schema: HTTPValidationError
+- status: 429
+  title: Rate Limit Reached
+  meaning: Too many requests for the current rate-limit profile.
+  remediation: Back off and retry with exponential backoff.
+- status: 500
+  title: Server Error
+  meaning: An unexpected error occurred on the server.
+  remediation: Retry later; contact support if persistent.
+- status: 503
+  title: Server Overloaded
+  meaning: The service is temporarily overloaded.
+  remediation: Retry with backoff; check https://status.arcee.ai.

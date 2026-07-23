@@ -1,0 +1,314 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Dev Mode API
+  version: 0.1.0
+tags:
+- name: Dev Mode
+paths:
+  /app/v1/dev-mode/chat/completions:
+    post:
+      tags:
+      - Dev Mode
+      summary: Dev Chat Completion
+      description: Dev mode chat completion endpoint (user-auth, no API key).
+      operationId: dev_chat_completion_app_v1_dev_mode_chat_completions_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: Existing dev session ID; creates new if omitted
+          title: Session Id
+        description: Existing dev session ID; creates new if omitted
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '402':
+          description: Insufficient credits
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/dev-mode/sessions:
+    get:
+      tags:
+      - Dev Mode
+      summary: Dev List Sessions
+      description: List dev sessions for current user.
+      operationId: dev_list_sessions_app_v1_dev_mode_sessions_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      - name: from_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: From Date
+      - name: to_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: To Date
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/dev-mode/sessions/{session_id}:
+    get:
+      tags:
+      - Dev Mode
+      summary: Dev Get Session
+      description: Get dev session with messages.
+      operationId: dev_get_session_app_v1_dev_mode_sessions__session_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Dev Mode
+      summary: Dev Update Session Title
+      description: Update dev session title.
+      operationId: dev_update_session_title_app_v1_dev_mode_sessions__session_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevSessionUpdateTitle'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Dev Mode
+      summary: Dev Delete Session
+      description: Delete dev session and its messages.
+      operationId: dev_delete_session_app_v1_dev_mode_sessions__session_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/dev-mode/sessions/{session_id}/messages:
+    get:
+      tags:
+      - Dev Mode
+      summary: Dev List Messages
+      description: List messages in a dev session.
+      operationId: dev_list_messages_app_v1_dev_mode_sessions__session_id__messages_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Session Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DevSessionUpdateTitle:
+      properties:
+        title:
+          type: string
+          title: Title
+      type: object
+      required:
+      - title
+      title: DevSessionUpdateTitle
+      description: Request body for updating dev session title.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChatCompletionRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        messages:
+          items: {}
+          type: array
+          title: Messages
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - messages
+      title: ChatCompletionRequest
+      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
+
+        to litellm without validation so schema maintenance is not required.'
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

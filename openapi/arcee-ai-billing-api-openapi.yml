@@ -1,0 +1,159 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Billing API
+  version: 0.1.0
+tags:
+- name: Billing
+paths:
+  /app/v1/billing:
+    get:
+      tags:
+      - Billing
+      summary: Get Customer Billing Data
+      description: 'Get customer billing data.
+
+        Uses primary DB to ensure immediate consistency (e.g., seeing newly added payment methods).'
+      operationId: get_customer_billing_data_app_v1_billing_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/billing/link:
+    get:
+      tags:
+      - Billing
+      summary: Get Billing Link
+      description: 'Get billing portal link.
+
+        Uses primary DB to ensure immediate consistency.'
+      operationId: get_billing_link_app_v1_billing_link_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/billing/topup:
+    post:
+      tags:
+      - Billing
+      summary: Top Up Wallet
+      operationId: top_up_wallet_app_v1_billing_topup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/billing/auto-topup:
+    put:
+      tags:
+      - Billing
+      summary: Update Topup
+      operationId: update_topup_app_v1_billing_auto_topup_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTopUpRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UpdateTopUpRequest:
+      properties:
+        enableAutoTopUp:
+          type: boolean
+          title: Enableautotopup
+        topUpAmount:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Topupamount
+        topUpThreshold:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Topupthreshold
+      type: object
+      required:
+      - enableAutoTopUp
+      - topUpAmount
+      - topUpThreshold
+      title: UpdateTopUpRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TopUpRequest:
+      properties:
+        amount:
+          type: string
+          title: Amount
+      type: object
+      required:
+      - amount
+      title: TopUpRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

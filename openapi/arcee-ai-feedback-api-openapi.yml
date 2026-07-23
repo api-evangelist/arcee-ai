@@ -1,0 +1,263 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles Feedback API
+  version: 0.1.0
+tags:
+- name: Feedback
+paths:
+  /app/v1/feedback/submit:
+    post:
+      tags:
+      - Feedback
+      summary: Submit Feedback
+      description: 'Submit feedback or bug report
+
+
+        This endpoint allows authenticated users to submit feedback about the application.
+
+        The feedback is sent via email to the support team.'
+      operationId: submit_feedback_app_v1_feedback_submit_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackSubmissionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackSubmissionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/feature-request/submit:
+    post:
+      tags:
+      - Feedback
+      summary: Submit Feature Request
+      description: 'Submit feature request
+
+
+        This endpoint allows authenticated users to submit feature requests for the application.
+
+        The request is sent via email to the support team.'
+      operationId: submit_feature_request_app_v1_feature_request_submit_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureRequestSubmissionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureRequestSubmissionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/contact-support/submit:
+    post:
+      tags:
+      - Feedback
+      summary: Submit Contact Support
+      description: 'Submit contact support request
+
+
+        This endpoint allows authenticated users to submit support requests.
+
+        The request is sent via email to the support team.'
+      operationId: submit_contact_support_app_v1_contact_support_submit_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactSupportSubmissionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactSupportSubmissionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    ContactSupportSubmissionRequest:
+      properties:
+        request_title:
+          type: string
+          title: Request Title
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - request_title
+      - message
+      title: ContactSupportSubmissionRequest
+      description: Request model for contact support submission
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ContactSupportSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        support_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Support Id
+      type: object
+      required:
+      - success
+      - message
+      title: ContactSupportSubmissionResponse
+      description: Response model for contact support submission
+    FeedbackSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        feedback_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeedbackSubmissionResponse
+      description: Response model for feedback submission
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FeatureRequestSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeatureRequestSubmissionResponse
+      description: Response model for feature request submission
+    FeatureRequestSubmissionRequest:
+      properties:
+        feature_title:
+          type: string
+          title: Feature Title
+        application_feature:
+          type: string
+          title: Application Feature
+        importance:
+          type: string
+          title: Importance
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+      - feature_title
+      - application_feature
+      - importance
+      - description
+      title: FeatureRequestSubmissionRequest
+      description: Request model for feature request submission
+    FeedbackSubmissionRequest:
+      properties:
+        topic:
+          type: string
+          title: Topic
+        application_page:
+          type: string
+          title: Application Page
+        description:
+          type: string
+          title: Description
+        user_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Email
+        user_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Name
+      type: object
+      required:
+      - topic
+      - application_page
+      - description
+      title: FeedbackSubmissionRequest
+      description: Request model for feedback submission
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

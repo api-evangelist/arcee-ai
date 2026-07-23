@@ -1,0 +1,389 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles System Prompts API
+  version: 0.1.0
+tags:
+- name: System Prompts
+paths:
+  /app/v1/system-prompts:
+    post:
+      tags:
+      - System Prompts
+      summary: Create System Prompt
+      description: Create a new system prompt.
+      operationId: create_system_prompt_app_v1_system_prompts_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemPromptCreate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - System Prompts
+      summary: Get System Prompts
+      description: 'Get paginated system prompts for the current user.
+
+        Optionally filter by search term in title or content.
+
+        Uses primary DB to ensure immediate consistency (e.g., seeing newly created prompts in the list).'
+      operationId: get_system_prompts_app_v1_system_prompts_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/system-prompts/{prompt_id}:
+    get:
+      tags:
+      - System Prompts
+      summary: Get System Prompt
+      description: 'Get a system prompt by ID.
+
+        Uses primary DB to ensure immediate consistency (e.g., reading newly created prompts).'
+      operationId: get_system_prompt_app_v1_system_prompts__prompt_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: prompt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Prompt Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - System Prompts
+      summary: Update System Prompt
+      description: Update an existing system prompt.
+      operationId: update_system_prompt_app_v1_system_prompts__prompt_id__put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: prompt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Prompt Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemPromptUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - System Prompts
+      summary: Delete System Prompt
+      description: Delete a system prompt.
+      operationId: delete_system_prompt_app_v1_system_prompts__prompt_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: prompt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Prompt Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/system-prompts/search:
+    get:
+      tags:
+      - System Prompts
+      summary: Search System Prompts
+      description: 'Search system prompts by title or content.
+
+        Uses primary DB to ensure immediate consistency (e.g., searching for newly created prompts).'
+      operationId: search_system_prompts_app_v1_system_prompts_search_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Q
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SystemPromptCreate:
+      properties:
+        content:
+          type: string
+          maxLength: 20000
+          title: Content
+          description: System prompt content (max 20,000 characters)
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Title
+          description: System prompt title (max 200 characters)
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Temperature for this prompt
+      type: object
+      required:
+      - content
+      title: SystemPromptCreate
+      description: Model for creating a new system prompt.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SystemPromptListItemResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        title:
+          type: string
+          title: Title
+        shortPrompt:
+          type: string
+          title: Shortprompt
+        createdAt:
+          type: string
+          format: date-time
+          title: Createdat
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+        temperature:
+          type: number
+          title: Temperature
+      type: object
+      required:
+      - id
+      - title
+      - shortPrompt
+      - createdAt
+      - updatedAt
+      - temperature
+      title: SystemPromptListItemResponse
+      description: System prompt item in list response (without full content).
+    SystemPromptResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        title:
+          type: string
+          title: Title
+        content:
+          type: string
+          title: Content
+        createdAt:
+          type: string
+          format: date-time
+          title: Createdat
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+        temperature:
+          type: number
+          title: Temperature
+      type: object
+      required:
+      - id
+      - title
+      - content
+      - createdAt
+      - updatedAt
+      - temperature
+      title: SystemPromptResponse
+      description: System prompt response with database fields.
+    SystemPromptListResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+        offset:
+          type: integer
+          title: Offset
+        limit:
+          type: integer
+          title: Limit
+        content:
+          items:
+            $ref: '#/components/schemas/SystemPromptListItemResponse'
+          type: array
+          title: Content
+      type: object
+      required:
+      - total
+      - offset
+      - limit
+      - content
+      title: SystemPromptListResponse
+      description: Paginated system prompt list response.
+    SystemPromptUpdate:
+      properties:
+        content:
+          anyOf:
+          - type: string
+            maxLength: 20000
+          - type: 'null'
+          title: Content
+          description: System prompt content (max 20,000 characters)
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Title
+          description: System prompt title (max 200 characters)
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Temperature for this prompt
+      type: object
+      title: SystemPromptUpdate
+      description: Update an existing system prompt.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

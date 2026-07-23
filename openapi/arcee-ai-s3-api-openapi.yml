@@ -1,0 +1,352 @@
+openapi: 3.1.0
+info:
+  title: AFM Access Profiles S3 API
+  version: 0.1.0
+tags:
+- name: S3
+paths:
+  /app/v1/chat-files/reserve-id:
+    post:
+      tags:
+      - S3
+      summary: Reserve Chat File Id
+      description: 'Reserve a chat session ID for use during file upload.
+
+
+        Creates a placeholder chat session row so the UUID is atomically claimed
+
+        before the file is uploaded, eliminating the race condition between ID
+
+        generation and chat session creation.'
+      operationId: reserve_chat_file_id_app_v1_chat_files_reserve_id_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/chat-files/{chat_id}:
+    post:
+      tags:
+      - S3
+      summary: Upload Chat Files
+      description: Upload files for a specific chat session
+      operationId: upload_chat_files_app_v1_chat_files__chat_id__post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_chat_files_app_v1_chat_files__chat_id__post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - S3
+      summary: Get Chat Files
+      description: Retrieve files for a specific chat session
+      operationId: get_chat_files_app_v1_chat_files__chat_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/parse-file-content:
+    get:
+      tags:
+      - S3
+      summary: Parse File Content
+      description: Parse file content from S3 URL - returns TODO for now
+      operationId: parse_file_content_app_v1_parse_file_content_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: s3_url
+        in: query
+        required: true
+        schema:
+          type: string
+          title: S3 Url
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/s3/avatar/upload:
+    post:
+      tags:
+      - S3
+      summary: Upload Avatar
+      description: Upload user avatar image to S3 and update user profile.
+      operationId: upload_avatar_app_v1_s3_avatar_upload_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_avatar_app_v1_s3_avatar_upload_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/s3/avatar:
+    delete:
+      tags:
+      - S3
+      summary: Delete Avatar
+      description: Delete user avatar from S3 and update user profile.
+      operationId: delete_avatar_app_v1_s3_avatar_delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/s3/organization/{org_id}/logo/upload:
+    post:
+      tags:
+      - S3
+      summary: Upload Org Logo
+      description: 'Upload organization logo to S3 and update organization meta.
+
+        Only organization owners can upload logos.'
+      operationId: upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/s3/model/{base_model_name}/logo/upload:
+    post:
+      tags:
+      - S3
+      summary: Upload Model Logo
+      description: 'Upload model logo to S3 and return the AWS URL.
+
+        Only arcee_admin users can upload logos.
+
+        This endpoint only uploads the file - logo must be saved to model.meta separately.'
+      operationId: upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: base_model_name
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Base Model Name (URL encoded)
+          title: Base Model Name
+        description: Base Model Name (URL encoded)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/s3/organization/{org_id}/logo:
+    delete:
+      tags:
+      - S3
+      summary: Delete Org Logo
+      description: 'Delete organization logo from S3 and update organization meta.
+
+        Only organization owners can delete logos.'
+      operationId: delete_org_logo_app_v1_s3_organization__org_id__logo_delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: Organization ID
+          title: Org Id
+        description: Organization ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post
+    Body_upload_avatar_app_v1_s3_avatar_upload_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_avatar_app_v1_s3_avatar_upload_post
+    Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post
+    Body_upload_chat_files_app_v1_chat_files__chat_id__post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+      type: object
+      required:
+      - files
+      title: Body_upload_chat_files_app_v1_chat_files__chat_id__post
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
