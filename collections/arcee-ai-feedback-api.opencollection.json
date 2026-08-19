@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Feedback API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Feedback",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/feedback/submit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit feedback or bug report\n\nThis endpoint allows authenticated users to submit feedback about the application.\nThe feedback is sent via email to the support team."
+        },
+        {
+          "info": {
+            "name": "Submit Feature Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/feature-request/submit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit feature request\n\nThis endpoint allows authenticated users to submit feature requests for the application.\nThe request is sent via email to the support team."
+        },
+        {
+          "info": {
+            "name": "Submit Contact Support",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/contact-support/submit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit contact support request\n\nThis endpoint allows authenticated users to submit support requests.\nThe request is sent via email to the support team."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

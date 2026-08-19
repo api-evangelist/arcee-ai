@@ -1,0 +1,397 @@
+{
+  "item": [
+    {
+      "id": "c1576790-fbb6-4c1e-8cdb-c32cb6e4a8fc",
+      "name": "Models",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9485c516-f7a3-43e1-a3eb-96628f8db707",
+          "name": "Get Models",
+          "request": {
+            "name": "Get Models",
+            "description": {
+              "content": "Get all models according to OpenRouter provider spec.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7dacf6a9-a9fb-46ae-985c-d58b89ec99e1",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"hugging_face_id\": \"string\",\n      \"name\": \"string\",\n      \"created\": 736,\n      \"context_length\": 8319,\n      \"pricing\": {\n        \"prompt\": \"string\",\n        \"completion\": \"string\",\n        \"image\": \"string\",\n        \"request\": \"string\",\n        \"input_cache_read\": \"string\"\n      },\n      \"input_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"output_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"quantization\": \"string\",\n      \"max_output_length\": 105,\n      \"supported_sampling_parameters\": [\n        \"string\",\n        \"string\"\n      ],\n      \"supported_features\": [\n        \"string\",\n        \"string\"\n      ],\n      \"description\": \"string\",\n      \"openrouter\": {\n        \"slug\": \"string\"\n      },\n      \"datacenters\": [\n        {\n          \"country_code\": \"string\"\n        },\n        {\n          \"country_code\": \"string\"\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"hugging_face_id\": \"string\",\n      \"name\": \"string\",\n      \"created\": 5071,\n      \"context_length\": 9334,\n      \"pricing\": {\n        \"prompt\": \"string\",\n        \"completion\": \"string\",\n        \"image\": \"string\",\n        \"request\": \"string\",\n        \"input_cache_read\": \"string\"\n      },\n      \"input_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"output_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"quantization\": \"string\",\n      \"max_output_length\": 506,\n      \"supported_sampling_parameters\": [\n        \"string\",\n        \"string\"\n      ],\n      \"supported_features\": [\n        \"string\",\n        \"string\"\n      ],\n      \"description\": \"string\",\n      \"openrouter\": {\n        \"slug\": \"string\"\n      },\n      \"datacenters\": [\n        {\n          \"country_code\": \"string\"\n        },\n        {\n          \"country_code\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7c5bb3a-c2e5-49ae-917f-342a15d0696e",
+              "name": "Authentication Fails",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication failed due to invalid or missing API key\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d22adc6-9a86-48fd-be67-ae57a8be479e",
+              "name": "Invalid Parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"One or more request parameters are invalid or out of range\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ab89940-1600-418a-9d95-00a3c7cba721",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal server error occurred while processing the request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71b1f3e8-990d-4703-8812-14a6f9ab6978",
+          "name": "Get Models",
+          "request": {
+            "name": "Get Models",
+            "description": {
+              "content": "Get all models according to OpenRouter provider spec.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "51ce37f3-5b0a-472f-ba21-a15fa183ddb8",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"hugging_face_id\": \"string\",\n      \"name\": \"string\",\n      \"created\": 736,\n      \"context_length\": 8319,\n      \"pricing\": {\n        \"prompt\": \"string\",\n        \"completion\": \"string\",\n        \"image\": \"string\",\n        \"request\": \"string\",\n        \"input_cache_read\": \"string\"\n      },\n      \"input_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"output_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"quantization\": \"string\",\n      \"max_output_length\": 105,\n      \"supported_sampling_parameters\": [\n        \"string\",\n        \"string\"\n      ],\n      \"supported_features\": [\n        \"string\",\n        \"string\"\n      ],\n      \"description\": \"string\",\n      \"openrouter\": {\n        \"slug\": \"string\"\n      },\n      \"datacenters\": [\n        {\n          \"country_code\": \"string\"\n        },\n        {\n          \"country_code\": \"string\"\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"hugging_face_id\": \"string\",\n      \"name\": \"string\",\n      \"created\": 5071,\n      \"context_length\": 9334,\n      \"pricing\": {\n        \"prompt\": \"string\",\n        \"completion\": \"string\",\n        \"image\": \"string\",\n        \"request\": \"string\",\n        \"input_cache_read\": \"string\"\n      },\n      \"input_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"output_modalities\": [\n        \"string\",\n        \"string\"\n      ],\n      \"quantization\": \"string\",\n      \"max_output_length\": 506,\n      \"supported_sampling_parameters\": [\n        \"string\",\n        \"string\"\n      ],\n      \"supported_features\": [\n        \"string\",\n        \"string\"\n      ],\n      \"description\": \"string\",\n      \"openrouter\": {\n        \"slug\": \"string\"\n      },\n      \"datacenters\": [\n        {\n          \"country_code\": \"string\"\n        },\n        {\n          \"country_code\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f0cadc06-1de5-4132-9158-5dff518d4329",
+              "name": "Authentication Fails",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Authentication failed due to invalid or missing API key\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c91a76a-a2d0-4b71-9bf3-19164a4ceef4",
+              "name": "Invalid Parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"One or more request parameters are invalid or out of range\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f67a445-874b-4319-9914-a93765b61a44",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal server error occurred while processing the request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0a1fa03a-2a87-48e5-a85c-9739943947bd",
+    "name": "AFM Access Profiles Models API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

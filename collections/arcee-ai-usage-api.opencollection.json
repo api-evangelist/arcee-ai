@@ -1,0 +1,200 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Usage API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Usage Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/usage/stats",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for filtering (ISO format)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for filtering (ISO format)"
+              },
+              {
+                "name": "model",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific model"
+              },
+              {
+                "name": "model_provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by model provider"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Filter by source (api or app)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to skip"
+              }
+            ]
+          },
+          "docs": "Get daily usage statistics for the API key's organization.\n\nReturns paginated daily usage statistics with optional filtering by date range,\nmodel, provider, and source. Each record represents aggregated usage for a specific\nuser/model/provider/source combination on a given date."
+        },
+        {
+          "info": {
+            "name": "Get Usage Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/usage/summary",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for summary (ISO format)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for summary (ISO format)"
+              }
+            ]
+          },
+          "docs": "Get aggregated usage summary statistics for the API key's organization.\n\nReturns high-level metrics including total tokens, requests, unique users,\nmodels, providers, and breakdown by API vs app usage."
+        },
+        {
+          "info": {
+            "name": "Get User Credits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/usage/credits"
+          },
+          "docs": "Endpoint for users to get their credit balance."
+        },
+        {
+          "info": {
+            "name": "Get Usage Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/usage/stats",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for filtering (ISO format)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for filtering (ISO format)"
+              },
+              {
+                "name": "model",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific model"
+              },
+              {
+                "name": "model_provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by model provider"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "Filter by source (api or app)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to skip"
+              }
+            ]
+          },
+          "docs": "Get daily usage statistics for the API key's organization.\n\nReturns paginated daily usage statistics with optional filtering by date range,\nmodel, provider, and source. Each record represents aggregated usage for a specific\nuser/model/provider/source combination on a given date."
+        },
+        {
+          "info": {
+            "name": "Get Usage Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/usage/summary",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for summary (ISO format)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for summary (ISO format)"
+              }
+            ]
+          },
+          "docs": "Get aggregated usage summary statistics for the API key's organization.\n\nReturns high-level metrics including total tokens, requests, unique users,\nmodels, providers, and breakdown by API vs app usage."
+        },
+        {
+          "info": {
+            "name": "Get User Credits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/usage/credits"
+          },
+          "docs": "Endpoint for users to get their credit balance."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

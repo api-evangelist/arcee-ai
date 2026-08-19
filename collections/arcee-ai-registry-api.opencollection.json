@@ -1,0 +1,167 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Registry API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Registry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sync Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/models/sync",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync Arcee AI models from Together AI API to the database."
+        },
+        {
+          "info": {
+            "name": "Sync From Providers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/models/sync-from-providers",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync models from providers (Together AI, Clarifai) to the database.\n- Adds new models with pricing = 0.0\n- Updates existing models (only context_length, type, hugging_face_url)\n- Preserves pricing, base_model_name, display_name\n- Does NOT sync to Lago"
+        },
+        {
+          "info": {
+            "name": "Sync To Lago",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/models/sync-to-lago",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sync all models from the database to Lago.\n- Adds models to billable metrics\n- Creates/updates plan charges with pricing"
+        },
+        {
+          "info": {
+            "name": "Get All Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/models",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all Arcee AI models from the database."
+        },
+        {
+          "info": {
+            "name": "Create Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/models",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new Arcee AI model in the database."
+        },
+        {
+          "info": {
+            "name": "Get Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/models/:model_id",
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a single Arcee AI model by ID from the database."
+        },
+        {
+          "info": {
+            "name": "Update Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/app/v1/models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a single Arcee AI model in the database."
+        },
+        {
+          "info": {
+            "name": "Delete Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a single Arcee AI model from the database. Invalidates the\nLiteLLM router cache so all pods rebuild on their next request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

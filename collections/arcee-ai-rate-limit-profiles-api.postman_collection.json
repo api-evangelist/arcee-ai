@@ -1,0 +1,801 @@
+{
+  "item": [
+    {
+      "id": "4870042e-c19a-4e0f-a0c9-18a04503b115",
+      "name": "Rate Limit Profiles",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1b78a4eb-b91c-4d57-8b1b-9e0ce3eacc72",
+          "name": "Get All Rate Limit Profiles",
+          "request": {
+            "name": "Get All Rate Limit Profiles",
+            "description": {
+              "content": "Get all rate limit profiles",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "rate_limit_profiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "65c010ef-ab78-4fee-a979-7ad1a2a73f18",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"cf9431e8-f2ca-fcc3-3b8f-aa2e7af90227\",\n    \"name\": \"string\",\n    \"is_default\": false,\n    \"requests_per_minute\": 2561,\n    \"requests_per_day\": 7724,\n    \"requests_per_week\": 6780,\n    \"requests_per_month\": 6071,\n    \"tokens_per_minute\": 4476,\n    \"tokens_per_week\": 1615,\n    \"tokens_per_day\": 8926,\n    \"tokens_per_month\": 7607,\n    \"description\": \"string\",\n    \"meta\": {\n      \"key_0\": \"string\"\n    },\n    \"created_at\": \"1954-11-16T18:52:24.004Z\",\n    \"created_by\": \"030b4a94-029d-d869-ea5e-febb718da8e3\"\n  },\n  {\n    \"id\": \"d7611d4b-746c-e802-493e-eb016fa7eb3e\",\n    \"name\": \"string\",\n    \"is_default\": true,\n    \"requests_per_minute\": 8196,\n    \"requests_per_day\": 9407,\n    \"requests_per_week\": 615,\n    \"requests_per_month\": 3549,\n    \"tokens_per_minute\": 3181,\n    \"tokens_per_week\": 4811,\n    \"tokens_per_day\": 5093,\n    \"tokens_per_month\": 2348,\n    \"description\": \"string\",\n    \"meta\": {\n      \"key_0\": false,\n      \"key_1\": 1300.2814294958987,\n      \"key_2\": true,\n      \"key_3\": false\n    },\n    \"created_at\": \"2008-01-06T09:40:40.228Z\",\n    \"created_by\": \"aac27d60-ccb4-975a-2e4b-1d0054e16241\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18fbe76c-1ce9-4ea6-9664-fee27dc476d5",
+          "name": "Create Rate Limit Profile",
+          "request": {
+            "name": "Create Rate Limit Profile",
+            "description": {
+              "content": "Create a new rate limit profile",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "rate_limit_profiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"requests_per_minute\": \"<integer>\",\n  \"requests_per_day\": \"<integer>\",\n  \"requests_per_week\": \"<integer>\",\n  \"requests_per_month\": \"<integer>\",\n  \"tokens_per_minute\": \"<integer>\",\n  \"tokens_per_week\": \"<integer>\",\n  \"tokens_per_day\": \"<integer>\",\n  \"tokens_per_month\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"meta\": {\n    \"key_0\": \"string\"\n  },\n  \"is_default\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fdcae6db-7fec-4601-b726-b809201381d2",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"requests_per_minute\": \"<integer>\",\n  \"requests_per_day\": \"<integer>\",\n  \"requests_per_week\": \"<integer>\",\n  \"requests_per_month\": \"<integer>\",\n  \"tokens_per_minute\": \"<integer>\",\n  \"tokens_per_week\": \"<integer>\",\n  \"tokens_per_day\": \"<integer>\",\n  \"tokens_per_month\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"meta\": {\n    \"key_0\": 9755\n  },\n  \"is_default\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"9c0610b5-c8b9-f0bb-4804-a75511c52820\",\n  \"name\": \"string\",\n  \"is_default\": true,\n  \"requests_per_minute\": 7821,\n  \"requests_per_day\": 3603,\n  \"requests_per_week\": 2250,\n  \"requests_per_month\": 1537,\n  \"tokens_per_minute\": 394,\n  \"tokens_per_week\": 5476,\n  \"tokens_per_day\": 4460,\n  \"tokens_per_month\": 178,\n  \"description\": \"string\",\n  \"meta\": {\n    \"key_0\": \"string\",\n    \"key_1\": 7066,\n    \"key_2\": 7769.945287358795\n  },\n  \"created_at\": \"2010-06-03T00:21:45.043Z\",\n  \"created_by\": \"4be21b4c-a5d5-dc97-6917-23296a0731be\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a486258-b0d4-49b9-90e5-9ffc52c8c687",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"requests_per_minute\": \"<integer>\",\n  \"requests_per_day\": \"<integer>\",\n  \"requests_per_week\": \"<integer>\",\n  \"requests_per_month\": \"<integer>\",\n  \"tokens_per_minute\": \"<integer>\",\n  \"tokens_per_week\": \"<integer>\",\n  \"tokens_per_day\": \"<integer>\",\n  \"tokens_per_month\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"meta\": {\n    \"key_0\": 9755\n  },\n  \"is_default\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "517282a2-f18f-41bb-8f06-013d93e901ab",
+          "name": "Get Rate Limit Profile",
+          "request": {
+            "name": "Get Rate Limit Profile",
+            "description": {
+              "content": "Get a rate limit profile by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "rate_limit_profiles",
+                ":profile_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "profile_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "89a9e479-e930-44ca-bd92-54ed9f0f1b97",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles",
+                    ":profile_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "profile_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"9c0610b5-c8b9-f0bb-4804-a75511c52820\",\n  \"name\": \"string\",\n  \"is_default\": true,\n  \"requests_per_minute\": 7821,\n  \"requests_per_day\": 3603,\n  \"requests_per_week\": 2250,\n  \"requests_per_month\": 1537,\n  \"tokens_per_minute\": 394,\n  \"tokens_per_week\": 5476,\n  \"tokens_per_day\": 4460,\n  \"tokens_per_month\": 178,\n  \"description\": \"string\",\n  \"meta\": {\n    \"key_0\": \"string\",\n    \"key_1\": 7066,\n    \"key_2\": 7769.945287358795\n  },\n  \"created_at\": \"2010-06-03T00:21:45.043Z\",\n  \"created_by\": \"4be21b4c-a5d5-dc97-6917-23296a0731be\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e356de88-f161-429c-b696-dd31ec713341",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles",
+                    ":profile_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "profile_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7c7f1c9e-61da-4dde-9807-319cb02260e4",
+          "name": "Update Rate Limit Profile",
+          "request": {
+            "name": "Update Rate Limit Profile",
+            "description": {
+              "content": "Update a rate limit profile",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "rate_limit_profiles",
+                ":profile_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "profile_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"requests_per_minute\": \"<integer>\",\n  \"requests_per_day\": \"<integer>\",\n  \"requests_per_week\": \"<integer>\",\n  \"requests_per_month\": \"<integer>\",\n  \"tokens_per_minute\": \"<integer>\",\n  \"tokens_per_week\": \"<integer>\",\n  \"tokens_per_day\": \"<integer>\",\n  \"tokens_per_month\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"meta\": {\n    \"key_0\": 7866.7846999190715\n  },\n  \"is_default\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8a6a6016-10fe-42d7-8d01-21dc6e5ad15a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles",
+                    ":profile_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "profile_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"requests_per_minute\": \"<integer>\",\n  \"requests_per_day\": \"<integer>\",\n  \"requests_per_week\": \"<integer>\",\n  \"requests_per_month\": \"<integer>\",\n  \"tokens_per_minute\": \"<integer>\",\n  \"tokens_per_week\": \"<integer>\",\n  \"tokens_per_day\": \"<integer>\",\n  \"tokens_per_month\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"meta\": {\n    \"key_0\": 2422\n  },\n  \"is_default\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"9c0610b5-c8b9-f0bb-4804-a75511c52820\",\n  \"name\": \"string\",\n  \"is_default\": true,\n  \"requests_per_minute\": 7821,\n  \"requests_per_day\": 3603,\n  \"requests_per_week\": 2250,\n  \"requests_per_month\": 1537,\n  \"tokens_per_minute\": 394,\n  \"tokens_per_week\": 5476,\n  \"tokens_per_day\": 4460,\n  \"tokens_per_month\": 178,\n  \"description\": \"string\",\n  \"meta\": {\n    \"key_0\": \"string\",\n    \"key_1\": 7066,\n    \"key_2\": 7769.945287358795\n  },\n  \"created_at\": \"2010-06-03T00:21:45.043Z\",\n  \"created_by\": \"4be21b4c-a5d5-dc97-6917-23296a0731be\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eec0b5e3-b474-43d7-8325-028a1afeb0df",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles",
+                    ":profile_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "profile_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"requests_per_minute\": \"<integer>\",\n  \"requests_per_day\": \"<integer>\",\n  \"requests_per_week\": \"<integer>\",\n  \"requests_per_month\": \"<integer>\",\n  \"tokens_per_minute\": \"<integer>\",\n  \"tokens_per_week\": \"<integer>\",\n  \"tokens_per_day\": \"<integer>\",\n  \"tokens_per_month\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"meta\": {\n    \"key_0\": 2422\n  },\n  \"is_default\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9b3a6968-3586-4369-86de-e0d76b16da99",
+          "name": "Delete Rate Limit Profile",
+          "request": {
+            "name": "Delete Rate Limit Profile",
+            "description": {
+              "content": "Delete a rate limit profile",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "rate_limit_profiles",
+                ":profile_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "profile_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3c170442-e15e-4410-abda-d59cff0eb3e5",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles",
+                    ":profile_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "profile_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6a457f1f-e270-4fd4-935b-c045ee6e0c03",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "rate_limit_profiles",
+                    ":profile_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "profile_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "87f77602-5ce6-4959-a57d-a3d8a1ee6e48",
+    "name": "AFM Access Profiles Rate Limit Profiles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

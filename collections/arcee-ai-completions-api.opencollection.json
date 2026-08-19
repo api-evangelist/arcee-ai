@@ -1,0 +1,156 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Completions API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Completions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Stream Message Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/completions/:session_id/stream",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Send a message and get a streaming completion response."
+        },
+        {
+          "info": {
+            "name": "Create Chat With First Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/completions/create-chat",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create new chat and stream first message response in one request.\nOptimized: streams immediately, saves to DB asynchronously at the end."
+        },
+        {
+          "info": {
+            "name": "Regenerate Last Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/completions/:session_id/regenerate",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Regenerate the last assistant response for a chat session.\n\nThis endpoint:\n1. Gets the last user message and its paired assistant response\n2. Deletes only the assistant message (preserving the user message and its files)\n3. Streams a new response using the same user message content and settings"
+        },
+        {
+          "info": {
+            "name": "Stop Message Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/completions/messages/:message_id/stop",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Signal the backend to stop an in-progress stream for the given assistant message.\nWorks across pods by setting a Valkey key that the streaming generator polls per chunk."
+        },
+        {
+          "info": {
+            "name": "Generate Chat Title",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/completions/generate-title",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a title for a chat session based on the initial message."
+        },
+        {
+          "info": {
+            "name": "Create Chat Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Chat completion endpoint using the shared LiteLLM-backed external service."
+        },
+        {
+          "info": {
+            "name": "Create Chat Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Chat completion endpoint using the shared LiteLLM-backed external service."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

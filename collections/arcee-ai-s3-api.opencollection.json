@@ -1,0 +1,214 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles S3 API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "S3",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Reserve Chat File Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/chat-files/reserve-id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Reserve a chat session ID for use during file upload.\n\nCreates a placeholder chat session row so the UUID is atomically claimed\nbefore the file is uploaded, eliminating the race condition between ID\ngeneration and chat session creation."
+        },
+        {
+          "info": {
+            "name": "Get Chat Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/chat-files/:chat_id",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve files for a specific chat session"
+        },
+        {
+          "info": {
+            "name": "Upload Chat Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/chat-files/:chat_id",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload files for a specific chat session"
+        },
+        {
+          "info": {
+            "name": "Parse File Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/parse-file-content",
+            "params": [
+              {
+                "name": "s3_url",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Parse file content from S3 URL - returns TODO for now"
+        },
+        {
+          "info": {
+            "name": "Upload Avatar",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/s3/avatar/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload user avatar image to S3 and update user profile."
+        },
+        {
+          "info": {
+            "name": "Delete Avatar",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/s3/avatar",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete user avatar from S3 and update user profile."
+        },
+        {
+          "info": {
+            "name": "Upload Org Logo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/s3/organization/:org_id/logo/upload",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization ID"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload organization logo to S3 and update organization meta.\nOnly organization owners can upload logos."
+        },
+        {
+          "info": {
+            "name": "Upload Model Logo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/s3/model/:base_model_name/logo/upload",
+            "params": [
+              {
+                "name": "base_model_name",
+                "value": "",
+                "type": "path",
+                "description": "Base Model Name (URL encoded)"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload model logo to S3 and return the AWS URL.\nOnly arcee_admin users can upload logos.\nThis endpoint only uploads the file - logo must be saved to model.meta separately."
+        },
+        {
+          "info": {
+            "name": "Delete Org Logo",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/s3/organization/:org_id/logo",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete organization logo from S3 and update organization meta.\nOnly organization owners can delete logos."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

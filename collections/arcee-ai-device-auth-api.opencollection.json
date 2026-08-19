@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Device Auth API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Device Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Device Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/device/code",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a device authorization: issue a device_code + human user_code."
+        },
+        {
+          "info": {
+            "name": "Poll Device Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/device/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Poll for the authorization result. Returns the API key once approved."
+        },
+        {
+          "info": {
+            "name": "Device Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/device/info",
+            "params": [
+              {
+                "name": "user_code",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Return the requesting client's display name + status for the consent screen."
+        },
+        {
+          "info": {
+            "name": "Approve Device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/device/approve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Approve a device authorization: mint an API key scoped to the chosen workspace."
+        },
+        {
+          "info": {
+            "name": "Deny Device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/device/deny",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deny a device authorization so the polling client stops with access_denied."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,396 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Auth API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Signup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/signup",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Signup"
+        },
+        {
+          "info": {
+            "name": "Login",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/login",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Login"
+        },
+        {
+          "info": {
+            "name": "Refresh Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/refresh"
+          },
+          "docs": "Refresh the access token using either:\n1. Refresh token (if user selected \"stay signed in\")\n2. Current access token (for active users without refresh token)"
+        },
+        {
+          "info": {
+            "name": "Logout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/logout",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Logout the current user by clearing cookies and revoking refresh token"
+        },
+        {
+          "info": {
+            "name": "Verify Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/verify-email/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Verify email address using verification token and redirect to frontend"
+        },
+        {
+          "info": {
+            "name": "Request Email Change",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/request-email-change",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Request email change: check uniqueness, store pending_email, generate token, send email.\nOnly available for users who signed up with email or GitHub (not Google)."
+        },
+        {
+          "info": {
+            "name": "Verify Email Change",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/verify-email-change/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Verify email change token and redirect to frontend"
+        },
+        {
+          "info": {
+            "name": "Resend Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/resend-verification",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resend verification email for a user"
+        },
+        {
+          "info": {
+            "name": "Invite User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/invites/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Invite User"
+        },
+        {
+          "info": {
+            "name": "Update Invited User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/complete-invite",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Invited User"
+        },
+        {
+          "info": {
+            "name": "Validate Password Reset Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/password-reset/validate",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Validate password reset token and return reset_token for password change"
+        },
+        {
+          "info": {
+            "name": "Send Password Reset Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/password-reset",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send password reset email to user"
+        },
+        {
+          "info": {
+            "name": "Password Reset",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/app/v1/password-reset",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reset password for a user using reset_token (no authentication required)"
+        },
+        {
+          "info": {
+            "name": "Change Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/app/v1/change-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Change password for authenticated user (authentication required)"
+        },
+        {
+          "info": {
+            "name": "Google Oauth Login With Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/oauth/google/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Handle Google OAuth login/signup with specific organization"
+        },
+        {
+          "info": {
+            "name": "Google Oauth Login",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/oauth/google",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Handle Google OAuth login/signup with default organization"
+        },
+        {
+          "info": {
+            "name": "Github Oauth Login",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/oauth/github",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Handle GitHub OAuth login/signup. Optional invite_token for invitation flow."
+        },
+        {
+          "info": {
+            "name": "Get Invitations Data By Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/invitations/data/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get invitation data by token and check if user exists"
+        },
+        {
+          "info": {
+            "name": "Validate Invitation Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/invitations/validate/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate invitation token and create/update user based on validation type"
+        },
+        {
+          "info": {
+            "name": "Heartbeat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/heartbeat",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Heartbeat endpoint to verify if token is valid and not expired.\nReturns 200 if token is valid, 401 if invalid/expired.\nPublishes heartbeat to SNS/worker for asynchronous logging."
+        },
+        {
+          "info": {
+            "name": "Get Parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/parameters"
+          },
+          "docs": "Get environment variables for frontend configuration.\nOnly accessible from FRONTEND_URL origin.\nValues are retrieved from database (SystemSettings) instead of environment variables.\nThis endpoint is public and does not require authentication.\nUser-specific permissions should be checked via /user-permissions endpoint."
+        },
+        {
+          "info": {
+            "name": "Get User Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/user-permissions",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get user-specific permissions and feature flags.\nReturns permissions based on the authenticated user's role.\nIf user is not authenticated, returns all permissions as False."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

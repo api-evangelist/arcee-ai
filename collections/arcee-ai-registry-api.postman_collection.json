@@ -1,0 +1,1077 @@
+{
+  "item": [
+    {
+      "id": "91efbecd-5489-4bd4-8345-02ce0a3b503e",
+      "name": "Registry",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b1aeebc1-f932-46e1-a992-13af7eba8707",
+          "name": "Sync Models",
+          "request": {
+            "name": "Sync Models",
+            "description": {
+              "content": "Sync Arcee AI models from Together AI API to the database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models",
+                "sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "efc51fad-6977-46b5-bac0-2ca13b7c0b28",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"synced\": 8733,\n  \"updated\": 7859,\n  \"deactivated\": 7847,\n  \"available_models\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6c1410a1-85ff-4d51-b77a-c1260aaf73ed",
+          "name": "Sync From Providers",
+          "request": {
+            "name": "Sync From Providers",
+            "description": {
+              "content": "Sync models from providers (Together AI, Clarifai) to the database.\n- Adds new models with pricing = 0.0\n- Updates existing models (only context_length, type, hugging_face_url)\n- Preserves pricing, base_model_name, display_name\n- Does NOT sync to Lago",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models",
+                "sync-from-providers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a81bee33-8e12-4616-9fb6-a1aa1e0f5c1b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    "sync-from-providers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"synced\": 8733,\n  \"updated\": 7859,\n  \"deactivated\": 7847,\n  \"available_models\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5a6bba0d-4f79-4c2e-a5c4-b6fd142082ee",
+          "name": "Sync To Lago",
+          "request": {
+            "name": "Sync To Lago",
+            "description": {
+              "content": "Sync all models from the database to Lago.\n- Adds models to billable metrics\n- Creates/updates plan charges with pricing",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models",
+                "sync-to-lago"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "163061f1-9c0f-4805-923d-aa4d4c17154a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    "sync-to-lago"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa765848-f77f-42f5-a869-ea7446ec7daf",
+          "name": "Get All Models",
+          "request": {
+            "name": "Get All Models",
+            "description": {
+              "content": "Get all Arcee AI models from the database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "eac6f76f-2b23-49aa-ade9-3bd1b92eebd1",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"3a77248b-62b7-2e15-b2d8-10b31a63eab5\",\n    \"model_id\": \"string\",\n    \"display_name\": \"string\",\n    \"pricing\": {\n      \"input\": 4233.481406550121,\n      \"cached_input\": 8824.870342539776,\n      \"output\": 1397.4433935573604\n    },\n    \"created_at\": \"string\",\n    \"organization\": \"string\",\n    \"provider_name\": \"string\",\n    \"type\": \"string\",\n    \"context_length\": 4539,\n    \"status\": true,\n    \"is_public\": false,\n    \"is_active\": true,\n    \"is_app_enabled\": false,\n    \"is_api_enabled\": false,\n    \"hugging_face_url\": \"string\",\n    \"model_provider_id\": \"bf855d51-356a-b857-a80c-3d8a3661d9b0\",\n    \"base_model_name\": \"string\",\n    \"meta\": {\n      \"key_0\": false\n    },\n    \"temperature\": 479.7744141025639,\n    \"top_p\": 3831.2464143760417,\n    \"top_k\": 2341,\n    \"min_p\": 7889.167146991685,\n    \"routing_weight\": 3883,\n    \"quantization\": \"string\",\n    \"max_output_length\": 6549,\n    \"supported_sampling_parameters\": [\n      \"string\",\n      \"string\"\n    ],\n    \"supported_features\": [\n      \"string\",\n      \"string\"\n    ],\n    \"input_modalities\": [\n      \"string\",\n      \"string\"\n    ],\n    \"output_modalities\": [\n      \"string\",\n      \"string\"\n    ],\n    \"datacenters\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": 9936\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": false,\n        \"key_2\": \"string\"\n      }\n    ],\n    \"description\": \"string\",\n    \"updated_at\": \"string\"\n  },\n  {\n    \"id\": \"243546fa-6695-7ab8-2992-61ea3331f537\",\n    \"model_id\": \"string\",\n    \"display_name\": \"string\",\n    \"pricing\": {\n      \"input\": 719.6526130995795,\n      \"cached_input\": 660.2157619951787,\n      \"output\": 6982.560937214522\n    },\n    \"created_at\": \"string\",\n    \"organization\": \"string\",\n    \"provider_name\": \"string\",\n    \"type\": \"string\",\n    \"context_length\": 9802,\n    \"status\": true,\n    \"is_public\": false,\n    \"is_active\": true,\n    \"is_app_enabled\": false,\n    \"is_api_enabled\": false,\n    \"hugging_face_url\": \"string\",\n    \"model_provider_id\": \"b4201292-d14d-045c-5c65-1f41a21fa991\",\n    \"base_model_name\": \"string\",\n    \"meta\": {\n      \"key_0\": 9643.485550143127,\n      \"key_1\": 5014,\n      \"key_2\": 9146.430923021022,\n      \"key_3\": 4983\n    },\n    \"temperature\": 5769.105013541737,\n    \"top_p\": 3814.009853221323,\n    \"top_k\": 2248,\n    \"min_p\": 7679.444892946203,\n    \"routing_weight\": 9201,\n    \"quantization\": \"string\",\n    \"max_output_length\": 8683,\n    \"supported_sampling_parameters\": [\n      \"string\",\n      \"string\"\n    ],\n    \"supported_features\": [\n      \"string\",\n      \"string\"\n    ],\n    \"input_modalities\": [\n      \"string\",\n      \"string\"\n    ],\n    \"output_modalities\": [\n      \"string\",\n      \"string\"\n    ],\n    \"datacenters\": [\n      {\n        \"key_0\": 2758,\n        \"key_1\": 4334.181435236735,\n        \"key_2\": \"string\",\n        \"key_3\": 2638\n      },\n      {\n        \"key_0\": 6626,\n        \"key_1\": 9342.465676378602\n      }\n    ],\n    \"description\": \"string\",\n    \"updated_at\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c4de223-467d-4471-b73f-8a5365947589",
+          "name": "Create Model",
+          "request": {
+            "name": "Create Model",
+            "description": {
+              "content": "Create a new Arcee AI model in the database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"display_name\": \"<string>\",\n  \"model_provider_id\": \"<uuid>\",\n  \"organization\": \"<string>\",\n  \"type\": \"<string>\",\n  \"context_length\": \"<integer>\",\n  \"status\": \"<boolean>\",\n  \"is_public\": \"<boolean>\",\n  \"is_active\": \"<boolean>\",\n  \"is_app_enabled\": \"<boolean>\",\n  \"is_api_enabled\": \"<boolean>\",\n  \"hugging_face_url\": \"<string>\",\n  \"pricing\": {\n    \"input\": \"<number>\",\n    \"cached_input\": \"<number>\",\n    \"output\": \"<number>\"\n  },\n  \"meta\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"min_p\": \"<number>\",\n  \"routing_weight\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e0681b16-4d65-4be6-b07c-66d250930b57",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"display_name\": \"<string>\",\n  \"model_provider_id\": \"<uuid>\",\n  \"organization\": \"<string>\",\n  \"type\": \"<string>\",\n  \"context_length\": \"<integer>\",\n  \"status\": \"<boolean>\",\n  \"is_public\": \"<boolean>\",\n  \"is_active\": \"<boolean>\",\n  \"is_app_enabled\": \"<boolean>\",\n  \"is_api_enabled\": \"<boolean>\",\n  \"hugging_face_url\": \"<string>\",\n  \"pricing\": {\n    \"input\": 6658.49288901435,\n    \"cached_input\": 2563.5285309800292,\n    \"output\": 7273.631973785506\n  },\n  \"meta\": {\n    \"key_0\": true,\n    \"key_1\": true\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"min_p\": \"<number>\",\n  \"routing_weight\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"83ecdaa7-b1f9-8852-2e75-673aee013e11\",\n  \"model_id\": \"string\",\n  \"display_name\": \"string\",\n  \"pricing\": {\n    \"input\": 6354.20384302569,\n    \"cached_input\": 3398.0386073127365,\n    \"output\": 3278.7584205183994\n  },\n  \"created_at\": \"string\",\n  \"organization\": \"string\",\n  \"provider_name\": \"string\",\n  \"type\": \"string\",\n  \"context_length\": 2528,\n  \"status\": true,\n  \"is_public\": false,\n  \"is_active\": true,\n  \"is_app_enabled\": false,\n  \"is_api_enabled\": false,\n  \"hugging_face_url\": \"string\",\n  \"model_provider_id\": \"845b9e68-57e1-54f8-3d3f-877598ad7292\",\n  \"base_model_name\": \"string\",\n  \"meta\": {\n    \"key_0\": true,\n    \"key_1\": \"string\",\n    \"key_2\": 6757\n  },\n  \"temperature\": 3274.254790459433,\n  \"top_p\": 7357.527279890142,\n  \"top_k\": 3593,\n  \"min_p\": 2509.873398039663,\n  \"routing_weight\": 6198,\n  \"quantization\": \"string\",\n  \"max_output_length\": 4459,\n  \"supported_sampling_parameters\": [\n    \"string\",\n    \"string\"\n  ],\n  \"supported_features\": [\n    \"string\",\n    \"string\"\n  ],\n  \"input_modalities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"output_modalities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"datacenters\": [\n    {\n      \"key_0\": 9760.137341544762\n    },\n    {\n      \"key_0\": 7674.177992200002,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    }\n  ],\n  \"description\": \"string\",\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1de37b2c-3313-4d86-a887-b814765c8a97",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"display_name\": \"<string>\",\n  \"model_provider_id\": \"<uuid>\",\n  \"organization\": \"<string>\",\n  \"type\": \"<string>\",\n  \"context_length\": \"<integer>\",\n  \"status\": \"<boolean>\",\n  \"is_public\": \"<boolean>\",\n  \"is_active\": \"<boolean>\",\n  \"is_app_enabled\": \"<boolean>\",\n  \"is_api_enabled\": \"<boolean>\",\n  \"hugging_face_url\": \"<string>\",\n  \"pricing\": {\n    \"input\": 6658.49288901435,\n    \"cached_input\": 2563.5285309800292,\n    \"output\": 7273.631973785506\n  },\n  \"meta\": {\n    \"key_0\": true,\n    \"key_1\": true\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"min_p\": \"<number>\",\n  \"routing_weight\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6664718f-2464-4207-a9a9-0f2f521d4698",
+          "name": "Get Model",
+          "request": {
+            "name": "Get Model",
+            "description": {
+              "content": "Get a single Arcee AI model by ID from the database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models",
+                ":model_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9ce8c251-b1fe-4c06-9add-7285d35971da",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"83ecdaa7-b1f9-8852-2e75-673aee013e11\",\n  \"model_id\": \"string\",\n  \"display_name\": \"string\",\n  \"pricing\": {\n    \"input\": 6354.20384302569,\n    \"cached_input\": 3398.0386073127365,\n    \"output\": 3278.7584205183994\n  },\n  \"created_at\": \"string\",\n  \"organization\": \"string\",\n  \"provider_name\": \"string\",\n  \"type\": \"string\",\n  \"context_length\": 2528,\n  \"status\": true,\n  \"is_public\": false,\n  \"is_active\": true,\n  \"is_app_enabled\": false,\n  \"is_api_enabled\": false,\n  \"hugging_face_url\": \"string\",\n  \"model_provider_id\": \"845b9e68-57e1-54f8-3d3f-877598ad7292\",\n  \"base_model_name\": \"string\",\n  \"meta\": {\n    \"key_0\": true,\n    \"key_1\": \"string\",\n    \"key_2\": 6757\n  },\n  \"temperature\": 3274.254790459433,\n  \"top_p\": 7357.527279890142,\n  \"top_k\": 3593,\n  \"min_p\": 2509.873398039663,\n  \"routing_weight\": 6198,\n  \"quantization\": \"string\",\n  \"max_output_length\": 4459,\n  \"supported_sampling_parameters\": [\n    \"string\",\n    \"string\"\n  ],\n  \"supported_features\": [\n    \"string\",\n    \"string\"\n  ],\n  \"input_modalities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"output_modalities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"datacenters\": [\n    {\n      \"key_0\": 9760.137341544762\n    },\n    {\n      \"key_0\": 7674.177992200002,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    }\n  ],\n  \"description\": \"string\",\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f57ace0b-7046-4cc9-b018-df2f49657e43",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "737b1832-22ed-4aa8-9eb9-ab252b07eeb9",
+          "name": "Update Model",
+          "request": {
+            "name": "Update Model",
+            "description": {
+              "content": "Update a single Arcee AI model in the database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<string>\",\n  \"base_model_name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"context_length\": \"<integer>\",\n  \"status\": \"<boolean>\",\n  \"is_public\": \"<boolean>\",\n  \"is_active\": \"<boolean>\",\n  \"is_app_enabled\": \"<boolean>\",\n  \"is_api_enabled\": \"<boolean>\",\n  \"hugging_face_url\": \"<string>\",\n  \"pricing\": {\n    \"input\": \"<number>\",\n    \"cached_input\": \"<number>\",\n    \"output\": \"<number>\"\n  },\n  \"provider_id\": \"<uuid>\",\n  \"meta\": {\n    \"key_0\": 4159.747900950474,\n    \"key_1\": 9711.876290641801\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"min_p\": \"<number>\",\n  \"routing_weight\": \"<integer>\",\n  \"quantization\": \"<string>\",\n  \"max_output_length\": \"<integer>\",\n  \"supported_sampling_parameters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"supported_features\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"input_modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"output_modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"datacenters\": [\n    {\n      \"key_0\": 7511.758083706614,\n      \"key_1\": 4096.354053190709\n    },\n    {\n      \"key_0\": 2946.3946939922416,\n      \"key_1\": 6576.461494603032\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b6ce9ac7-534c-4b27-a4b9-8329d5b0c50c",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"display_name\": \"<string>\",\n  \"base_model_name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"context_length\": \"<integer>\",\n  \"status\": \"<boolean>\",\n  \"is_public\": \"<boolean>\",\n  \"is_active\": \"<boolean>\",\n  \"is_app_enabled\": \"<boolean>\",\n  \"is_api_enabled\": \"<boolean>\",\n  \"hugging_face_url\": \"<string>\",\n  \"pricing\": {\n    \"input\": 9822.111019943364,\n    \"cached_input\": 3964.025354689534,\n    \"output\": 5482.569862730349\n  },\n  \"provider_id\": \"<uuid>\",\n  \"meta\": {\n    \"key_0\": 8624,\n    \"key_1\": true,\n    \"key_2\": \"string\",\n    \"key_3\": 4344\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"min_p\": \"<number>\",\n  \"routing_weight\": \"<integer>\",\n  \"quantization\": \"<string>\",\n  \"max_output_length\": \"<integer>\",\n  \"supported_sampling_parameters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"supported_features\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"input_modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"output_modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"datacenters\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 5270.520526247426,\n      \"key_1\": false,\n      \"key_2\": 5380.204122251926,\n      \"key_3\": false,\n      \"key_4\": 9395.854611535951\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"83ecdaa7-b1f9-8852-2e75-673aee013e11\",\n  \"model_id\": \"string\",\n  \"display_name\": \"string\",\n  \"pricing\": {\n    \"input\": 6354.20384302569,\n    \"cached_input\": 3398.0386073127365,\n    \"output\": 3278.7584205183994\n  },\n  \"created_at\": \"string\",\n  \"organization\": \"string\",\n  \"provider_name\": \"string\",\n  \"type\": \"string\",\n  \"context_length\": 2528,\n  \"status\": true,\n  \"is_public\": false,\n  \"is_active\": true,\n  \"is_app_enabled\": false,\n  \"is_api_enabled\": false,\n  \"hugging_face_url\": \"string\",\n  \"model_provider_id\": \"845b9e68-57e1-54f8-3d3f-877598ad7292\",\n  \"base_model_name\": \"string\",\n  \"meta\": {\n    \"key_0\": true,\n    \"key_1\": \"string\",\n    \"key_2\": 6757\n  },\n  \"temperature\": 3274.254790459433,\n  \"top_p\": 7357.527279890142,\n  \"top_k\": 3593,\n  \"min_p\": 2509.873398039663,\n  \"routing_weight\": 6198,\n  \"quantization\": \"string\",\n  \"max_output_length\": 4459,\n  \"supported_sampling_parameters\": [\n    \"string\",\n    \"string\"\n  ],\n  \"supported_features\": [\n    \"string\",\n    \"string\"\n  ],\n  \"input_modalities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"output_modalities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"datacenters\": [\n    {\n      \"key_0\": 9760.137341544762\n    },\n    {\n      \"key_0\": 7674.177992200002,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    }\n  ],\n  \"description\": \"string\",\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20241277-7272-4e5d-9086-3c58f9683e35",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"display_name\": \"<string>\",\n  \"base_model_name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"context_length\": \"<integer>\",\n  \"status\": \"<boolean>\",\n  \"is_public\": \"<boolean>\",\n  \"is_active\": \"<boolean>\",\n  \"is_app_enabled\": \"<boolean>\",\n  \"is_api_enabled\": \"<boolean>\",\n  \"hugging_face_url\": \"<string>\",\n  \"pricing\": {\n    \"input\": 9822.111019943364,\n    \"cached_input\": 3964.025354689534,\n    \"output\": 5482.569862730349\n  },\n  \"provider_id\": \"<uuid>\",\n  \"meta\": {\n    \"key_0\": 8624,\n    \"key_1\": true,\n    \"key_2\": \"string\",\n    \"key_3\": 4344\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"min_p\": \"<number>\",\n  \"routing_weight\": \"<integer>\",\n  \"quantization\": \"<string>\",\n  \"max_output_length\": \"<integer>\",\n  \"supported_sampling_parameters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"supported_features\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"input_modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"output_modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"datacenters\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 5270.520526247426,\n      \"key_1\": false,\n      \"key_2\": 5380.204122251926,\n      \"key_3\": false,\n      \"key_4\": 9395.854611535951\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bdf2e4c7-8069-45d4-aaad-e6d689492932",
+          "name": "Delete Model",
+          "request": {
+            "name": "Delete Model",
+            "description": {
+              "content": "Delete a single Arcee AI model from the database. Invalidates the\nLiteLLM router cache so all pods rebuild on their next request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "v1",
+                "models",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1e576695-ad71-4f4a-a279-f448996353ce",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f81eedf-6ffd-4c08-b00c-c1724c53e3c0",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "app",
+                    "v1",
+                    "models",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8dc8d6da-e6ee-40af-801b-a720ee0a777c",
+    "name": "AFM Access Profiles Registry API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles System Prompts API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System Prompts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get System Prompts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/system-prompts",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get paginated system prompts for the current user.\nOptionally filter by search term in title or content.\nUses primary DB to ensure immediate consistency (e.g., seeing newly created prompts in the list)."
+        },
+        {
+          "info": {
+            "name": "Create System Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/system-prompts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new system prompt."
+        },
+        {
+          "info": {
+            "name": "Get System Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/system-prompts/:prompt_id",
+            "params": [
+              {
+                "name": "prompt_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a system prompt by ID.\nUses primary DB to ensure immediate consistency (e.g., reading newly created prompts)."
+        },
+        {
+          "info": {
+            "name": "Update System Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/app/v1/system-prompts/:prompt_id",
+            "params": [
+              {
+                "name": "prompt_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an existing system prompt."
+        },
+        {
+          "info": {
+            "name": "Delete System Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/system-prompts/:prompt_id",
+            "params": [
+              {
+                "name": "prompt_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a system prompt."
+        },
+        {
+          "info": {
+            "name": "Search System Prompts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/system-prompts/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search system prompts by title or content.\nUses primary DB to ensure immediate consistency (e.g., searching for newly created prompts)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles RAG API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "RAG",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Rag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/rag"
+          },
+          "docs": "Rag"
+        },
+        {
+          "info": {
+            "name": "Get Data Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/data-groups",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Data Group"
+        },
+        {
+          "info": {
+            "name": "Create Data Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/data-groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create Data Group"
+        },
+        {
+          "info": {
+            "name": "Delete Data Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/data-groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete Data Group"
+        },
+        {
+          "info": {
+            "name": "Get Data Group Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/data-groups/:data_group_id/users",
+            "params": [
+              {
+                "name": "data_group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Data Group Users"
+        },
+        {
+          "info": {
+            "name": "Add Users To Data Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/data-groups/add-users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Add Users To Data Group"
+        },
+        {
+          "info": {
+            "name": "Remove User From Data Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/data-groups/:data_group_id/users/:user_org_profile_id",
+            "params": [
+              {
+                "name": "data_group_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_org_profile_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove User From Data Group"
+        },
+        {
+          "info": {
+            "name": "Get Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/files/:data_group_id",
+            "params": [
+              {
+                "name": "data_group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Files"
+        },
+        {
+          "info": {
+            "name": "Upload Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/files/:data_group_id",
+            "params": [
+              {
+                "name": "data_group_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "purpose",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload Files"
+        },
+        {
+          "info": {
+            "name": "Delete Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/app/v1/files/:data_id/:data_group_id",
+            "params": [
+              {
+                "name": "data_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "data_group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete Files"
+        },
+        {
+          "info": {
+            "name": "Get Top K",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/v1/top-k/:data_group_id",
+            "params": [
+              {
+                "name": "data_group_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "The query to search for"
+              },
+              {
+                "name": "k",
+                "value": "",
+                "type": "query",
+                "description": "Number of top results to return"
+              }
+            ]
+          },
+          "docs": "Get top-k results for a query using API key authentication"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

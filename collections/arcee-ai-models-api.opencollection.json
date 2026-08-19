@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Models API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/models"
+          },
+          "docs": "Get all models according to OpenRouter provider spec."
+        },
+        {
+          "info": {
+            "name": "Get Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/models"
+          },
+          "docs": "Get all models according to OpenRouter provider spec."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

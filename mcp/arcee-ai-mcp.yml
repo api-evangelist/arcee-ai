@@ -6,16 +6,13 @@ server:
   name: Arcee AnyMCP
   transport: http
   url: https://mcp.arcee.ai/
-  description: >-
-    Arcee AnyMCP is Arcee AI's hosted Model Context Protocol platform. It lets you remotely deploy
-    and manage MCP servers (one-click deployment, thousands of servers) that any MCP-compatible
-    client (Claude Desktop, etc.) can connect to. It is a hosting/management surface for MCP
-    servers rather than a single MCP server that wraps the Arcee inference API. Free to use.
-notes: >-
-  No official MCP server that exposes the Arcee Platform inference API as MCP tools was found. The
-  tools[] below are DERIVED candidates from the public OpenAI-compatible operations in
-  openapi/arcee-ai-afm-openapi.json (status: candidate) — a starting point for a wrapper, not a
-  published Arcee server.
+  description: Arcee AnyMCP is Arcee AI's hosted Model Context Protocol platform. It lets you remotely
+    deploy and manage MCP servers (one-click deployment, thousands of servers) that any MCP-compatible
+    client (Claude Desktop, etc.) can connect to. It is a hosting/management surface for MCP servers rather
+    than a single MCP server that wraps the Arcee inference API. Free to use.
+notes: 'No official MCP server that exposes the Arcee Platform inference API as MCP tools was found. The
+  tools[] below are DERIVED candidates from the public OpenAI-compatible operations in openapi/arcee-ai-afm-openapi.json
+  (status: candidate) — a starting point for a wrapper, not a published Arcee server.'
 candidate_tools_method: derived
 candidate_tools_source: openapi/arcee-ai-afm-openapi.json
 tools:
@@ -35,3 +32,12 @@ tools:
   description: Retrieve usage statistics for the API key.
   status: candidate
   source_operation: openapi/arcee-ai-afm-openapi.json#get_usage_stats_v1_usage_stats_get
+deployment:
+  mode: none
+  endpoint: https://mcp.arcee.ai/
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

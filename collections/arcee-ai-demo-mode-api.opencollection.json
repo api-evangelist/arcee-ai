@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AFM Access Profiles Demo Mode API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Demo Mode",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Demo Create Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/demo/chat/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new demo chat session and stream the first assistant response.\n\nNo per-session message-limit check here (unlike demo_stream_message)\nbecause this endpoint creates a brand-new session with zero messages.\nCross-session abuse (cookie clearing) is mitigated by Caddy's\nper-IP rate limiter at the infrastructure layer."
+        },
+        {
+          "info": {
+            "name": "Demo Stream Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/demo/chat/:session_id/stream",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a message to an existing demo chat session and stream the response."
+        },
+        {
+          "info": {
+            "name": "Demo Stop Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/app/v1/demo/chat/messages/:message_id/stop",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Stop an in-progress demo stream by setting the Valkey stop key."
+        },
+        {
+          "info": {
+            "name": "Demo Get Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/demo/chat/session"
+          },
+          "docs": "Get the current demo session with messages, identified by the signed cookie token."
+        },
+        {
+          "info": {
+            "name": "Demo Get Chat Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/app/v1/demo/chat-models"
+          },
+          "docs": "Get available models for demo mode (no auth required)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
