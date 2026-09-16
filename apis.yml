@@ -1,13 +1,13 @@
 aid: arcee-ai
 name: Arcee AI
-description: 'Arcee AI is an American open-intelligence research lab that builds and releases small,
-  efficient open-weight language models (the Trinity family, AFM-4.5B, and Virtuoso/Maestro derivatives)
-  along with a developer platform for running them. The Arcee Platform exposes an OpenAI-compatible
-  inference API at api.arcee.ai (chat completions, model listing, and usage/credits endpoints) secured
-  with bearer API keys, plus Arcee Conductor (model routing), Arcee Orchestra (agentic workflows with
-  their own invocation API), and AnyMCP for hosting Model Context Protocol servers. Arcee also maintains
-  widely used open-source model tooling including mergekit, DistillKit, and DALM. Models can be consumed
-  through the hosted API or self-deployed on vLLM, SGLang, llama.cpp, and Ollama.'
+description: Arcee AI is an American open-intelligence research lab that builds and releases small, efficient
+  open-weight language models (the Trinity family, AFM-4.5B, and Virtuoso/Maestro derivatives) along with
+  a developer platform for running them. The Arcee Platform exposes an OpenAI-compatible inference API
+  at api.arcee.ai (chat completions, model listing, and usage/credits endpoints) secured with bearer API
+  keys, plus Arcee Conductor (model routing), Arcee Orchestra (agentic workflows with their own invocation
+  API), and AnyMCP for hosting Model Context Protocol servers. Arcee also maintains widely used open-source
+  model tooling including mergekit, DistillKit, and DALM. Models can be consumed through the hosted API
+  or self-deployed on vLLM, SGLang, llama.cpp, and Ollama.
 url: https://raw.githubusercontent.com/api-evangelist/arcee-ai/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -42,7 +42,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-09-16'
 image: https://avatars.githubusercontent.com/u/126496414?v=4
 tags:
 - Company
@@ -92,7 +92,7 @@ apis:
   - type: AgenticAccess
     url: agentic-access/arcee-ai-agentic-access.yml
 - aid: arcee-ai:arcee-ai-afm-api-api
-  name: Arcee AI AFM API API
+  name: Arcee AI AFM API
   description: The AFM API API from Arcee AI — 1 operation(s) for afm api.
   humanURL: https://docs.arcee.ai/
   baseURL: https://api.arcee.ai
@@ -699,7 +699,10 @@ common:
   url: packages/arcee-ai-packages.yml
 - type: X-MCPServerCandidate
   url: mcp/arcee-ai-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: Conformance
   url: conformance/arcee-ai-conformance.yml
 - type: DomainSecurity
