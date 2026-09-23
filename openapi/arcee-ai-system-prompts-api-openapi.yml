@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles System Prompts API
+  title: AFM System Prompts API
   version: 0.1.0
 tags:
 - name: System Prompts
@@ -209,96 +209,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    SystemPromptListResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SystemPromptCreate:
-      properties:
+        total:
+          type: integer
+          title: Total
+        offset:
+          type: integer
+          title: Offset
+        limit:
+          type: integer
+          title: Limit
         content:
-          type: string
-          maxLength: 20000
-          title: Content
-          description: System prompt content (max 20,000 characters)
-        title:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Title
-          description: System prompt title (max 200 characters)
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-          description: Temperature for this prompt
-      type: object
-      required:
-      - content
-      title: SystemPromptCreate
-      description: Model for creating a new system prompt.
-    ValidationError:
-      properties:
-        loc:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/SystemPromptListItemResponse'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Content
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    SystemPromptListItemResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        title:
-          type: string
-          title: Title
-        shortPrompt:
-          type: string
-          title: Shortprompt
-        createdAt:
-          type: string
-          format: date-time
-          title: Createdat
-        updatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Updatedat
-        temperature:
-          type: number
-          title: Temperature
-      type: object
-      required:
-      - id
-      - title
-      - shortPrompt
-      - createdAt
-      - updatedAt
-      - temperature
-      title: SystemPromptListItemResponse
-      description: System prompt item in list response (without full content).
+      - total
+      - offset
+      - limit
+      - content
+      title: SystemPromptListResponse
+      description: Paginated system prompt list response.
     SystemPromptResponse:
       properties:
         id:
@@ -334,30 +268,40 @@ components:
       - temperature
       title: SystemPromptResponse
       description: System prompt response with database fields.
-    SystemPromptListResponse:
+    HTTPValidationError:
       properties:
-        total:
-          type: integer
-          title: Total
-        offset:
-          type: integer
-          title: Offset
-        limit:
-          type: integer
-          title: Limit
-        content:
+        detail:
           items:
-            $ref: '#/components/schemas/SystemPromptListItemResponse'
+            $ref: '#/components/schemas/ValidationError'
           type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SystemPromptCreate:
+      properties:
+        content:
+          type: string
+          maxLength: 20000
           title: Content
+          description: System prompt content (max 20,000 characters)
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Title
+          description: System prompt title (max 200 characters)
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Temperature for this prompt
       type: object
       required:
-      - total
-      - offset
-      - limit
       - content
-      title: SystemPromptListResponse
-      description: Paginated system prompt list response.
+      title: SystemPromptCreate
+      description: Model for creating a new system prompt.
     SystemPromptUpdate:
       properties:
         content:
@@ -383,6 +327,62 @@ components:
       type: object
       title: SystemPromptUpdate
       description: Update an existing system prompt.
+    SystemPromptListItemResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        title:
+          type: string
+          title: Title
+        shortPrompt:
+          type: string
+          title: Shortprompt
+        createdAt:
+          type: string
+          format: date-time
+          title: Createdat
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+        temperature:
+          type: number
+          title: Temperature
+      type: object
+      required:
+      - id
+      - title
+      - shortPrompt
+      - createdAt
+      - updatedAt
+      - temperature
+      title: SystemPromptListItemResponse
+      description: System prompt item in list response (without full content).
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles RAG API
+  title: AFM RAG API
   version: 0.1.0
 tags:
-- name: RAG
+- name: Rag
 paths:
   /app/v1/rag:
     post:
       tags:
-      - RAG
+      - Rag
       summary: Rag
       operationId: rag_app_v1_rag_post
       responses:
@@ -20,7 +20,7 @@ paths:
   /app/v1/data-groups:
     get:
       tags:
-      - RAG
+      - Rag
       summary: Get Data Group
       operationId: get_data_group_app_v1_data_groups_get
       responses:
@@ -33,7 +33,7 @@ paths:
       - HTTPBearer: []
     post:
       tags:
-      - RAG
+      - Rag
       summary: Create Data Group
       operationId: create_data_group_app_v1_data_groups_post
       requestBody:
@@ -59,7 +59,7 @@ paths:
   /app/v1/data-groups/{group_id}:
     delete:
       tags:
-      - RAG
+      - Rag
       summary: Delete Data Group
       operationId: delete_data_group_app_v1_data_groups__group_id__delete
       security:
@@ -86,7 +86,7 @@ paths:
   /app/v1/data-groups/{data_group_id}/users:
     get:
       tags:
-      - RAG
+      - Rag
       summary: Get Data Group Users
       operationId: get_data_group_users_app_v1_data_groups__data_group_id__users_get
       security:
@@ -113,7 +113,7 @@ paths:
   /app/v1/data-groups/add-users:
     post:
       tags:
-      - RAG
+      - Rag
       summary: Add Users To Data Group
       operationId: add_users_to_data_group_app_v1_data_groups_add_users_post
       requestBody:
@@ -139,7 +139,7 @@ paths:
   /app/v1/data-groups/{data_group_id}/users/{user_org_profile_id}:
     delete:
       tags:
-      - RAG
+      - Rag
       summary: Remove User From Data Group
       operationId: remove_user_from_data_group_app_v1_data_groups__data_group_id__users__user_org_profile_id__delete
       security:
@@ -174,7 +174,7 @@ paths:
   /app/v1/files/{data_group_id}:
     post:
       tags:
-      - RAG
+      - Rag
       summary: Upload Files
       operationId: upload_files_app_v1_files__data_group_id__post
       security:
@@ -213,7 +213,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - RAG
+      - Rag
       summary: Get Files
       operationId: get_files_app_v1_files__data_group_id__get
       security:
@@ -240,7 +240,7 @@ paths:
   /app/v1/files/{data_id}/{data_group_id}:
     delete:
       tags:
-      - RAG
+      - Rag
       summary: Delete Files
       operationId: delete_files_app_v1_files__data_id___data_group_id__delete
       security:
@@ -273,7 +273,7 @@ paths:
   /app/v1/v1/top-k/{data_group_id}:
     get:
       tags:
-      - RAG
+      - Rag
       summary: Get Top K
       description: Get top-k results for a query using API key authentication
       operationId: get_top_k_app_v1_v1_top_k__data_group_id__get
@@ -317,6 +317,33 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateDataGroupRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_public:
+          type: boolean
+          title: Is Public
+          default: false
+      type: object
+      required:
+      - name
+      title: CreateDataGroupRequest
     AddUsersToGroupRequest:
       properties:
         user_org_profile_ids:
@@ -334,15 +361,18 @@ components:
       - user_org_profile_ids
       - data_group_id
       title: AddUsersToGroupRequest
-    HTTPValidationError:
+    Body_upload_files_app_v1_files__data_group_id__post:
       properties:
-        detail:
+        files:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: string
+            format: binary
           type: array
-          title: Detail
+          title: Files
       type: object
-      title: HTTPValidationError
+      required:
+      - files
+      title: Body_upload_files_app_v1_files__data_group_id__post
     ValidationError:
       properties:
         loc:
@@ -364,36 +394,6 @@ components:
       - msg
       - type
       title: ValidationError
-    Body_upload_files_app_v1_files__data_group_id__post:
-      properties:
-        files:
-          items:
-            type: string
-            format: binary
-          type: array
-          title: Files
-      type: object
-      required:
-      - files
-      title: Body_upload_files_app_v1_files__data_group_id__post
-    CreateDataGroupRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        is_public:
-          type: boolean
-          title: Is Public
-          default: false
-      type: object
-      required:
-      - name
-      title: CreateDataGroupRequest
   securitySchemes:
     HTTPBearer:
       type: http

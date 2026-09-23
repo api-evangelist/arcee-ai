@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles User API
+  title: AFM User API
   version: 0.1.0
 tags:
 - name: User
@@ -330,6 +330,48 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    BalanceVisibilityRequest:
+      properties:
+        show_balance_in_sidebar:
+          type: boolean
+          title: Show Balance In Sidebar
+      type: object
+      required:
+      - show_balance_in_sidebar
+      title: BalanceVisibilityRequest
+    AppRole:
+      type: string
+      enum:
+      - int_user
+      - int_editor
+      - int_admin
+      - ext_user
+      - ext_tester
+      - ext_partner
+      title: AppRole
+      description: Roles for role-based access control.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          type: string
+          title: New Role
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserRoleUpdateRequest
     AppRoleEntry:
       properties:
         id:
@@ -358,26 +400,27 @@ components:
       - last_name
       - app_role
       title: AppRoleEntry
-    HTTPValidationError:
+    UserAppRoleUpdateRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          $ref: '#/components/schemas/AppRole'
       type: object
-      title: HTTPValidationError
-    AppRole:
-      type: string
-      enum:
-      - int_user
-      - int_editor
-      - int_admin
-      - ext_user
-      - ext_tester
-      - ext_partner
-      title: AppRole
-      description: Roles for role-based access control.
+      required:
+      - user_id
+      - new_role
+      title: UserAppRoleUpdateRequest
+    GitHubEmailMismatchBannerHomeRequest:
+      properties:
+        show_mismatch_banner_home:
+          type: boolean
+          title: Show Mismatch Banner Home
+      type: object
+      required:
+      - show_mismatch_banner_home
+      title: GitHubEmailMismatchBannerHomeRequest
     LanguageUpdateRequest:
       properties:
         language:
@@ -387,28 +430,36 @@ components:
       required:
       - language
       title: LanguageUpdateRequest
-    UserRoleUpdateRequest:
+    UserUpdateRequest:
       properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          type: string
-          title: New Role
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        preferences:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Preferences
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
       type: object
       required:
-      - user_id
-      - new_role
-      title: UserRoleUpdateRequest
-    ThemeUpdateRequest:
-      properties:
-        theme:
-          type: string
-          title: Theme
-      type: object
-      required:
-      - theme
-      title: ThemeUpdateRequest
+      - first_name
+      - last_name
+      - preferences
+      - password
+      title: UserUpdateRequest
     PaginatedAppRoleResponse:
       properties:
         entries:
@@ -444,6 +495,15 @@ components:
       - has_next
       - has_prev
       title: PaginatedAppRoleResponse
+    ThemeUpdateRequest:
+      properties:
+        theme:
+          type: string
+          title: Theme
+      type: object
+      required:
+      - theme
+      title: ThemeUpdateRequest
     ValidationError:
       properties:
         loc:
@@ -465,66 +525,6 @@ components:
       - msg
       - type
       title: ValidationError
-    GitHubEmailMismatchBannerHomeRequest:
-      properties:
-        show_mismatch_banner_home:
-          type: boolean
-          title: Show Mismatch Banner Home
-      type: object
-      required:
-      - show_mismatch_banner_home
-      title: GitHubEmailMismatchBannerHomeRequest
-    UserUpdateRequest:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        preferences:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Preferences
-        password:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Password
-      type: object
-      required:
-      - first_name
-      - last_name
-      - preferences
-      - password
-      title: UserUpdateRequest
-    UserAppRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          $ref: '#/components/schemas/AppRole'
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserAppRoleUpdateRequest
-    BalanceVisibilityRequest:
-      properties:
-        show_balance_in_sidebar:
-          type: boolean
-          title: Show Balance In Sidebar
-      type: object
-      required:
-      - show_balance_in_sidebar
-      title: BalanceVisibilityRequest
   securitySchemes:
     HTTPBearer:
       type: http

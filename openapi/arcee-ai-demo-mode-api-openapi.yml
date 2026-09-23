@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Demo Mode API
+  title: AFM Demo Mode API
   version: 0.1.0
 tags:
 - name: Demo Mode
@@ -128,6 +128,15 @@ paths:
                 $ref: '#/components/schemas/ChatModelsResponse'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ChatToolResponse:
       properties:
         id:
@@ -159,72 +168,6 @@ components:
       - icon
       title: ChatToolResponse
       description: Tool response for chat models endpoint.
-    DemoStreamMessageRequest:
-      properties:
-        content:
-          type: string
-          maxLength: 50000
-          title: Content
-          description: Message content
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-      type: object
-      required:
-      - content
-      title: DemoStreamMessageRequest
-      description: Subsequent message in an existing demo chat session.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DemoCreateChatRequest:
-      properties:
-        message:
-          type: string
-          maxLength: 50000
-          title: Message
-          description: First message content
-        base_model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Base Model Name
-          description: Base model name
-      type: object
-      required:
-      - message
-      title: DemoCreateChatRequest
-      description: First message to start a demo chat session.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ChatModelsResponse:
       properties:
         models:
@@ -243,6 +186,24 @@ components:
       - tools
       title: ChatModelsResponse
       description: Response model for chat models and tools endpoint.
+    DemoStreamMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 50000
+          title: Content
+          description: Message content
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      required:
+      - content
+      title: DemoStreamMessageRequest
+      description: Subsequent message in an existing demo chat session.
     ChatModelResponse:
       properties:
         id:
@@ -296,6 +257,45 @@ components:
       - base_model_name
       title: ChatModelResponse
       description: Model response for chat models endpoint.
+    DemoCreateChatRequest:
+      properties:
+        message:
+          type: string
+          maxLength: 50000
+          title: Message
+          description: First message content
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+          description: Base model name
+      type: object
+      required:
+      - message
+      title: DemoCreateChatRequest
+      description: First message to start a demo chat session.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

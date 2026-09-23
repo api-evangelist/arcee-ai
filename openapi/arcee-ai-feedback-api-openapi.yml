@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Feedback API
+  title: AFM Feedback API
   version: 0.1.0
 tags:
 - name: Feedback
@@ -106,20 +106,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    ContactSupportSubmissionRequest:
-      properties:
-        request_title:
-          type: string
-          title: Request Title
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - request_title
-      - message
-      title: ContactSupportSubmissionRequest
-      description: Request model for contact support submission
     HTTPValidationError:
       properties:
         detail:
@@ -129,44 +115,34 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ContactSupportSubmissionResponse:
+    FeedbackSubmissionRequest:
       properties:
-        success:
-          type: boolean
-          title: Success
-        message:
+        topic:
           type: string
-          title: Message
-        support_id:
+          title: Topic
+        application_page:
+          type: string
+          title: Application Page
+        description:
+          type: string
+          title: Description
+        user_email:
           anyOf:
           - type: string
           - type: 'null'
-          title: Support Id
-      type: object
-      required:
-      - success
-      - message
-      title: ContactSupportSubmissionResponse
-      description: Response model for contact support submission
-    FeedbackSubmissionResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        message:
-          type: string
-          title: Message
-        feedback_id:
+          title: User Email
+        user_name:
           anyOf:
           - type: string
           - type: 'null'
-          title: Feedback Id
+          title: User Name
       type: object
       required:
-      - success
-      - message
-      title: FeedbackSubmissionResponse
-      description: Response model for feedback submission
+      - topic
+      - application_page
+      - description
+      title: FeedbackSubmissionRequest
+      description: Request model for feedback submission
     ValidationError:
       properties:
         loc:
@@ -188,6 +164,58 @@ components:
       - msg
       - type
       title: ValidationError
+    ContactSupportSubmissionRequest:
+      properties:
+        request_title:
+          type: string
+          title: Request Title
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - request_title
+      - message
+      title: ContactSupportSubmissionRequest
+      description: Request model for contact support submission
+    FeedbackSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        feedback_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeedbackSubmissionResponse
+      description: Response model for feedback submission
+    ContactSupportSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        support_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Support Id
+      type: object
+      required:
+      - success
+      - message
+      title: ContactSupportSubmissionResponse
+      description: Response model for contact support submission
     FeatureRequestSubmissionResponse:
       properties:
         success:
@@ -229,34 +257,6 @@ components:
       - description
       title: FeatureRequestSubmissionRequest
       description: Request model for feature request submission
-    FeedbackSubmissionRequest:
-      properties:
-        topic:
-          type: string
-          title: Topic
-        application_page:
-          type: string
-          title: Application Page
-        description:
-          type: string
-          title: Description
-        user_email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Email
-        user_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Name
-      type: object
-      required:
-      - topic
-      - application_page
-      - description
-      title: FeedbackSubmissionRequest
-      description: Request model for feedback submission
   securitySchemes:
     HTTPBearer:
       type: http

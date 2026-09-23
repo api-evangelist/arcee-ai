@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Arcee-Admin API
+  title: AFM Arcee Admin API
   version: 0.1.0
 tags:
 - name: Arcee-Admin
@@ -471,169 +471,32 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    PaginatedFlaggedResponsesResponse:
-      properties:
-        entries:
-          items:
-            $ref: '#/components/schemas/FlaggedResponseEntry'
-          type: array
-          title: Entries
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        page_size:
-          type: integer
-          title: Page Size
-        total_pages:
-          type: integer
-          title: Total Pages
-        has_next:
-          type: boolean
-          title: Has Next
-        has_prev:
-          type: boolean
-          title: Has Prev
-      type: object
-      required:
-      - entries
-      - total
-      - page
-      - page_size
-      - total_pages
-      - has_next
-      - has_prev
-      title: PaginatedFlaggedResponsesResponse
-    JoinWaitlistRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: JoinWaitlistRequest
-    PaginatedWaitlistResponse:
-      properties:
-        entries:
-          items:
-            $ref: '#/components/schemas/WaitlistEntryResponse'
-          type: array
-          title: Entries
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        page_size:
-          type: integer
-          title: Page Size
-        total_pages:
-          type: integer
-          title: Total Pages
-        has_next:
-          type: boolean
-          title: Has Next
-        has_prev:
-          type: boolean
-          title: Has Prev
-      type: object
-      required:
-      - entries
-      - total
-      - page
-      - page_size
-      - total_pages
-      - has_next
-      - has_prev
-      title: PaginatedWaitlistResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    UpdateFlaggedResponseStatusRequest:
-      properties:
-        admin_review:
-          type: string
-          title: Admin Review
-      type: object
-      required:
-      - admin_review
-      title: UpdateFlaggedResponseStatusRequest
-    WaitlistEntryResponse:
+    ToolInfoResponse:
       properties:
         id:
           type: string
-          format: uuid
           title: Id
-        email:
+        name:
           type: string
-          title: Email
-        created_at:
+          title: Name
+        description:
           type: string
-          title: Created At
-        status:
-          $ref: '#/components/schemas/WaitlistStatus'
-        token_expiration:
+          title: Description
+        icon_name:
+          type: string
+          title: Icon Name
+        active_state_label:
           anyOf:
           - type: string
           - type: 'null'
-          title: Token Expiration
-        approved_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Approved Date
+          title: Active State Label
       type: object
       required:
       - id
-      - email
-      - created_at
-      - status
-      title: WaitlistEntryResponse
-    UpdateIntSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: integer
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: UpdateIntSettingRequest
-    ToggleFreeKeyRequest:
-      properties:
-        key_id:
-          type: string
-          format: uuid
-          title: Key Id
-      type: object
-      required:
-      - key_id
-      title: ToggleFreeKeyRequest
+      - name
+      - description
+      - icon_name
+      title: ToolInfoResponse
     AdminChatMessageResponse:
       properties:
         id:
@@ -667,35 +530,15 @@ components:
       - content
       - created_at
       title: AdminChatMessageResponse
-    UpdateTextSettingRequest:
+    UpdateFlaggedResponseStatusRequest:
       properties:
-        setting_name:
+        admin_review:
           type: string
-          title: Setting Name
-        new_value:
-          type: string
-          title: New Value
+          title: Admin Review
       type: object
       required:
-      - setting_name
-      - new_value
-      title: UpdateTextSettingRequest
-    UpdateWaitlistEntryStatusRequest:
-      properties:
-        entry_id:
-          type: string
-          title: Entry Id
-        email:
-          type: string
-          title: Email
-        new_status:
-          $ref: '#/components/schemas/WaitlistStatus'
-      type: object
-      required:
-      - entry_id
-      - email
-      - new_status
-      title: UpdateWaitlistEntryStatusRequest
+      - admin_review
+      title: UpdateFlaggedResponseStatusRequest
     FlaggedResponseEntry:
       properties:
         id:
@@ -757,6 +600,67 @@ components:
       - setting_name
       - new_value
       title: ToggleAppSettingRequest
+    UpdateTextSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: string
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateTextSettingRequest
+    UpdateIntSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: integer
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateIntSettingRequest
+    UpdateWaitlistEntryStatusRequest:
+      properties:
+        entry_id:
+          type: string
+          title: Entry Id
+        email:
+          type: string
+          title: Email
+        new_status:
+          $ref: '#/components/schemas/WaitlistStatus'
+      type: object
+      required:
+      - entry_id
+      - email
+      - new_status
+      title: UpdateWaitlistEntryStatusRequest
+    JoinWaitlistRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: JoinWaitlistRequest
+    ToggleFreeKeyRequest:
+      properties:
+        key_id:
+          type: string
+          format: uuid
+          title: Key Id
+      type: object
+      required:
+      - key_id
+      title: ToggleFreeKeyRequest
     WaitlistStatus:
       type: string
       enum:
@@ -765,32 +669,128 @@ components:
       - rejected
       - completed
       title: WaitlistStatus
-    ToolInfoResponse:
+    PaginatedFlaggedResponsesResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/FlaggedResponseEntry'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedFlaggedResponsesResponse
+    PaginatedWaitlistResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/WaitlistEntryResponse'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedWaitlistResponse
+    WaitlistEntryResponse:
       properties:
         id:
           type: string
+          format: uuid
           title: Id
-        name:
+        email:
           type: string
-          title: Name
-        description:
+          title: Email
+        created_at:
           type: string
-          title: Description
-        icon_name:
-          type: string
-          title: Icon Name
-        active_state_label:
+          title: Created At
+        status:
+          $ref: '#/components/schemas/WaitlistStatus'
+        token_expiration:
           anyOf:
           - type: string
           - type: 'null'
-          title: Active State Label
+          title: Token Expiration
+        approved_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Approved Date
       type: object
       required:
       - id
-      - name
-      - description
-      - icon_name
-      title: ToolInfoResponse
+      - email
+      - created_at
+      - status
+      title: WaitlistEntryResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Keys API
+  title: AFM Keys API
   version: 0.1.0
 tags:
 - name: Keys
@@ -288,6 +288,89 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateAPIKeyRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+      type: object
+      required:
+      - name
+      title: CreateAPIKeyRequest
+    UpdateAPIKeyRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/APIKeyStatus'
+          - type: 'null'
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+      type: object
+      title: UpdateAPIKeyRequest
     APIKeyResponse:
       properties:
         id:
@@ -381,89 +464,15 @@ components:
       - expires_at
       - status
       title: APIKeyResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CreateAPIKeyRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Token Limit
-        request_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Request Limit
-        data_retention_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Data Retention Days
-      type: object
-      required:
-      - name
-      title: CreateAPIKeyRequest
-    UpdateAPIKeyRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/APIKeyStatus'
-          - type: 'null'
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Token Limit
-        request_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Request Limit
-        data_retention_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Data Retention Days
-      type: object
-      title: UpdateAPIKeyRequest
+    APIKeyStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - deactivated
+      - expired
+      - cooldown
+      title: APIKeyStatus
     ValidationError:
       properties:
         loc:
@@ -485,15 +494,6 @@ components:
       - msg
       - type
       title: ValidationError
-    APIKeyStatus:
-      type: string
-      enum:
-      - active
-      - inactive
-      - deactivated
-      - expired
-      - cooldown
-      title: APIKeyStatus
   securitySchemes:
     HTTPBearer:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Completions API
+  title: AFM Completions API
   version: 0.1.0
 tags:
 - name: Completions
@@ -218,6 +218,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     CreateChatWithMessageRequest:
       properties:
         message:
@@ -314,54 +323,6 @@ components:
       - message
       title: CreateChatWithMessageRequest
       description: Model for creating chat and sending first message in one request.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    GenerateTitleRequest:
-      properties:
-        initial_message:
-          type: string
-          maxLength: 50000
-          title: Initial Message
-          description: Initial message to generate title from
-        chat_session_id:
-          type: string
-          format: uuid
-          title: Chat Session Id
-          description: Chat session ID to update with generated title
-      type: object
-      required:
-      - initial_message
-      - chat_session_id
-      title: GenerateTitleRequest
-      description: Request to generate a chat title. The backend uses a pinned title-generation model.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     GenerateTitleResponse:
       properties:
         title:
@@ -379,6 +340,28 @@ components:
       - chat_session_id
       title: GenerateTitleResponse
       description: Response with generated title.
+    ChatCompletionRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        messages:
+          items: {}
+          type: array
+          title: Messages
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - messages
+      title: ChatCompletionRequest
+      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
+
+        to litellm without validation so schema maintenance is not required.'
     ChatInput:
       properties:
         content:
@@ -426,28 +409,45 @@ components:
       - content
       - session_id
       title: ChatInput
-    ChatCompletionRequest:
+    GenerateTitleRequest:
       properties:
-        model:
+        initial_message:
           type: string
-          title: Model
-        messages:
-          items: {}
-          type: array
-          title: Messages
-        stream:
-          type: boolean
-          title: Stream
-          default: false
-      additionalProperties: true
+          maxLength: 50000
+          title: Initial Message
+          description: Initial message to generate title from
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+          description: Chat session ID to update with generated title
       type: object
       required:
-      - model
-      - messages
-      title: ChatCompletionRequest
-      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
-
-        to litellm without validation so schema maintenance is not required.'
+      - initial_message
+      - chat_session_id
+      title: GenerateTitleRequest
+      description: Request to generate a chat title. The backend uses a pinned title-generation model.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

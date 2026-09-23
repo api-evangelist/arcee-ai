@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Dev Mode API
+  title: AFM Dev Mode API
   version: 0.1.0
 tags:
 - name: Dev Mode
@@ -267,16 +267,6 @@ components:
       - msg
       - type
       title: ValidationError
-    DevSessionUpdateTitle:
-      properties:
-        title:
-          type: string
-          title: Title
-      type: object
-      required:
-      - title
-      title: DevSessionUpdateTitle
-      description: Request body for updating dev session title.
     HTTPValidationError:
       properties:
         detail:
@@ -308,6 +298,16 @@ components:
       description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
 
         to litellm without validation so schema maintenance is not required.'
+    DevSessionUpdateTitle:
+      properties:
+        title:
+          type: string
+          title: Title
+      type: object
+      required:
+      - title
+      title: DevSessionUpdateTitle
+      description: Request body for updating dev session title.
   securitySchemes:
     HTTPBearer:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Search API
+  title: AFM Search API
   version: 0.1.0
 tags:
 - name: Search
@@ -35,6 +35,20 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    SearchRequest:
+      properties:
+        query:
+          type: string
+          title: Query
+        recency_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Recency Days
+      type: object
+      required:
+      - query
+      title: SearchRequest
     AISearchResponse:
       properties:
         query:
@@ -58,6 +72,15 @@ components:
       - sources
       - search_time
       title: AISearchResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -79,29 +102,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SearchRequest:
-      properties:
-        query:
-          type: string
-          title: Query
-        recency_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Recency Days
-      type: object
-      required:
-      - query
-      title: SearchRequest
   securitySchemes:
     HTTPBearer:
       type: http

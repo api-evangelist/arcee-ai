@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: AFM Access Profiles Rate Limit Profiles API
+  title: AFM Rate Limit Profiles API
   version: 0.1.0
 tags:
 - name: Rate Limit Profiles
@@ -155,6 +155,153 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    RateLimitProfileResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        requests_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Minute
+        requests_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Day
+        requests_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Week
+        requests_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Month
+        tokens_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Minute
+        tokens_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Week
+        tokens_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Day
+        tokens_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Month
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        is_default:
+          type: boolean
+          title: Is Default
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
+      type: object
+      required:
+      - id
+      - name
+      - is_default
+      title: RateLimitProfileResponse
+    CreateRateLimitProfileRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        requests_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Minute
+        requests_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Day
+        requests_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Week
+        requests_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Requests Per Month
+        tokens_per_minute:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Minute
+        tokens_per_week:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Week
+        tokens_per_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Day
+        tokens_per_month:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tokens Per Month
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        is_default:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Default
+          default: false
+      type: object
+      required:
+      - name
+      title: CreateRateLimitProfileRequest
     UpdateRateLimitProfileRequest:
       properties:
         name:
@@ -241,153 +388,6 @@ components:
       - msg
       - type
       title: ValidationError
-    CreateRateLimitProfileRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        requests_per_minute:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Minute
-        requests_per_day:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Day
-        requests_per_week:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Week
-        requests_per_month:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Month
-        tokens_per_minute:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Minute
-        tokens_per_week:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Week
-        tokens_per_day:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Day
-        tokens_per_month:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Month
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        is_default:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Default
-          default: false
-      type: object
-      required:
-      - name
-      title: CreateRateLimitProfileRequest
-    RateLimitProfileResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        requests_per_minute:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Minute
-        requests_per_day:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Day
-        requests_per_week:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Week
-        requests_per_month:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Requests Per Month
-        tokens_per_minute:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Minute
-        tokens_per_week:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Week
-        tokens_per_day:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Day
-        tokens_per_month:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Tokens Per Month
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        is_default:
-          type: boolean
-          title: Is Default
-        created_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Created At
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Created By
-      type: object
-      required:
-      - id
-      - name
-      - is_default
-      title: RateLimitProfileResponse
   securitySchemes:
     HTTPBearer:
       type: http
