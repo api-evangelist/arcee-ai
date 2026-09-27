@@ -50,12 +50,12 @@ x-docs-platform-checked: 2026-09-19
 tags:
 - Company
 - Artificial Intelligence
-- Machine-Learning
+- Machine Learning
 - LLM
 - Small Language Models
 - Inference
 - MCP
-- Open-Source
+- Open Source
 - Developer Platform
 tags_raw:
 - Company
@@ -68,6 +68,8 @@ tags_raw:
 - Model Context Protocol
 - Open Source
 - Developer Platform
+- Machine-Learning
+- Open-Source
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

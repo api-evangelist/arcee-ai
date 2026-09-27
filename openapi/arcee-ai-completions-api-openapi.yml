@@ -218,6 +218,110 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    GenerateTitleResponse:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: Generated chat title
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+          description: Chat session ID that was updated
+      type: object
+      required:
+      - title
+      - chat_session_id
+      title: GenerateTitleResponse
+      description: Response with generated title.
+    ChatCompletionRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        messages:
+          items: {}
+          type: array
+          title: Messages
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - messages
+      title: ChatCompletionRequest
+      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
+
+        to litellm without validation so schema maintenance is not required.'
+    GenerateTitleRequest:
+      properties:
+        initial_message:
+          type: string
+          maxLength: 50000
+          title: Initial Message
+          description: Initial message to generate title from
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+          description: Chat session ID to update with generated title
+      type: object
+      required:
+      - initial_message
+      - chat_session_id
+      title: GenerateTitleRequest
+      description: Request to generate a chat title. The backend uses a pinned title-generation model.
+    ChatInput:
+      properties:
+        content:
+          type: string
+          maxLength: 50000
+          title: Content
+          description: Message content (max 50,000 characters)
+        session_id:
+          type: string
+          format: uuid
+          title: Session Id
+        data_group_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Data Group Id
+        system_prompt:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: System Prompt
+          description: System prompt (string or object)
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        tool:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool
+          description: Tool to use (e.g., 'search')
+        provider_preference:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Preference
+          description: Preferred provider name for model selection
+      type: object
+      required:
+      - content
+      - session_id
+      title: ChatInput
     HTTPValidationError:
       properties:
         detail:
@@ -323,110 +427,6 @@ components:
       - message
       title: CreateChatWithMessageRequest
       description: Model for creating chat and sending first message in one request.
-    GenerateTitleResponse:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: Generated chat title
-        chat_session_id:
-          type: string
-          format: uuid
-          title: Chat Session Id
-          description: Chat session ID that was updated
-      type: object
-      required:
-      - title
-      - chat_session_id
-      title: GenerateTitleResponse
-      description: Response with generated title.
-    ChatCompletionRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-        messages:
-          items: {}
-          type: array
-          title: Messages
-        stream:
-          type: boolean
-          title: Stream
-          default: false
-      additionalProperties: true
-      type: object
-      required:
-      - model
-      - messages
-      title: ChatCompletionRequest
-      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
-
-        to litellm without validation so schema maintenance is not required.'
-    ChatInput:
-      properties:
-        content:
-          type: string
-          maxLength: 50000
-          title: Content
-          description: Message content (max 50,000 characters)
-        session_id:
-          type: string
-          format: uuid
-          title: Session Id
-        data_group_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Data Group Id
-        system_prompt:
-          anyOf:
-          - type: string
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: System Prompt
-          description: System prompt (string or object)
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        tool:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Tool
-          description: Tool to use (e.g., 'search')
-        provider_preference:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Provider Preference
-          description: Preferred provider name for model selection
-      type: object
-      required:
-      - content
-      - session_id
-      title: ChatInput
-    GenerateTitleRequest:
-      properties:
-        initial_message:
-          type: string
-          maxLength: 50000
-          title: Initial Message
-          description: Initial message to generate title from
-        chat_session_id:
-          type: string
-          format: uuid
-          title: Chat Session Id
-          description: Chat session ID to update with generated title
-      type: object
-      required:
-      - initial_message
-      - chat_session_id
-      title: GenerateTitleRequest
-      description: Request to generate a chat title. The backend uses a pinned title-generation model.
     ValidationError:
       properties:
         loc:

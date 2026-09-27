@@ -872,6 +872,51 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    Body_add_members_app_v1_members_add_post:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+          title: Emails
+          description: List of email addresses to invite
+      type: object
+      required:
+      - emails
+      title: Body_add_members_app_v1_members_add_post
+    ChangeUserOrgRequest:
+      properties:
+        user_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Ids
+      type: object
+      required:
+      - user_ids
+      title: ChangeUserOrgRequest
+    UpdateOrgProfilesRequest:
+      properties:
+        rate_limit_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Rate Limit Profile Id
+        access_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Access Profile Id
+        no_retention:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: No Retention
+      type: object
+      title: UpdateOrgProfilesRequest
     OrganizationStatusUpdateRequest:
       properties:
         org_id:
@@ -885,18 +930,6 @@ components:
       - org_id
       - new_status
       title: OrganizationStatusUpdateRequest
-    Body_add_members_app_v1_members_add_post:
-      properties:
-        emails:
-          items:
-            type: string
-          type: array
-          title: Emails
-          description: List of email addresses to invite
-      type: object
-      required:
-      - emails
-      title: Body_add_members_app_v1_members_add_post
     ChangeOrganizationStatusRequest:
       properties:
         status:
@@ -906,6 +939,53 @@ components:
       required:
       - status
       title: ChangeOrganizationStatusRequest
+    SwitchUserCurrentOrgRequest:
+      properties:
+        organization_id:
+          type: string
+          title: Organization Id
+      type: object
+      required:
+      - organization_id
+      title: SwitchUserCurrentOrgRequest
+    Body_update_user_role_app_v1_users__user_id__role_patch:
+      properties:
+        role:
+          type: string
+          title: Role
+          description: New role (user, admin)
+      type: object
+      required:
+      - role
+      title: Body_update_user_role_app_v1_users__user_id__role_patch
+    Body_create_organization_app_v1_orgs_post:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: Logo
+        members:
+          type: string
+          title: Members
+          default: '[]'
+        importSettings:
+          type: string
+          title: Importsettings
+          default: 'null'
+      type: object
+      required:
+      - name
+      title: Body_create_organization_app_v1_orgs_post
     HTTPValidationError:
       properties:
         detail:
@@ -915,6 +995,37 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    UpdateOrgRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logo
+        limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Limits
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+      type: object
+      title: UpdateOrgRequest
     Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
       properties:
         status:
@@ -925,6 +1036,27 @@ components:
       required:
       - status
       title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Body_update_user_status_app_v1_users__user_id__status_patch:
       properties:
         status:
@@ -971,138 +1103,6 @@ components:
       - has_next
       - has_prev
       title: PaginatedOrgProfilesResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    UpdateOrgRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logo
-        limits:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Limits
-        organization_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Organization Id
-      type: object
-      title: UpdateOrgRequest
-    Body_update_user_role_app_v1_users__user_id__role_patch:
-      properties:
-        role:
-          type: string
-          title: Role
-          description: New role (user, admin)
-      type: object
-      required:
-      - role
-      title: Body_update_user_role_app_v1_users__user_id__role_patch
-    SwitchUserCurrentOrgRequest:
-      properties:
-        organization_id:
-          type: string
-          title: Organization Id
-      type: object
-      required:
-      - organization_id
-      title: SwitchUserCurrentOrgRequest
-    ChangeUserOrgRequest:
-      properties:
-        user_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: User Ids
-      type: object
-      required:
-      - user_ids
-      title: ChangeUserOrgRequest
-    Body_create_organization_app_v1_orgs_post:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-            format: binary
-          - type: 'null'
-          title: Logo
-        members:
-          type: string
-          title: Members
-          default: '[]'
-        importSettings:
-          type: string
-          title: Importsettings
-          default: 'null'
-      type: object
-      required:
-      - name
-      title: Body_create_organization_app_v1_orgs_post
-    UpdateOrgProfilesRequest:
-      properties:
-        rate_limit_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Rate Limit Profile Id
-        access_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Access Profile Id
-        no_retention:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: No Retention
-      type: object
-      title: UpdateOrgProfilesRequest
   securitySchemes:
     HTTPBearer:
       type: http

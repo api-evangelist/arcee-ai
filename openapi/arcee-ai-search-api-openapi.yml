@@ -35,20 +35,15 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    SearchRequest:
+    HTTPValidationError:
       properties:
-        query:
-          type: string
-          title: Query
-        recency_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Recency Days
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - query
-      title: SearchRequest
+      title: HTTPValidationError
     AISearchResponse:
       properties:
         query:
@@ -72,15 +67,20 @@ components:
       - sources
       - search_time
       title: AISearchResponse
-    HTTPValidationError:
+    SearchRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        query:
+          type: string
+          title: Query
+        recency_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Recency Days
       type: object
-      title: HTTPValidationError
+      required:
+      - query
+      title: SearchRequest
     ValidationError:
       properties:
         loc:

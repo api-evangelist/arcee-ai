@@ -207,149 +207,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PricingModel:
-      properties:
-        input:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Input
-        cached_input:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Cached Input
-        output:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Output
-      type: object
-      title: PricingModel
-      description: Pricing information for a model.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ModelCreateRequest:
-      properties:
-        id:
-          type: string
-          title: Id
-        display_name:
-          type: string
-          title: Display Name
-        organization:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Organization
-          default: Arcee AI
-        type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Type
-        context_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Context Length
-        status:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Status
-          default: true
-        is_public:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Public
-          default: false
-        is_active:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Active
-          default: true
-        is_app_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is App Enabled
-          default: false
-        is_api_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Api Enabled
-          default: false
-        hugging_face_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hugging Face Url
-        pricing:
-          anyOf:
-          - $ref: '#/components/schemas/PricingModel'
-          - type: 'null'
-          default: {}
-        model_provider_id:
-          type: string
-          format: uuid
-          title: Model Provider Id
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        temperature:
-          anyOf:
-          - type: number
-            maximum: 2.0
-            minimum: 0.0
-          - type: 'null'
-          title: Temperature
-        top_p:
-          anyOf:
-          - type: number
-            maximum: 1.0
-            minimum: 0.0
-          - type: 'null'
-          title: Top P
-        top_k:
-          anyOf:
-          - type: integer
-            minimum: 1.0
-          - type: 'null'
-          title: Top K
-        min_p:
-          anyOf:
-          - type: number
-            maximum: 1.0
-            minimum: 0.0
-          - type: 'null'
-          title: Min P
-        routing_weight:
-          anyOf:
-          - type: integer
-            minimum: 1.0
-          - type: 'null'
-          title: Routing Weight
-      type: object
-      required:
-      - id
-      - display_name
-      - model_provider_id
-      title: ModelCreateRequest
-      description: Request model for creating an Arcee AI model.
     ModelResponse:
       properties:
         id:
@@ -519,6 +376,157 @@ components:
       - created_at
       title: ModelResponse
       description: Response model for Arcee AI model data.
+    SyncResponse:
+      properties:
+        synced:
+          type: integer
+          title: Synced
+          description: Number of new models synced
+        updated:
+          type: integer
+          title: Updated
+          description: Number of existing models updated
+        deactivated:
+          type: integer
+          title: Deactivated
+          description: Number of models deactivated (not found in Together AI)
+        available_models:
+          items:
+            type: string
+          type: array
+          title: Available Models
+          description: List of available model IDs after sync
+      type: object
+      required:
+      - synced
+      - updated
+      - deactivated
+      - available_models
+      title: SyncResponse
+      description: Response model for sync operation.
+    ModelCreateRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+          default: Arcee AI
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        context_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Context Length
+        status:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Status
+          default: true
+        is_public:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Public
+          default: false
+        is_active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Active
+          default: true
+        is_app_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is App Enabled
+          default: false
+        is_api_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Api Enabled
+          default: false
+        hugging_face_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Url
+        pricing:
+          anyOf:
+          - $ref: '#/components/schemas/PricingModel'
+          - type: 'null'
+          default: {}
+        model_provider_id:
+          type: string
+          format: uuid
+          title: Model Provider Id
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: 0.0
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Top K
+        min_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Min P
+        routing_weight:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Routing Weight
+      type: object
+      required:
+      - id
+      - display_name
+      - model_provider_id
+      title: ModelCreateRequest
+      description: Request model for creating an Arcee AI model.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ModelUpdateRequest:
       properties:
         display_name:
@@ -675,34 +683,6 @@ components:
       type: object
       title: ModelUpdateRequest
       description: Request model for updating an Arcee AI model.
-    SyncResponse:
-      properties:
-        synced:
-          type: integer
-          title: Synced
-          description: Number of new models synced
-        updated:
-          type: integer
-          title: Updated
-          description: Number of existing models updated
-        deactivated:
-          type: integer
-          title: Deactivated
-          description: Number of models deactivated (not found in Together AI)
-        available_models:
-          items:
-            type: string
-          type: array
-          title: Available Models
-          description: List of available model IDs after sync
-      type: object
-      required:
-      - synced
-      - updated
-      - deactivated
-      - available_models
-      title: SyncResponse
-      description: Response model for sync operation.
     ValidationError:
       properties:
         loc:
@@ -724,6 +704,26 @@ components:
       - msg
       - type
       title: ValidationError
+    PricingModel:
+      properties:
+        input:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Input
+        cached_input:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cached Input
+        output:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Output
+      type: object
+      title: PricingModel
+      description: Pricing information for a model.
   securitySchemes:
     HTTPBearer:
       type: http

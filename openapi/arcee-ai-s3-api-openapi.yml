@@ -274,15 +274,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Body_upload_chat_files_app_v1_chat_files__chat_id__post:
       properties:
         files:
@@ -295,16 +286,6 @@ components:
       required:
       - files
       title: Body_upload_chat_files_app_v1_chat_files__chat_id__post
-    Body_upload_avatar_app_v1_s3_avatar_upload_post:
-      properties:
-        file:
-          type: string
-          format: binary
-          title: File
-      type: object
-      required:
-      - file
-      title: Body_upload_avatar_app_v1_s3_avatar_upload_post
     Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post:
       properties:
         file:
@@ -315,6 +296,16 @@ components:
       required:
       - file
       title: Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post
+    Body_upload_avatar_app_v1_s3_avatar_upload_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_avatar_app_v1_s3_avatar_upload_post
     Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post:
       properties:
         file:
@@ -325,6 +316,15 @@ components:
       required:
       - file
       title: Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

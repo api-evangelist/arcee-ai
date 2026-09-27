@@ -117,6 +117,15 @@ components:
       - rate_limit_profile_id
       - rate_limit_profile_name
       title: PartnerResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PartnerDetailResponse:
       properties:
         id:
@@ -177,15 +186,6 @@ components:
       - type
       - partner_org
       title: PartnerDetailResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PaginatedPartnersResponse:
       properties:
         entries:

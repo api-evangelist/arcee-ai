@@ -1518,15 +1518,260 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    TopApiKeyItem:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        label_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label Key
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        total_calls:
+          type: integer
+          title: Total Calls
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
       type: object
-      title: HTTPValidationError
+      required:
+      - api_key_id
+      - api_key_name
+      - total_calls
+      - total_tokens
+      - cached_tokens
+      title: TopApiKeyItem
+      description: Top API key by usage.
+    ApiKeyActivationForDateItem:
+      properties:
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        created_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created Date
+        first_usage_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Usage Date
+        activated:
+          type: boolean
+          title: Activated
+      type: object
+      required:
+      - api_key_id
+      - api_key_name
+      - activated
+      title: ApiKeyActivationForDateItem
+      description: API key creation and activation detail for a specific date/period.
+    ApiKeyForDateItem:
+      properties:
+        api_key_id:
+          type: string
+          title: Api Key Id
+        api_key_name:
+          type: string
+          title: Api Key Name
+        label_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label Key
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
+        calls:
+          type: integer
+          title: Calls
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Credits
+      type: object
+      required:
+      - api_key_id
+      - api_key_name
+      - calls
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      title: ApiKeyForDateItem
+      description: Detailed API key data for a specific date.
+    OverviewResponse:
+      properties:
+        summary:
+          $ref: '#/components/schemas/UsageSummary'
+        revenue_summary:
+          $ref: '#/components/schemas/RevenueSummary'
+        top_users:
+          items:
+            $ref: '#/components/schemas/TopUserItem'
+          type: array
+          title: Top Users
+        top_api_keys:
+          items:
+            $ref: '#/components/schemas/TopApiKeyItem'
+          type: array
+          title: Top Api Keys
+      type: object
+      required:
+      - summary
+      - revenue_summary
+      - top_users
+      - top_api_keys
+      title: OverviewResponse
+      description: Combined platform overview metrics.
+    RevenueTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        total_credits:
+          type: number
+          title: Total Credits
+        app_credits:
+          type: number
+          title: App Credits
+        api_credits:
+          type: number
+          title: Api Credits
+        total_calls:
+          type: integer
+          title: Total Calls
+      type: object
+      required:
+      - date
+      - total_credits
+      - app_credits
+      - api_credits
+      - total_calls
+      title: RevenueTimelineItem
+      description: Single data point in revenue timeline.
+    UserActivationForDateItem:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        signup_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Date
+        first_chat_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Chat Date
+        activated:
+          type: boolean
+          title: Activated
+      type: object
+      required:
+      - user_id
+      - activated
+      title: UserActivationForDateItem
+      description: User signup and activation detail for a specific date/period.
+    DevModeSummary:
+      properties:
+        total_requests:
+          type: integer
+          title: Total Requests
+        active_users:
+          type: integer
+          title: Active Users
+        total_sessions:
+          type: integer
+          title: Total Sessions
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        cached_input_tokens:
+          type: integer
+          title: Cached Input Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_credits:
+          type: number
+          title: Total Credits
+        success_rate:
+          type: number
+          title: Success Rate
+      type: object
+      required:
+      - total_requests
+      - active_users
+      - total_sessions
+      - input_tokens
+      - output_tokens
+      - cached_input_tokens
+      - total_tokens
+      - total_credits
+      - success_rate
+      title: DevModeSummary
+      description: Aggregated Dev Mode usage summary statistics.
     ApiKeyModelUsageItem:
       properties:
         api_key_id:
@@ -1577,28 +1822,97 @@ components:
       - cached_tokens
       title: ApiKeyModelUsageItem
       description: Usage for a single (api_key, model) pair.
-    ApiKeyActivationRate:
+    DevModeModelUsage:
       properties:
-        total_keys:
+        model:
+          type: string
+          title: Model
+        requests:
           type: integer
-          title: Total Keys
-        keys_with_usage:
+          title: Requests
+        input_tokens:
           type: integer
-          title: Keys With Usage
-        keys_unused:
+          title: Input Tokens
+        output_tokens:
           type: integer
-          title: Keys Unused
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        credits:
+          type: number
+          title: Credits
+      type: object
+      required:
+      - model
+      - requests
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - credits
+      title: DevModeModelUsage
+      description: Dev Mode usage breakdown by model.
+    ApiTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        total_calls:
+          type: integer
+          title: Total Calls
+        unique_keys:
+          type: integer
+          title: Unique Keys
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
+      type: object
+      required:
+      - date
+      - total_calls
+      - unique_keys
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_tokens
+      title: ApiTimelineItem
+      description: Single data point in API usage timeline.
+    ChatUserActivationRate:
+      properties:
+        total_users:
+          type: integer
+          title: Total Users
+        users_with_chat:
+          type: integer
+          title: Users With Chat
+        users_no_chat:
+          type: integer
+          title: Users No Chat
         activation_rate:
           type: number
           title: Activation Rate
       type: object
       required:
-      - total_keys
-      - keys_with_usage
-      - keys_unused
+      - total_users
+      - users_with_chat
+      - users_no_chat
       - activation_rate
-      title: ApiKeyActivationRate
-      description: API key activation rate stats.
+      title: ChatUserActivationRate
+      description: Chat user activation rate stats.
     UsageTimelineItem:
       properties:
         date:
@@ -1650,135 +1964,23 @@ components:
       - unique_api_keys
       title: UsageTimelineItem
       description: Single data point in usage timeline.
-    OverviewResponse:
+    AppTimelineItem:
       properties:
-        summary:
-          $ref: '#/components/schemas/UsageSummary'
-        revenue_summary:
-          $ref: '#/components/schemas/RevenueSummary'
-        top_users:
-          items:
-            $ref: '#/components/schemas/TopUserItem'
-          type: array
-          title: Top Users
-        top_api_keys:
-          items:
-            $ref: '#/components/schemas/TopApiKeyItem'
-          type: array
-          title: Top Api Keys
-      type: object
-      required:
-      - summary
-      - revenue_summary
-      - top_users
-      - top_api_keys
-      title: OverviewResponse
-      description: Combined platform overview metrics.
-    Granularity:
-      type: string
-      enum:
-      - hour
-      - day
-      - week
-      - month
-      - year
-      title: Granularity
-      description: Time granularity options for analytics queries.
-    DevModeSummary:
-      properties:
-        total_requests:
-          type: integer
-          title: Total Requests
-        active_users:
-          type: integer
-          title: Active Users
-        total_sessions:
-          type: integer
-          title: Total Sessions
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        cached_input_tokens:
-          type: integer
-          title: Cached Input Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        total_credits:
-          type: number
-          title: Total Credits
-        success_rate:
-          type: number
-          title: Success Rate
-      type: object
-      required:
-      - total_requests
-      - active_users
-      - total_sessions
-      - input_tokens
-      - output_tokens
-      - cached_input_tokens
-      - total_tokens
-      - total_credits
-      - success_rate
-      title: DevModeSummary
-      description: Aggregated Dev Mode usage summary statistics.
-    DevModeModelUsage:
-      properties:
-        model:
+        date:
           type: string
-          title: Model
-        requests:
-          type: integer
-          title: Requests
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        credits:
-          type: number
-          title: Credits
-      type: object
-      required:
-      - model
-      - requests
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      - credits
-      title: DevModeModelUsage
-      description: Dev Mode usage breakdown by model.
-    TopUserItem:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
+          title: Date
         total_calls:
           type: integer
           title: Total Calls
+        unique_users:
+          type: integer
+          title: Unique Users
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
         total_tokens:
           type: integer
           title: Total Tokens
@@ -1792,46 +1994,33 @@ components:
           title: Total Credits
       type: object
       required:
-      - user_id
-      - total_calls
-      - total_tokens
-      - cached_tokens
-      title: TopUserItem
-      description: Top user by usage.
-    DevModeTimelineItem:
-      properties:
-        date:
-          type: string
-          title: Date
-        requests:
-          type: integer
-          title: Requests
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        cached_input_tokens:
-          type: integer
-          title: Cached Input Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        credits:
-          type: number
-          title: Credits
-      type: object
-      required:
       - date
-      - requests
+      - total_calls
+      - unique_users
       - input_tokens
       - output_tokens
-      - cached_input_tokens
       - total_tokens
-      - credits
-      title: DevModeTimelineItem
-      description: Single data point in Dev Mode usage timeline.
+      - cached_tokens
+      title: AppTimelineItem
+      description: Single data point in app usage timeline.
+    ChatUserActivationTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        new_users:
+          type: integer
+          title: New Users
+        activated_users:
+          type: integer
+          title: Activated Users
+      type: object
+      required:
+      - period
+      - new_users
+      - activated_users
+      title: ChatUserActivationTimelineItem
+      description: Single data point in chat user activation timeline.
     NewUsersTimelineItem:
       properties:
         period:
@@ -1846,262 +2035,6 @@ components:
       - new_users
       title: NewUsersTimelineItem
       description: Single data point in new users timeline.
-    ApiKeyForDateItem:
-      properties:
-        api_key_id:
-          type: string
-          title: Api Key Id
-        api_key_name:
-          type: string
-          title: Api Key Name
-        label_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label Key
-        owner_email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Owner Email
-        calls:
-          type: integer
-          title: Calls
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        cached_tokens:
-          type: integer
-          title: Cached Tokens
-        credits:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Credits
-      type: object
-      required:
-      - api_key_id
-      - api_key_name
-      - calls
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      - cached_tokens
-      title: ApiKeyForDateItem
-      description: Detailed API key data for a specific date.
-    NewApiKeysTimelineItem:
-      properties:
-        period:
-          type: string
-          title: Period
-        new_keys:
-          type: integer
-          title: New Keys
-      type: object
-      required:
-      - period
-      - new_keys
-      title: NewApiKeysTimelineItem
-      description: Single data point in new API keys timeline.
-    ModelUsageItem:
-      properties:
-        model:
-          type: string
-          title: Model
-        model_provider:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Provider
-        total_calls:
-          type: integer
-          title: Total Calls
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        cached_tokens:
-          type: integer
-          title: Cached Tokens
-        total_credits:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Total Credits
-      type: object
-      required:
-      - model
-      - total_calls
-      - total_tokens
-      - cached_tokens
-      title: ModelUsageItem
-      description: Usage breakdown by model.
-    ApiKeyActivationForDateItem:
-      properties:
-        api_key_id:
-          type: string
-          title: Api Key Id
-        api_key_name:
-          type: string
-          title: Api Key Name
-        owner_email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Owner Email
-        created_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Created Date
-        first_usage_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Usage Date
-        activated:
-          type: boolean
-          title: Activated
-      type: object
-      required:
-      - api_key_id
-      - api_key_name
-      - activated
-      title: ApiKeyActivationForDateItem
-      description: API key creation and activation detail for a specific date/period.
-    ApiTimelineItem:
-      properties:
-        date:
-          type: string
-          title: Date
-        total_calls:
-          type: integer
-          title: Total Calls
-        unique_keys:
-          type: integer
-          title: Unique Keys
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        cached_tokens:
-          type: integer
-          title: Cached Tokens
-        total_credits:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Total Credits
-      type: object
-      required:
-      - date
-      - total_calls
-      - unique_keys
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      - cached_tokens
-      title: ApiTimelineItem
-      description: Single data point in API usage timeline.
-    DevModeUserForDateItem:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        requests:
-          type: integer
-          title: Requests
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        cached_input_tokens:
-          type: integer
-          title: Cached Input Tokens
-        credits:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Credits
-      type: object
-      required:
-      - user_id
-      - requests
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      - cached_input_tokens
-      title: DevModeUserForDateItem
-      description: Detailed Dev Mode user data for a specific date or range (drill-down).
-    UserActivationForDateItem:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        signup_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Signup Date
-        first_chat_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Chat Date
-        activated:
-          type: boolean
-          title: Activated
-      type: object
-      required:
-      - user_id
-      - activated
-      title: UserActivationForDateItem
-      description: User signup and activation detail for a specific date/period.
     AppUserForDateItem:
       properties:
         user_id:
@@ -2152,23 +2085,19 @@ components:
       - cached_tokens
       title: AppUserForDateItem
       description: Detailed app user data for a specific date.
-    AppTimelineItem:
+    ModelUsageItem:
       properties:
-        date:
+        model:
           type: string
-          title: Date
+          title: Model
+        model_provider:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Provider
         total_calls:
           type: integer
           title: Total Calls
-        unique_users:
-          type: integer
-          title: Unique Users
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
         total_tokens:
           type: integer
           title: Total Tokens
@@ -2182,67 +2111,52 @@ components:
           title: Total Credits
       type: object
       required:
-      - date
+      - model
       - total_calls
-      - unique_users
-      - input_tokens
-      - output_tokens
       - total_tokens
       - cached_tokens
-      title: AppTimelineItem
-      description: Single data point in app usage timeline.
-    DAUTimelineItem:
+      title: ModelUsageItem
+      description: Usage breakdown by model.
+    ApiKeyActivationRate:
       properties:
-        period:
-          type: string
-          title: Period
-        active_count:
+        total_keys:
           type: integer
-          title: Active Count
-        total_calls:
+          title: Total Keys
+        keys_with_usage:
           type: integer
-          title: Total Calls
-        total_tokens:
+          title: Keys With Usage
+        keys_unused:
           type: integer
-          title: Total Tokens
-        total_credits:
+          title: Keys Unused
+        activation_rate:
           type: number
-          title: Total Credits
+          title: Activation Rate
       type: object
       required:
-      - period
-      - active_count
-      - total_calls
-      - total_tokens
-      - total_credits
-      title: DAUTimelineItem
-      description: Single data point in daily active users timeline.
-    RevenueTimelineItem:
+      - total_keys
+      - keys_with_usage
+      - keys_unused
+      - activation_rate
+      title: ApiKeyActivationRate
+      description: API key activation rate stats.
+    UserTypeBreakdown:
       properties:
-        date:
-          type: string
-          title: Date
-        total_credits:
-          type: number
-          title: Total Credits
-        app_credits:
-          type: number
-          title: App Credits
-        api_credits:
-          type: number
-          title: Api Credits
-        total_calls:
+        platform_only:
           type: integer
-          title: Total Calls
+          title: Platform Only
+        api_only:
+          type: integer
+          title: Api Only
+        both:
+          type: integer
+          title: Both
       type: object
       required:
-      - date
-      - total_credits
-      - app_credits
-      - api_credits
-      - total_calls
-      title: RevenueTimelineItem
-      description: Single data point in revenue timeline.
+      - platform_only
+      - api_only
+      - both
+      title: UserTypeBreakdown
+      description: Breakdown of users by access type.
     UsageSummary:
       properties:
         total_calls:
@@ -2294,6 +2208,38 @@ components:
       - unique_api_keys
       title: UsageSummary
       description: Aggregated usage summary statistics.
+    RetentionCohortItem:
+      properties:
+        cohort_period:
+          type: string
+          title: Cohort Period
+        cohort_size:
+          type: integer
+          title: Cohort Size
+        returned_count:
+          type: integer
+          title: Returned Count
+        retention_rate:
+          type: number
+          title: Retention Rate
+      type: object
+      required:
+      - cohort_period
+      - cohort_size
+      - returned_count
+      - retention_rate
+      title: RetentionCohortItem
+      description: Cohort retention data.
+    Granularity:
+      type: string
+      enum:
+      - hour
+      - day
+      - week
+      - month
+      - year
+      title: Granularity
+      description: Time granularity options for analytics queries.
     ApiKeyActivationTimelineItem:
       properties:
         period:
@@ -2312,6 +2258,75 @@ components:
       - activated_keys
       title: ApiKeyActivationTimelineItem
       description: Single data point in API key activation timeline.
+    DevModeTimelineItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        requests:
+          type: integer
+          title: Requests
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        cached_input_tokens:
+          type: integer
+          title: Cached Input Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        credits:
+          type: number
+          title: Credits
+      type: object
+      required:
+      - date
+      - requests
+      - input_tokens
+      - output_tokens
+      - cached_input_tokens
+      - total_tokens
+      - credits
+      title: DevModeTimelineItem
+      description: Single data point in Dev Mode usage timeline.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    NewApiKeysTimelineItem:
+      properties:
+        period:
+          type: string
+          title: Period
+        new_keys:
+          type: integer
+          title: New Keys
+      type: object
+      required:
+      - period
+      - new_keys
+      title: NewApiKeysTimelineItem
+      description: Single data point in new API keys timeline.
     RevenueSummary:
       properties:
         total_credits:
@@ -2346,68 +2361,57 @@ components:
       - average_credits_per_api_key
       title: RevenueSummary
       description: Aggregated revenue summary statistics.
-    UserTypeBreakdown:
+    TopUserItem:
       properties:
-        platform_only:
-          type: integer
-          title: Platform Only
-        api_only:
-          type: integer
-          title: Api Only
-        both:
-          type: integer
-          title: Both
-      type: object
-      required:
-      - platform_only
-      - api_only
-      - both
-      title: UserTypeBreakdown
-      description: Breakdown of users by access type.
-    ChatUserActivationRate:
-      properties:
-        total_users:
-          type: integer
-          title: Total Users
-        users_with_chat:
-          type: integer
-          title: Users With Chat
-        users_no_chat:
-          type: integer
-          title: Users No Chat
-        activation_rate:
-          type: number
-          title: Activation Rate
-      type: object
-      required:
-      - total_users
-      - users_with_chat
-      - users_no_chat
-      - activation_rate
-      title: ChatUserActivationRate
-      description: Chat user activation rate stats.
-    RetentionCohortItem:
-      properties:
-        cohort_period:
+        user_id:
           type: string
-          title: Cohort Period
-        cohort_size:
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        total_calls:
           type: integer
-          title: Cohort Size
-        returned_count:
+          title: Total Calls
+        total_tokens:
           type: integer
-          title: Returned Count
-        retention_rate:
-          type: number
-          title: Retention Rate
+          title: Total Tokens
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+        total_credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Credits
       type: object
       required:
-      - cohort_period
-      - cohort_size
-      - returned_count
-      - retention_rate
-      title: RetentionCohortItem
-      description: Cohort retention data.
+      - user_id
+      - total_calls
+      - total_tokens
+      - cached_tokens
+      title: TopUserItem
+      description: Top user by usage.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DevModeTopUser:
       properties:
         user_org_profile_id:
@@ -2435,86 +2439,82 @@ components:
       - credits
       title: DevModeTopUser
       description: Top Dev Mode user by chosen usage metric.
-    TopApiKeyItem:
+    DAUTimelineItem:
       properties:
-        api_key_id:
+        period:
           type: string
-          title: Api Key Id
-        api_key_name:
-          type: string
-          title: Api Key Name
-        label_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label Key
-        owner_email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Owner Email
+          title: Period
+        active_count:
+          type: integer
+          title: Active Count
         total_calls:
           type: integer
           title: Total Calls
         total_tokens:
           type: integer
           title: Total Tokens
-        cached_tokens:
-          type: integer
-          title: Cached Tokens
         total_credits:
-          anyOf:
-          - type: number
-          - type: 'null'
+          type: number
           title: Total Credits
       type: object
       required:
-      - api_key_id
-      - api_key_name
+      - period
+      - active_count
       - total_calls
       - total_tokens
-      - cached_tokens
-      title: TopApiKeyItem
-      description: Top API key by usage.
-    ChatUserActivationTimelineItem:
+      - total_credits
+      title: DAUTimelineItem
+      description: Single data point in daily active users timeline.
+    DevModeUserForDateItem:
       properties:
-        period:
+        user_id:
           type: string
-          title: Period
-        new_users:
+          title: User Id
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        requests:
           type: integer
-          title: New Users
-        activated_users:
+          title: Requests
+        input_tokens:
           type: integer
-          title: Activated Users
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        cached_input_tokens:
+          type: integer
+          title: Cached Input Tokens
+        credits:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Credits
       type: object
       required:
-      - period
-      - new_users
-      - activated_users
-      title: ChatUserActivationTimelineItem
-      description: Single data point in chat user activation timeline.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - user_id
+      - requests
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - cached_input_tokens
+      title: DevModeUserForDateItem
+      description: Detailed Dev Mode user data for a specific date or range (drill-down).
   securitySchemes:
     HTTPBearer:
       type: http

@@ -71,6 +71,17 @@ paths:
                 detail: An internal server error occurred while processing the request
 components:
   schemas:
+    ModelsListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/APIModelResponse'
+          type: array
+          title: Data
+      type: object
+      required:
+      - data
+      title: ModelsListResponse
     PricingResponse:
       properties:
         prompt:
@@ -105,17 +116,6 @@ components:
       required:
       - country_code
       title: DatacenterResponse
-    ModelsListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/APIModelResponse'
-          type: array
-          title: Data
-      type: object
-      required:
-      - data
-      title: ModelsListResponse
     APIModelResponse:
       properties:
         id:

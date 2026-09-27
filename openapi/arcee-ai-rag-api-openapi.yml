@@ -317,15 +317,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     CreateDataGroupRequest:
       properties:
         name:
@@ -344,6 +335,18 @@ components:
       required:
       - name
       title: CreateDataGroupRequest
+    Body_upload_files_app_v1_files__data_group_id__post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+      type: object
+      required:
+      - files
+      title: Body_upload_files_app_v1_files__data_group_id__post
     AddUsersToGroupRequest:
       properties:
         user_org_profile_ids:
@@ -361,18 +364,15 @@ components:
       - user_org_profile_ids
       - data_group_id
       title: AddUsersToGroupRequest
-    Body_upload_files_app_v1_files__data_group_id__post:
+    HTTPValidationError:
       properties:
-        files:
+        detail:
           items:
-            type: string
-            format: binary
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Files
+          title: Detail
       type: object
-      required:
-      - files
-      title: Body_upload_files_app_v1_files__data_group_id__post
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

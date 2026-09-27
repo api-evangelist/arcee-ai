@@ -330,15 +330,24 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    BalanceVisibilityRequest:
+    LanguageUpdateRequest:
       properties:
-        show_balance_in_sidebar:
-          type: boolean
-          title: Show Balance In Sidebar
+        language:
+          type: string
+          title: Language
       type: object
       required:
-      - show_balance_in_sidebar
-      title: BalanceVisibilityRequest
+      - language
+      title: LanguageUpdateRequest
+    GitHubEmailMismatchBannerHomeRequest:
+      properties:
+        show_mismatch_banner_home:
+          type: boolean
+          title: Show Mismatch Banner Home
+      type: object
+      required:
+      - show_mismatch_banner_home
+      title: GitHubEmailMismatchBannerHomeRequest
     AppRole:
       type: string
       enum:
@@ -350,28 +359,15 @@ components:
       - ext_partner
       title: AppRole
       description: Roles for role-based access control.
-    HTTPValidationError:
+    BalanceVisibilityRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UserRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          type: string
-          title: New Role
+        show_balance_in_sidebar:
+          type: boolean
+          title: Show Balance In Sidebar
       type: object
       required:
-      - user_id
-      - new_role
-      title: UserRoleUpdateRequest
+      - show_balance_in_sidebar
+      title: BalanceVisibilityRequest
     AppRoleEntry:
       properties:
         id:
@@ -400,66 +396,6 @@ components:
       - last_name
       - app_role
       title: AppRoleEntry
-    UserAppRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          $ref: '#/components/schemas/AppRole'
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserAppRoleUpdateRequest
-    GitHubEmailMismatchBannerHomeRequest:
-      properties:
-        show_mismatch_banner_home:
-          type: boolean
-          title: Show Mismatch Banner Home
-      type: object
-      required:
-      - show_mismatch_banner_home
-      title: GitHubEmailMismatchBannerHomeRequest
-    LanguageUpdateRequest:
-      properties:
-        language:
-          type: string
-          title: Language
-      type: object
-      required:
-      - language
-      title: LanguageUpdateRequest
-    UserUpdateRequest:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        preferences:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Preferences
-        password:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Password
-      type: object
-      required:
-      - first_name
-      - last_name
-      - preferences
-      - password
-      title: UserUpdateRequest
     PaginatedAppRoleResponse:
       properties:
         entries:
@@ -495,6 +431,70 @@ components:
       - has_next
       - has_prev
       title: PaginatedAppRoleResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserAppRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          $ref: '#/components/schemas/AppRole'
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserAppRoleUpdateRequest
+    UserRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          type: string
+          title: New Role
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserRoleUpdateRequest
+    UserUpdateRequest:
+      properties:
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        preferences:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Preferences
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+      type: object
+      required:
+      - first_name
+      - last_name
+      - preferences
+      - password
+      title: UserUpdateRequest
     ThemeUpdateRequest:
       properties:
         theme:

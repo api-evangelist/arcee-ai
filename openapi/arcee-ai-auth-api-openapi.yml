@@ -578,89 +578,58 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    GoogleOAuthRequest:
+    ValidationError:
       properties:
-        token:
-          type: string
-          title: Token
-        preferences:
-          additionalProperties: true
-          type: object
-          title: Preferences
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
-      type: object
-      required:
-      - token
-      title: GoogleOAuthRequest
-    HTTPValidationError:
-      properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PasswordResetRequestModel:
-      properties:
-        userId:
+          title: Location
+        msg:
           type: string
-          title: Userid
-        password:
+          title: Message
+        type:
           type: string
-          title: Password
-        reset_token:
-          type: string
-          title: Reset Token
+          title: Error Type
       type: object
       required:
-      - userId
-      - password
-      - reset_token
-      title: PasswordResetRequestModel
-    GitHubOAuthRequest:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ResendVerificationRequest:
       properties:
-        code:
+        email:
           type: string
-          title: Code
-        redirect_uri:
-          type: string
-          title: Redirect Uri
-        invite_token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Invite Token
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
+          title: Email
       type: object
       required:
-      - code
-      - redirect_uri
-      title: GitHubOAuthRequest
-    HeartbeatRequest:
+      - email
+      title: ResendVerificationRequest
+    EmailChangeRequest:
       properties:
-        route:
+        new_email:
           type: string
-          title: Route
+          title: New Email
       type: object
       required:
-      - route
-      title: HeartbeatRequest
-    UserPermissionsResponse:
+      - new_email
+      title: EmailChangeRequest
+    InviteRequest:
       properties:
-        can_use_provider_switching:
-          type: boolean
-          title: Can Use Provider Switching
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
       type: object
       required:
-      - can_use_provider_switching
-      title: UserPermissionsResponse
+      - email
+      - role
+      title: InviteRequest
     PasswordChangeRequestModel:
       properties:
         password:
@@ -674,55 +643,15 @@ components:
       - password
       - old_password
       title: PasswordChangeRequestModel
-    EmailChangeRequest:
+    UserPermissionsResponse:
       properties:
-        new_email:
-          type: string
-          title: New Email
+        can_use_provider_switching:
+          type: boolean
+          title: Can Use Provider Switching
       type: object
       required:
-      - new_email
-      title: EmailChangeRequest
-    UpdateInvitedUserRequest:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        first_name:
-          type: string
-          title: First Name
-        last_name:
-          type: string
-          title: Last Name
-        new_password:
-          type: string
-          title: New Password
-      type: object
-      required:
-      - user_id
-      - first_name
-      - last_name
-      - new_password
-      title: UpdateInvitedUserRequest
-    ResendVerificationRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: ResendVerificationRequest
-    PasswordResetEmailRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: PasswordResetEmailRequest
+      - can_use_provider_switching
+      title: UserPermissionsResponse
     LoginRequest:
       properties:
         email:
@@ -740,19 +669,6 @@ components:
       - email
       - password
       title: LoginRequest
-    InviteRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        role:
-          type: string
-          title: Role
-      type: object
-      required:
-      - email
-      - role
-      title: InviteRequest
     SignupRequest:
       properties:
         first_name:
@@ -781,27 +697,111 @@ components:
       - email
       - password
       title: SignupRequest
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PasswordResetEmailRequest:
+      properties:
+        email:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Email
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - email
+      title: PasswordResetEmailRequest
+    HeartbeatRequest:
+      properties:
+        route:
+          type: string
+          title: Route
+      type: object
+      required:
+      - route
+      title: HeartbeatRequest
+    GitHubOAuthRequest:
+      properties:
+        code:
+          type: string
+          title: Code
+        redirect_uri:
+          type: string
+          title: Redirect Uri
+        invite_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Invite Token
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - code
+      - redirect_uri
+      title: GitHubOAuthRequest
+    PasswordResetRequestModel:
+      properties:
+        userId:
+          type: string
+          title: Userid
+        password:
+          type: string
+          title: Password
+        reset_token:
+          type: string
+          title: Reset Token
+      type: object
+      required:
+      - userId
+      - password
+      - reset_token
+      title: PasswordResetRequestModel
+    GoogleOAuthRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - token
+      title: GoogleOAuthRequest
+    UpdateInvitedUserRequest:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        new_password:
+          type: string
+          title: New Password
+      type: object
+      required:
+      - user_id
+      - first_name
+      - last_name
+      - new_password
+      title: UpdateInvitedUserRequest
   securitySchemes:
     HTTPBearer:
       type: http

@@ -423,16 +423,6 @@ paths:
                 detail: An internal server error occurred while processing the request
 components:
   schemas:
-    CreditsResponse:
-      properties:
-        credit_balance:
-          type: number
-          title: Credit Balance
-      type: object
-      required:
-      - credit_balance
-      title: CreditsResponse
-      description: API response model for credit balance.
     UsageStatsResponse:
       properties:
         id:
@@ -540,6 +530,16 @@ components:
       - date_range_days
       title: UsageSummaryResponse
       description: API response model for aggregated usage summary.
+    CreditsResponse:
+      properties:
+        credit_balance:
+          type: number
+          title: Credit Balance
+      type: object
+      required:
+      - credit_balance
+      title: CreditsResponse
+      description: API response model for credit balance.
   securitySchemes:
     HTTPBearer:
       type: http

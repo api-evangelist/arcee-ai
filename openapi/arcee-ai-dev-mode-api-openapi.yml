@@ -246,6 +246,28 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ChatCompletionRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        messages:
+          items: {}
+          type: array
+          title: Messages
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - messages
+      title: ChatCompletionRequest
+      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
+
+        to litellm without validation so schema maintenance is not required.'
     ValidationError:
       properties:
         loc:
@@ -276,28 +298,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ChatCompletionRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-        messages:
-          items: {}
-          type: array
-          title: Messages
-        stream:
-          type: boolean
-          title: Stream
-          default: false
-      additionalProperties: true
-      type: object
-      required:
-      - model
-      - messages
-      title: ChatCompletionRequest
-      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
-
-        to litellm without validation so schema maintenance is not required.'
     DevSessionUpdateTitle:
       properties:
         title:

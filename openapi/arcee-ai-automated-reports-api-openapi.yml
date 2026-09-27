@@ -263,36 +263,127 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    HTTPValidationError:
+    ScheduleUpdate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Name
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+        schedule_cron:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Schedule Cron
+        report_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Report Type
+        time_frame:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Time Frame
+        usage_scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Usage Scope
       type: object
-      title: HTTPValidationError
-    ValidationError:
+      title: ScheduleUpdate
+    AutomatedReportRunResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        id:
           type: string
-          title: Message
-        type:
+          format: uuid
+          title: Id
+        report_type:
           type: string
-          title: Error Type
+          title: Report Type
+        triggered_by:
+          type: string
+          title: Triggered By
+        iso_week:
+          type: string
+          title: Iso Week
+        target_api_key_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Api Key Id
+        started_at:
+          type: string
+          title: Started At
+        completed_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completed At
+        status:
+          type: string
+          title: Status
+        files_uploaded:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Files Uploaded
+        drive_folder_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Drive Folder Id
+        drive_subfolder_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Drive Subfolder Url
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - id
+      - report_type
+      - triggered_by
+      - iso_week
+      - started_at
+      - status
+      title: AutomatedReportRunResponse
+    TriggerRunResponse:
+      properties:
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        report_type:
+          type: string
+          title: Report Type
+        iso_week:
+          type: string
+          title: Iso Week
+        status:
+          type: string
+          title: Status
+          default: running
+      type: object
+      required:
+      - run_id
+      - report_type
+      - iso_week
+      title: TriggerRunResponse
     ApiKeyPickerItem:
       properties:
         id:
@@ -358,68 +449,15 @@ components:
       - schedule_cron
       - time_frame
       title: ScheduleCreate
-    TriggerRunRequest:
+    HTTPValidationError:
       properties:
-        report_type:
-          type: string
-          title: Report Type
-        iso_week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Iso Week
-        time_frame:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Time Frame
-        start_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Start Date
-        end_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: End Date
-        usage_scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Usage Scope
-        api_key_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Api Key Id
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - report_type
-      title: TriggerRunRequest
-    TriggerRunResponse:
-      properties:
-        run_id:
-          type: string
-          format: uuid
-          title: Run Id
-        report_type:
-          type: string
-          title: Report Type
-        iso_week:
-          type: string
-          title: Iso Week
-        status:
-          type: string
-          title: Status
-          default: running
-      type: object
-      required:
-      - run_id
-      - report_type
-      - iso_week
-      title: TriggerRunResponse
+      title: HTTPValidationError
     ScheduleItem:
       properties:
         id:
@@ -483,105 +521,67 @@ components:
       - enabled
       - schedules
       title: AutomatedReportsConfig
-    AutomatedReportRunResponse:
+    TriggerRunRequest:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
         report_type:
           type: string
           title: Report Type
-        triggered_by:
-          type: string
-          title: Triggered By
         iso_week:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Iso Week
-        target_api_key_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Api Key Id
-        started_at:
-          type: string
-          title: Started At
-        completed_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Completed At
-        status:
-          type: string
-          title: Status
-        files_uploaded:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Files Uploaded
-        drive_folder_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Drive Folder Id
-        drive_subfolder_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Drive Subfolder Url
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
-      type: object
-      required:
-      - id
-      - report_type
-      - triggered_by
-      - iso_week
-      - started_at
-      - status
-      title: AutomatedReportRunResponse
-    ScheduleUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Name
-        enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Enabled
-        schedule_cron:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Schedule Cron
-        report_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Report Type
         time_frame:
           anyOf:
           - type: string
           - type: 'null'
           title: Time Frame
+        start_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: End Date
         usage_scope:
           anyOf:
           - type: string
           - type: 'null'
           title: Usage Scope
+        api_key_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Api Key Id
       type: object
-      title: ScheduleUpdate
+      required:
+      - report_type
+      title: TriggerRunRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

@@ -288,50 +288,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CreateAPIKeyRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Token Limit
-        request_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Request Limit
-        data_retention_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Data Retention Days
-      type: object
-      required:
-      - name
-      title: CreateAPIKeyRequest
     UpdateAPIKeyRequest:
       properties:
         name:
@@ -371,6 +327,41 @@ components:
           title: Data Retention Days
       type: object
       title: UpdateAPIKeyRequest
+    CreateAPIKeyRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+      type: object
+      required:
+      - name
+      title: CreateAPIKeyRequest
     APIKeyResponse:
       properties:
         id:
@@ -473,6 +464,15 @@ components:
       - expired
       - cooldown
       title: APIKeyStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

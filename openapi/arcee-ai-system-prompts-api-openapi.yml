@@ -209,30 +209,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SystemPromptListResponse:
-      properties:
-        total:
-          type: integer
-          title: Total
-        offset:
-          type: integer
-          title: Offset
-        limit:
-          type: integer
-          title: Limit
-        content:
-          items:
-            $ref: '#/components/schemas/SystemPromptListItemResponse'
-          type: array
-          title: Content
-      type: object
-      required:
-      - total
-      - offset
-      - limit
-      - content
-      title: SystemPromptListResponse
-      description: Paginated system prompt list response.
     SystemPromptResponse:
       properties:
         id:
@@ -268,65 +244,30 @@ components:
       - temperature
       title: SystemPromptResponse
       description: System prompt response with database fields.
-    HTTPValidationError:
+    SystemPromptListResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SystemPromptCreate:
-      properties:
+        total:
+          type: integer
+          title: Total
+        offset:
+          type: integer
+          title: Offset
+        limit:
+          type: integer
+          title: Limit
         content:
-          type: string
-          maxLength: 20000
+          items:
+            $ref: '#/components/schemas/SystemPromptListItemResponse'
+          type: array
           title: Content
-          description: System prompt content (max 20,000 characters)
-        title:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Title
-          description: System prompt title (max 200 characters)
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-          description: Temperature for this prompt
       type: object
       required:
+      - total
+      - offset
+      - limit
       - content
-      title: SystemPromptCreate
-      description: Model for creating a new system prompt.
-    SystemPromptUpdate:
-      properties:
-        content:
-          anyOf:
-          - type: string
-            maxLength: 20000
-          - type: 'null'
-          title: Content
-          description: System prompt content (max 20,000 characters)
-        title:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Title
-          description: System prompt title (max 200 characters)
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-          description: Temperature for this prompt
-      type: object
-      title: SystemPromptUpdate
-      description: Update an existing system prompt.
+      title: SystemPromptListResponse
+      description: Paginated system prompt list response.
     SystemPromptListItemResponse:
       properties:
         id:
@@ -362,6 +303,65 @@ components:
       - temperature
       title: SystemPromptListItemResponse
       description: System prompt item in list response (without full content).
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SystemPromptUpdate:
+      properties:
+        content:
+          anyOf:
+          - type: string
+            maxLength: 20000
+          - type: 'null'
+          title: Content
+          description: System prompt content (max 20,000 characters)
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Title
+          description: System prompt title (max 200 characters)
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Temperature for this prompt
+      type: object
+      title: SystemPromptUpdate
+      description: Update an existing system prompt.
+    SystemPromptCreate:
+      properties:
+        content:
+          type: string
+          maxLength: 20000
+          title: Content
+          description: System prompt content (max 20,000 characters)
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Title
+          description: System prompt title (max 200 characters)
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Temperature for this prompt
+      type: object
+      required:
+      - content
+      title: SystemPromptCreate
+      description: Model for creating a new system prompt.
     ValidationError:
       properties:
         loc:
