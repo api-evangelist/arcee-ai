@@ -82,40 +82,15 @@ components:
       required:
       - data
       title: ModelsListResponse
-    PricingResponse:
+    OpenRouterMetadata:
       properties:
-        prompt:
+        slug:
           type: string
-          title: Prompt
-        completion:
-          type: string
-          title: Completion
-        image:
-          type: string
-          title: Image
-        request:
-          type: string
-          title: Request
-        input_cache_read:
-          type: string
-          title: Input Cache Read
+          title: Slug
       type: object
       required:
-      - prompt
-      - completion
-      - image
-      - request
-      - input_cache_read
-      title: PricingResponse
-    DatacenterResponse:
-      properties:
-        country_code:
-          type: string
-          title: Country Code
-      type: object
-      required:
-      - country_code
-      title: DatacenterResponse
+      - slug
+      title: OpenRouterMetadata
     APIModelResponse:
       properties:
         id:
@@ -198,15 +173,40 @@ components:
       - context_length
       - pricing
       title: APIModelResponse
-    OpenRouterMetadata:
+    PricingResponse:
       properties:
-        slug:
+        prompt:
           type: string
-          title: Slug
+          title: Prompt
+        completion:
+          type: string
+          title: Completion
+        image:
+          type: string
+          title: Image
+        request:
+          type: string
+          title: Request
+        input_cache_read:
+          type: string
+          title: Input Cache Read
       type: object
       required:
-      - slug
-      title: OpenRouterMetadata
+      - prompt
+      - completion
+      - image
+      - request
+      - input_cache_read
+      title: PricingResponse
+    DatacenterResponse:
+      properties:
+        country_code:
+          type: string
+          title: Country Code
+      type: object
+      required:
+      - country_code
+      title: DatacenterResponse
   securitySchemes:
     HTTPBearer:
       type: http

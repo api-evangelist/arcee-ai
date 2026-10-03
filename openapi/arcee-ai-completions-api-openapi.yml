@@ -218,23 +218,54 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    GenerateTitleResponse:
+    HTTPValidationError:
       properties:
-        title:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Title
-          description: Generated chat title
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GenerateTitleRequest:
+      properties:
+        initial_message:
+          type: string
+          maxLength: 50000
+          title: Initial Message
+          description: Initial message to generate title from
         chat_session_id:
           type: string
           format: uuid
           title: Chat Session Id
-          description: Chat session ID that was updated
+          description: Chat session ID to update with generated title
       type: object
       required:
-      - title
+      - initial_message
       - chat_session_id
-      title: GenerateTitleResponse
-      description: Response with generated title.
+      title: GenerateTitleRequest
+      description: Request to generate a chat title. The backend uses a pinned title-generation model.
     ChatCompletionRequest:
       properties:
         model:
@@ -257,24 +288,6 @@ components:
       description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
 
         to litellm without validation so schema maintenance is not required.'
-    GenerateTitleRequest:
-      properties:
-        initial_message:
-          type: string
-          maxLength: 50000
-          title: Initial Message
-          description: Initial message to generate title from
-        chat_session_id:
-          type: string
-          format: uuid
-          title: Chat Session Id
-          description: Chat session ID to update with generated title
-      type: object
-      required:
-      - initial_message
-      - chat_session_id
-      title: GenerateTitleRequest
-      description: Request to generate a chat title. The backend uses a pinned title-generation model.
     ChatInput:
       properties:
         content:
@@ -322,15 +335,23 @@ components:
       - content
       - session_id
       title: ChatInput
-    HTTPValidationError:
+    GenerateTitleResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        title:
+          type: string
+          title: Title
+          description: Generated chat title
+        chat_session_id:
+          type: string
+          format: uuid
+          title: Chat Session Id
+          description: Chat session ID that was updated
       type: object
-      title: HTTPValidationError
+      required:
+      - title
+      - chat_session_id
+      title: GenerateTitleResponse
+      description: Response with generated title.
     CreateChatWithMessageRequest:
       properties:
         message:
@@ -427,27 +448,6 @@ components:
       - message
       title: CreateChatWithMessageRequest
       description: Model for creating chat and sending first message in one request.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

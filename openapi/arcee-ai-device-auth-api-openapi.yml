@@ -156,20 +156,54 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    DeviceApproveRequest:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DeviceCodeRequest:
+      properties:
+        client_id:
+          type: string
+          title: Client Id
+      type: object
+      required:
+      - client_id
+      title: DeviceCodeRequest
+    DeviceDenyRequest:
       properties:
         user_code:
           type: string
           title: User Code
-        organization_id:
-          type: string
-          format: uuid
-          title: Organization Id
       type: object
       required:
       - user_code
-      - organization_id
-      title: DeviceApproveRequest
+      title: DeviceDenyRequest
     DeviceInfoResponse:
       properties:
         client_id:
@@ -191,32 +225,31 @@ components:
       - status
       - expires_in
       title: DeviceInfoResponse
-    DeviceTokenSuccess:
+    DeviceAuthErrorResponse:
       properties:
-        api_key:
+        error:
           type: string
-          title: Api Key
-        base_url:
-          type: string
-          title: Base Url
-        organization_id:
-          type: string
-          format: uuid
-          title: Organization Id
-        workspace_name:
-          type: string
-          title: Workspace Name
-        token_type:
-          type: string
-          title: Token Type
-          default: api_key
+          title: Error
+        error_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Description
       type: object
       required:
-      - api_key
-      - base_url
-      - organization_id
-      - workspace_name
-      title: DeviceTokenSuccess
+      - error
+      title: DeviceAuthErrorResponse
+      description: 'RFC 8628 OAuth-style error body returned (with HTTP 400) by the
+
+        unauthenticated device endpoints.'
+    DeviceDenyResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          default: denied
+      type: object
+      title: DeviceDenyResponse
     DeviceApproveResponse:
       properties:
         status:
@@ -235,23 +268,6 @@ components:
       - workspace_name
       - organization_id
       title: DeviceApproveResponse
-    DeviceDenyResponse:
-      properties:
-        status:
-          type: string
-          title: Status
-          default: denied
-      type: object
-      title: DeviceDenyResponse
-    DeviceCodeRequest:
-      properties:
-        client_id:
-          type: string
-          title: Client Id
-      type: object
-      required:
-      - client_id
-      title: DeviceCodeRequest
     DeviceCodeResponse:
       properties:
         device_code:
@@ -281,41 +297,32 @@ components:
       - interval
       - expires_in
       title: DeviceCodeResponse
-    DeviceDenyRequest:
+    DeviceTokenSuccess:
       properties:
-        user_code:
+        api_key:
           type: string
-          title: User Code
+          title: Api Key
+        base_url:
+          type: string
+          title: Base Url
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+        workspace_name:
+          type: string
+          title: Workspace Name
+        token_type:
+          type: string
+          title: Token Type
+          default: api_key
       type: object
       required:
-      - user_code
-      title: DeviceDenyRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DeviceAuthErrorResponse:
-      properties:
-        error:
-          type: string
-          title: Error
-        error_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Description
-      type: object
-      required:
-      - error
-      title: DeviceAuthErrorResponse
-      description: 'RFC 8628 OAuth-style error body returned (with HTTP 400) by the
-
-        unauthenticated device endpoints.'
+      - api_key
+      - base_url
+      - organization_id
+      - workspace_name
+      title: DeviceTokenSuccess
     DeviceTokenRequest:
       properties:
         device_code:
@@ -329,27 +336,20 @@ components:
       - device_code
       - client_id
       title: DeviceTokenRequest
-    ValidationError:
+    DeviceApproveRequest:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        user_code:
           type: string
-          title: Message
-        type:
+          title: User Code
+        organization_id:
           type: string
-          title: Error Type
+          format: uuid
+          title: Organization Id
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - user_code
+      - organization_id
+      title: DeviceApproveRequest
   securitySchemes:
     HTTPBearer:
       type: http

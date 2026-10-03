@@ -128,6 +128,15 @@ paths:
                 $ref: '#/components/schemas/ChatModelsResponse'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DemoCreateChatRequest:
       properties:
         message:
@@ -146,24 +155,76 @@ components:
       - message
       title: DemoCreateChatRequest
       description: First message to start a demo chat session.
-    DemoStreamMessageRequest:
+    ChatToolResponse:
       properties:
-        content:
+        id:
           type: string
-          maxLength: 50000
-          title: Content
-          description: Message content
-        meta:
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        icon:
+          type: string
+          title: Icon
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        activeStateLabel:
           anyOf:
-          - additionalProperties: true
-            type: object
+          - type: string
           - type: 'null'
-          title: Meta
+          title: Activestatelabel
       type: object
       required:
-      - content
-      title: DemoStreamMessageRequest
-      description: Subsequent message in an existing demo chat session.
+      - id
+      - name
+      - description
+      - icon
+      title: ChatToolResponse
+      description: Tool response for chat models endpoint.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatModelsResponse:
+      properties:
+        models:
+          items:
+            $ref: '#/components/schemas/ChatModelResponse'
+          type: array
+          title: Models
+        tools:
+          items:
+            $ref: '#/components/schemas/ChatToolResponse'
+          type: array
+          title: Tools
+      type: object
+      required:
+      - models
+      - tools
+      title: ChatModelsResponse
+      description: Response model for chat models and tools endpoint.
     ChatModelResponse:
       properties:
         id:
@@ -217,85 +278,24 @@ components:
       - base_model_name
       title: ChatModelResponse
       description: Model response for chat models endpoint.
-    HTTPValidationError:
+    DemoStreamMessageRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ChatModelsResponse:
-      properties:
-        models:
-          items:
-            $ref: '#/components/schemas/ChatModelResponse'
-          type: array
-          title: Models
-        tools:
-          items:
-            $ref: '#/components/schemas/ChatToolResponse'
-          type: array
-          title: Tools
-      type: object
-      required:
-      - models
-      - tools
-      title: ChatModelsResponse
-      description: Response model for chat models and tools endpoint.
-    ChatToolResponse:
-      properties:
-        id:
+        content:
           type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        icon:
-          type: string
-          title: Icon
-        enabled:
-          type: boolean
-          title: Enabled
-          default: true
-        activeStateLabel:
+          maxLength: 50000
+          title: Content
+          description: Message content
+        meta:
           anyOf:
-          - type: string
+          - additionalProperties: true
+            type: object
           - type: 'null'
-          title: Activestatelabel
+          title: Meta
       type: object
       required:
-      - id
-      - name
-      - description
-      - icon
-      title: ChatToolResponse
-      description: Tool response for chat models endpoint.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - content
+      title: DemoStreamMessageRequest
+      description: Subsequent message in an existing demo chat session.
   securitySchemes:
     HTTPBearer:
       type: http

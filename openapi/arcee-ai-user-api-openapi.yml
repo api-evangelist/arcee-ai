@@ -330,35 +330,45 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    LanguageUpdateRequest:
+    HTTPValidationError:
       properties:
-        language:
-          type: string
-          title: Language
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserUpdateRequest:
+      properties:
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        preferences:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Preferences
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
       type: object
       required:
-      - language
-      title: LanguageUpdateRequest
-    GitHubEmailMismatchBannerHomeRequest:
-      properties:
-        show_mismatch_banner_home:
-          type: boolean
-          title: Show Mismatch Banner Home
-      type: object
-      required:
-      - show_mismatch_banner_home
-      title: GitHubEmailMismatchBannerHomeRequest
-    AppRole:
-      type: string
-      enum:
-      - int_user
-      - int_editor
-      - int_admin
-      - ext_user
-      - ext_tester
-      - ext_partner
-      title: AppRole
-      description: Roles for role-based access control.
+      - first_name
+      - last_name
+      - preferences
+      - password
+      title: UserUpdateRequest
     BalanceVisibilityRequest:
       properties:
         show_balance_in_sidebar:
@@ -368,6 +378,36 @@ components:
       required:
       - show_balance_in_sidebar
       title: BalanceVisibilityRequest
+    GitHubEmailMismatchBannerHomeRequest:
+      properties:
+        show_mismatch_banner_home:
+          type: boolean
+          title: Show Mismatch Banner Home
+      type: object
+      required:
+      - show_mismatch_banner_home
+      title: GitHubEmailMismatchBannerHomeRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AppRoleEntry:
       properties:
         id:
@@ -396,6 +436,60 @@ components:
       - last_name
       - app_role
       title: AppRoleEntry
+    ThemeUpdateRequest:
+      properties:
+        theme:
+          type: string
+          title: Theme
+      type: object
+      required:
+      - theme
+      title: ThemeUpdateRequest
+    AppRole:
+      type: string
+      enum:
+      - int_user
+      - int_editor
+      - int_admin
+      - ext_user
+      - ext_tester
+      - ext_partner
+      title: AppRole
+      description: Roles for role-based access control.
+    UserAppRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          $ref: '#/components/schemas/AppRole'
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserAppRoleUpdateRequest
+    LanguageUpdateRequest:
+      properties:
+        language:
+          type: string
+          title: Language
+      type: object
+      required:
+      - language
+      title: LanguageUpdateRequest
+    UserRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          type: string
+          title: New Role
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserRoleUpdateRequest
     PaginatedAppRoleResponse:
       properties:
         entries:
@@ -431,100 +525,6 @@ components:
       - has_next
       - has_prev
       title: PaginatedAppRoleResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UserAppRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          $ref: '#/components/schemas/AppRole'
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserAppRoleUpdateRequest
-    UserRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          type: string
-          title: New Role
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserRoleUpdateRequest
-    UserUpdateRequest:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        preferences:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Preferences
-        password:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Password
-      type: object
-      required:
-      - first_name
-      - last_name
-      - preferences
-      - password
-      title: UserUpdateRequest
-    ThemeUpdateRequest:
-      properties:
-        theme:
-          type: string
-          title: Theme
-      type: object
-      required:
-      - theme
-      title: ThemeUpdateRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

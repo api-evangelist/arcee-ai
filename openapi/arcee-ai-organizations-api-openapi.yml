@@ -872,18 +872,25 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    Body_add_members_app_v1_members_add_post:
+    HTTPValidationError:
       properties:
-        emails:
+        detail:
           items:
-            type: string
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Emails
-          description: List of email addresses to invite
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_update_user_role_app_v1_users__user_id__role_patch:
+      properties:
+        role:
+          type: string
+          title: Role
+          description: New role (user, admin)
       type: object
       required:
-      - emails
-      title: Body_add_members_app_v1_members_add_post
+      - role
+      title: Body_update_user_role_app_v1_users__user_id__role_patch
     ChangeUserOrgRequest:
       properties:
         user_ids:
@@ -917,47 +924,27 @@ components:
           title: No Retention
       type: object
       title: UpdateOrgProfilesRequest
-    OrganizationStatusUpdateRequest:
+    ValidationError:
       properties:
-        org_id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Org Id
-        new_status:
+          title: Message
+        type:
           type: string
-          title: New Status
+          title: Error Type
       type: object
       required:
-      - org_id
-      - new_status
-      title: OrganizationStatusUpdateRequest
-    ChangeOrganizationStatusRequest:
-      properties:
-        status:
-          type: string
-          title: Status
-      type: object
-      required:
-      - status
-      title: ChangeOrganizationStatusRequest
-    SwitchUserCurrentOrgRequest:
-      properties:
-        organization_id:
-          type: string
-          title: Organization Id
-      type: object
-      required:
-      - organization_id
-      title: SwitchUserCurrentOrgRequest
-    Body_update_user_role_app_v1_users__user_id__role_patch:
-      properties:
-        role:
-          type: string
-          title: Role
-          description: New role (user, admin)
-      type: object
-      required:
-      - role
-      title: Body_update_user_role_app_v1_users__user_id__role_patch
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Body_create_organization_app_v1_orgs_post:
       properties:
         name:
@@ -986,77 +973,19 @@ components:
       required:
       - name
       title: Body_create_organization_app_v1_orgs_post
-    HTTPValidationError:
+    OrganizationStatusUpdateRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UpdateOrgRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logo
-        limits:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Limits
-        organization_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Organization Id
-      type: object
-      title: UpdateOrgRequest
-    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
-      properties:
-        status:
+        org_id:
           type: string
-          title: Status
-          description: New status (pending, accepted, cancelled)
+          title: Org Id
+        new_status:
+          type: string
+          title: New Status
       type: object
       required:
-      - status
-      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - org_id
+      - new_status
+      title: OrganizationStatusUpdateRequest
     Body_update_user_status_app_v1_users__user_id__status_patch:
       properties:
         status:
@@ -1103,6 +1032,77 @@ components:
       - has_next
       - has_prev
       title: PaginatedOrgProfilesResponse
+    Body_add_members_app_v1_members_add_post:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+          title: Emails
+          description: List of email addresses to invite
+      type: object
+      required:
+      - emails
+      title: Body_add_members_app_v1_members_add_post
+    ChangeOrganizationStatusRequest:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: ChangeOrganizationStatusRequest
+    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (pending, accepted, cancelled)
+      type: object
+      required:
+      - status
+      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
+    SwitchUserCurrentOrgRequest:
+      properties:
+        organization_id:
+          type: string
+          title: Organization Id
+      type: object
+      required:
+      - organization_id
+      title: SwitchUserCurrentOrgRequest
+    UpdateOrgRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logo
+        limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Limits
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+      type: object
+      title: UpdateOrgRequest
   securitySchemes:
     HTTPBearer:
       type: http

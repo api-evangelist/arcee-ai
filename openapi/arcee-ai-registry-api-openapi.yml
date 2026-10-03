@@ -376,6 +376,15 @@ components:
       - created_at
       title: ModelResponse
       description: Response model for Arcee AI model data.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     SyncResponse:
       properties:
         synced:
@@ -404,6 +413,27 @@ components:
       - available_models
       title: SyncResponse
       description: Response model for sync operation.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ModelCreateRequest:
       properties:
         id:
@@ -518,15 +548,6 @@ components:
       - model_provider_id
       title: ModelCreateRequest
       description: Request model for creating an Arcee AI model.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ModelUpdateRequest:
       properties:
         display_name:
@@ -683,27 +704,6 @@ components:
       type: object
       title: ModelUpdateRequest
       description: Request model for updating an Arcee AI model.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     PricingModel:
       properties:
         input:

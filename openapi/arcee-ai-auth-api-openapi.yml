@@ -578,6 +578,77 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    UserPermissionsResponse:
+      properties:
+        can_use_provider_switching:
+          type: boolean
+          title: Can Use Provider Switching
+      type: object
+      required:
+      - can_use_provider_switching
+      title: UserPermissionsResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HeartbeatRequest:
+      properties:
+        route:
+          type: string
+          title: Route
+      type: object
+      required:
+      - route
+      title: HeartbeatRequest
+    ResendVerificationRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: ResendVerificationRequest
+    PasswordChangeRequestModel:
+      properties:
+        password:
+          type: string
+          title: Password
+        old_password:
+          type: string
+          title: Old Password
+      type: object
+      required:
+      - password
+      - old_password
+      title: PasswordChangeRequestModel
+    InviteRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+      type: object
+      required:
+      - email
+      - role
+      title: InviteRequest
+    PasswordResetEmailRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: PasswordResetEmailRequest
     ValidationError:
       properties:
         loc:
@@ -599,15 +670,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ResendVerificationRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: ResendVerificationRequest
     EmailChangeRequest:
       properties:
         new_email:
@@ -617,58 +679,6 @@ components:
       required:
       - new_email
       title: EmailChangeRequest
-    InviteRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        role:
-          type: string
-          title: Role
-      type: object
-      required:
-      - email
-      - role
-      title: InviteRequest
-    PasswordChangeRequestModel:
-      properties:
-        password:
-          type: string
-          title: Password
-        old_password:
-          type: string
-          title: Old Password
-      type: object
-      required:
-      - password
-      - old_password
-      title: PasswordChangeRequestModel
-    UserPermissionsResponse:
-      properties:
-        can_use_provider_switching:
-          type: boolean
-          title: Can Use Provider Switching
-      type: object
-      required:
-      - can_use_provider_switching
-      title: UserPermissionsResponse
-    LoginRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        password:
-          type: string
-          title: Password
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
-      type: object
-      required:
-      - email
-      - password
-      title: LoginRequest
     SignupRequest:
       properties:
         first_name:
@@ -697,33 +707,6 @@ components:
       - email
       - password
       title: SignupRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PasswordResetEmailRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: PasswordResetEmailRequest
-    HeartbeatRequest:
-      properties:
-        route:
-          type: string
-          title: Route
-      type: object
-      required:
-      - route
-      title: HeartbeatRequest
     GitHubOAuthRequest:
       properties:
         code:
@@ -746,40 +729,23 @@ components:
       - code
       - redirect_uri
       title: GitHubOAuthRequest
-    PasswordResetRequestModel:
+    LoginRequest:
       properties:
-        userId:
+        email:
           type: string
-          title: Userid
+          title: Email
         password:
           type: string
           title: Password
-        reset_token:
-          type: string
-          title: Reset Token
-      type: object
-      required:
-      - userId
-      - password
-      - reset_token
-      title: PasswordResetRequestModel
-    GoogleOAuthRequest:
-      properties:
-        token:
-          type: string
-          title: Token
-        preferences:
-          additionalProperties: true
-          type: object
-          title: Preferences
         remember_me:
           type: boolean
           title: Remember Me
           default: false
       type: object
       required:
-      - token
-      title: GoogleOAuthRequest
+      - email
+      - password
+      title: LoginRequest
     UpdateInvitedUserRequest:
       properties:
         user_id:
@@ -802,6 +768,40 @@ components:
       - last_name
       - new_password
       title: UpdateInvitedUserRequest
+    GoogleOAuthRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - token
+      title: GoogleOAuthRequest
+    PasswordResetRequestModel:
+      properties:
+        userId:
+          type: string
+          title: Userid
+        password:
+          type: string
+          title: Password
+        reset_token:
+          type: string
+          title: Reset Token
+      type: object
+      required:
+      - userId
+      - password
+      - reset_token
+      title: PasswordResetRequestModel
   securitySchemes:
     HTTPBearer:
       type: http

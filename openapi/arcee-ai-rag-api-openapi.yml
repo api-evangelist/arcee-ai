@@ -317,6 +317,53 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AddUsersToGroupRequest:
+      properties:
+        user_org_profile_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Org Profile Ids
+        data_group_id:
+          type: string
+          format: uuid
+          title: Data Group Id
+      type: object
+      required:
+      - user_org_profile_ids
+      - data_group_id
+      title: AddUsersToGroupRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CreateDataGroupRequest:
       properties:
         name:
@@ -347,53 +394,6 @@ components:
       required:
       - files
       title: Body_upload_files_app_v1_files__data_group_id__post
-    AddUsersToGroupRequest:
-      properties:
-        user_org_profile_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: User Org Profile Ids
-        data_group_id:
-          type: string
-          format: uuid
-          title: Data Group Id
-      type: object
-      required:
-      - user_org_profile_ids
-      - data_group_id
-      title: AddUsersToGroupRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

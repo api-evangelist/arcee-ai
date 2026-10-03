@@ -462,41 +462,49 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    PaginatedFlaggedResponsesResponse:
+    HTTPValidationError:
       properties:
-        entries:
+        detail:
           items:
-            $ref: '#/components/schemas/FlaggedResponseEntry'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Entries
-        total:
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateIntSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
           type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        page_size:
-          type: integer
-          title: Page Size
-        total_pages:
-          type: integer
-          title: Total Pages
-        has_next:
-          type: boolean
-          title: Has Next
-        has_prev:
-          type: boolean
-          title: Has Prev
+          title: New Value
       type: object
       required:
-      - entries
-      - total
-      - page
-      - page_size
-      - total_pages
-      - has_next
-      - has_prev
-      title: PaginatedFlaggedResponsesResponse
+      - setting_name
+      - new_value
+      title: UpdateIntSettingRequest
+    ToggleAppSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: boolean
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: ToggleAppSettingRequest
+    WaitlistStatus:
+      type: string
+      enum:
+      - pending
+      - approved
+      - rejected
+      - completed
+      title: WaitlistStatus
     ToggleFreeKeyRequest:
       properties:
         key_id:
@@ -507,37 +515,27 @@ components:
       required:
       - key_id
       title: ToggleFreeKeyRequest
-    WaitlistEntryResponse:
+    ValidationError:
       properties:
-        id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          format: uuid
-          title: Id
-        email:
+          title: Message
+        type:
           type: string
-          title: Email
-        created_at:
-          type: string
-          title: Created At
-        status:
-          $ref: '#/components/schemas/WaitlistStatus'
-        token_expiration:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Token Expiration
-        approved_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Approved Date
+          title: Error Type
       type: object
       required:
-      - id
-      - email
-      - created_at
-      - status
-      title: WaitlistEntryResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AdminChatMessageResponse:
       properties:
         id:
@@ -571,6 +569,70 @@ components:
       - content
       - created_at
       title: AdminChatMessageResponse
+    PaginatedWaitlistResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/WaitlistEntryResponse'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedWaitlistResponse
+    UpdateTextSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: string
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateTextSettingRequest
+    UpdateWaitlistEntryStatusRequest:
+      properties:
+        entry_id:
+          type: string
+          title: Entry Id
+        email:
+          type: string
+          title: Email
+        new_status:
+          $ref: '#/components/schemas/WaitlistStatus'
+      type: object
+      required:
+      - entry_id
+      - email
+      - new_status
+      title: UpdateWaitlistEntryStatusRequest
     UpdateFlaggedResponseStatusRequest:
       properties:
         admin_review:
@@ -628,53 +690,11 @@ components:
       - created_at
       - admin_review
       title: FlaggedResponseEntry
-    UpdateWaitlistEntryStatusRequest:
-      properties:
-        entry_id:
-          type: string
-          title: Entry Id
-        email:
-          type: string
-          title: Email
-        new_status:
-          $ref: '#/components/schemas/WaitlistStatus'
-      type: object
-      required:
-      - entry_id
-      - email
-      - new_status
-      title: UpdateWaitlistEntryStatusRequest
-    UpdateIntSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: integer
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: UpdateIntSettingRequest
-    ToggleAppSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: boolean
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: ToggleAppSettingRequest
-    PaginatedWaitlistResponse:
+    PaginatedFlaggedResponsesResponse:
       properties:
         entries:
           items:
-            $ref: '#/components/schemas/WaitlistEntryResponse'
+            $ref: '#/components/schemas/FlaggedResponseEntry'
           type: array
           title: Entries
         total:
@@ -704,33 +724,7 @@ components:
       - total_pages
       - has_next
       - has_prev
-      title: PaginatedWaitlistResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    JoinWaitlistRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: JoinWaitlistRequest
-    WaitlistStatus:
-      type: string
-      enum:
-      - pending
-      - approved
-      - rejected
-      - completed
-      title: WaitlistStatus
+      title: PaginatedFlaggedResponsesResponse
     ToolInfoResponse:
       properties:
         id:
@@ -757,40 +751,46 @@ components:
       - description
       - icon_name
       title: ToolInfoResponse
-    UpdateTextSettingRequest:
+    WaitlistEntryResponse:
       properties:
-        setting_name:
+        id:
           type: string
-          title: Setting Name
-        new_value:
+          format: uuid
+          title: Id
+        email:
           type: string
-          title: New Value
+          title: Email
+        created_at:
+          type: string
+          title: Created At
+        status:
+          $ref: '#/components/schemas/WaitlistStatus'
+        token_expiration:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Expiration
+        approved_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Approved Date
       type: object
       required:
-      - setting_name
-      - new_value
-      title: UpdateTextSettingRequest
-    ValidationError:
+      - id
+      - email
+      - created_at
+      - status
+      title: WaitlistEntryResponse
+    JoinWaitlistRequest:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        email:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Email
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - email
+      title: JoinWaitlistRequest
   securitySchemes:
     HTTPBearer:
       type: http

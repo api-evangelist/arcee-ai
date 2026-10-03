@@ -106,67 +106,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    FeedbackSubmissionResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        message:
-          type: string
-          title: Message
-        feedback_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Feedback Id
-      type: object
-      required:
-      - success
-      - message
-      title: FeedbackSubmissionResponse
-      description: Response model for feedback submission
-    ContactSupportSubmissionRequest:
-      properties:
-        request_title:
-          type: string
-          title: Request Title
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - request_title
-      - message
-      title: ContactSupportSubmissionRequest
-      description: Request model for contact support submission
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FeatureRequestSubmissionResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        message:
-          type: string
-          title: Message
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Request Id
-      type: object
-      required:
-      - success
-      - message
-      title: FeatureRequestSubmissionResponse
-      description: Response model for feature request submission
     ContactSupportSubmissionResponse:
       properties:
         success:
@@ -186,6 +125,77 @@ components:
       - message
       title: ContactSupportSubmissionResponse
       description: Response model for contact support submission
+    FeatureRequestSubmissionRequest:
+      properties:
+        feature_title:
+          type: string
+          title: Feature Title
+        application_feature:
+          type: string
+          title: Application Feature
+        importance:
+          type: string
+          title: Importance
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+      - feature_title
+      - application_feature
+      - importance
+      - description
+      title: FeatureRequestSubmissionRequest
+      description: Request model for feature request submission
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FeedbackSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        feedback_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeedbackSubmissionResponse
+      description: Response model for feedback submission
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     FeedbackSubmissionRequest:
       properties:
         topic:
@@ -214,49 +224,39 @@ components:
       - description
       title: FeedbackSubmissionRequest
       description: Request model for feedback submission
-    FeatureRequestSubmissionRequest:
+    ContactSupportSubmissionRequest:
       properties:
-        feature_title:
+        request_title:
           type: string
-          title: Feature Title
-        application_feature:
-          type: string
-          title: Application Feature
-        importance:
-          type: string
-          title: Importance
-        description:
-          type: string
-          title: Description
-      type: object
-      required:
-      - feature_title
-      - application_feature
-      - importance
-      - description
-      title: FeatureRequestSubmissionRequest
-      description: Request model for feature request submission
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+          title: Request Title
+        message:
           type: string
           title: Message
-        type:
-          type: string
-          title: Error Type
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - request_title
+      - message
+      title: ContactSupportSubmissionRequest
+      description: Request model for contact support submission
+    FeatureRequestSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeatureRequestSubmissionResponse
+      description: Response model for feature request submission
   securitySchemes:
     HTTPBearer:
       type: http

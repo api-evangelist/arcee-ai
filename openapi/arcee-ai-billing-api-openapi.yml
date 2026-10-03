@@ -93,27 +93,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    UpdateTopUpRequest:
-      properties:
-        enableAutoTopUp:
-          type: boolean
-          title: Enableautotopup
-        topUpAmount:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Topupamount
-        topUpThreshold:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Topupthreshold
-      type: object
-      required:
-      - enableAutoTopUp
-      - topUpAmount
-      - topUpThreshold
-      title: UpdateTopUpRequest
     HTTPValidationError:
       properties:
         detail:
@@ -123,15 +102,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    TopUpRequest:
-      properties:
-        amount:
-          type: string
-          title: Amount
-      type: object
-      required:
-      - amount
-      title: TopUpRequest
     ValidationError:
       properties:
         loc:
@@ -153,6 +123,36 @@ components:
       - msg
       - type
       title: ValidationError
+    UpdateTopUpRequest:
+      properties:
+        enableAutoTopUp:
+          type: boolean
+          title: Enableautotopup
+        topUpAmount:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Topupamount
+        topUpThreshold:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Topupthreshold
+      type: object
+      required:
+      - enableAutoTopUp
+      - topUpAmount
+      - topUpThreshold
+      title: UpdateTopUpRequest
+    TopUpRequest:
+      properties:
+        amount:
+          type: string
+          title: Amount
+      type: object
+      required:
+      - amount
+      title: TopUpRequest
   securitySchemes:
     HTTPBearer:
       type: http
