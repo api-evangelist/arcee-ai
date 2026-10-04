@@ -146,21 +146,10 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UpdateRateLimitProfileRequest:
+    CreateRateLimitProfileRequest:
       properties:
         name:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Name
         requests_per_minute:
           anyOf:
@@ -218,8 +207,11 @@ components:
           - type: boolean
           - type: 'null'
           title: Is Default
+          default: false
       type: object
-      title: UpdateRateLimitProfileRequest
+      required:
+      - name
+      title: CreateRateLimitProfileRequest
     ValidationError:
       properties:
         loc:
@@ -241,6 +233,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RateLimitProfileResponse:
       properties:
         id:
@@ -322,10 +323,12 @@ components:
       - name
       - is_default
       title: RateLimitProfileResponse
-    CreateRateLimitProfileRequest:
+    UpdateRateLimitProfileRequest:
       properties:
         name:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Name
         requests_per_minute:
           anyOf:
@@ -383,11 +386,8 @@ components:
           - type: boolean
           - type: 'null'
           title: Is Default
-          default: false
       type: object
-      required:
-      - name
-      title: CreateRateLimitProfileRequest
+      title: UpdateRateLimitProfileRequest
   securitySchemes:
     HTTPBearer:
       type: http

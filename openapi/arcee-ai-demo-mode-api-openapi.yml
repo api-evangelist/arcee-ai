@@ -128,33 +128,24 @@ paths:
                 $ref: '#/components/schemas/ChatModelsResponse'
 components:
   schemas:
-    HTTPValidationError:
+    DemoStreamMessageRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DemoCreateChatRequest:
-      properties:
-        message:
+        content:
           type: string
           maxLength: 50000
-          title: Message
-          description: First message content
-        base_model_name:
+          title: Content
+          description: Message content
+        meta:
           anyOf:
-          - type: string
+          - additionalProperties: true
+            type: object
           - type: 'null'
-          title: Base Model Name
-          description: Base model name
+          title: Meta
       type: object
       required:
-      - message
-      title: DemoCreateChatRequest
-      description: First message to start a demo chat session.
+      - content
+      title: DemoStreamMessageRequest
+      description: Subsequent message in an existing demo chat session.
     ChatToolResponse:
       properties:
         id:
@@ -207,24 +198,33 @@ components:
       - msg
       - type
       title: ValidationError
-    ChatModelsResponse:
+    HTTPValidationError:
       properties:
-        models:
+        detail:
           items:
-            $ref: '#/components/schemas/ChatModelResponse'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Models
-        tools:
-          items:
-            $ref: '#/components/schemas/ChatToolResponse'
-          type: array
-          title: Tools
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DemoCreateChatRequest:
+      properties:
+        message:
+          type: string
+          maxLength: 50000
+          title: Message
+          description: First message content
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+          description: Base model name
       type: object
       required:
-      - models
-      - tools
-      title: ChatModelsResponse
-      description: Response model for chat models and tools endpoint.
+      - message
+      title: DemoCreateChatRequest
+      description: First message to start a demo chat session.
     ChatModelResponse:
       properties:
         id:
@@ -278,24 +278,24 @@ components:
       - base_model_name
       title: ChatModelResponse
       description: Model response for chat models endpoint.
-    DemoStreamMessageRequest:
+    ChatModelsResponse:
       properties:
-        content:
-          type: string
-          maxLength: 50000
-          title: Content
-          description: Message content
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
+        models:
+          items:
+            $ref: '#/components/schemas/ChatModelResponse'
+          type: array
+          title: Models
+        tools:
+          items:
+            $ref: '#/components/schemas/ChatToolResponse'
+          type: array
+          title: Tools
       type: object
       required:
-      - content
-      title: DemoStreamMessageRequest
-      description: Subsequent message in an existing demo chat session.
+      - models
+      - tools
+      title: ChatModelsResponse
+      description: Response model for chat models and tools endpoint.
   securitySchemes:
     HTTPBearer:
       type: http

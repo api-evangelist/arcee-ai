@@ -71,6 +71,49 @@ paths:
                 detail: An internal server error occurred while processing the request
 components:
   schemas:
+    OpenRouterMetadata:
+      properties:
+        slug:
+          type: string
+          title: Slug
+      type: object
+      required:
+      - slug
+      title: OpenRouterMetadata
+    PricingResponse:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        completion:
+          type: string
+          title: Completion
+        image:
+          type: string
+          title: Image
+        request:
+          type: string
+          title: Request
+        input_cache_read:
+          type: string
+          title: Input Cache Read
+      type: object
+      required:
+      - prompt
+      - completion
+      - image
+      - request
+      - input_cache_read
+      title: PricingResponse
+    DatacenterResponse:
+      properties:
+        country_code:
+          type: string
+          title: Country Code
+      type: object
+      required:
+      - country_code
+      title: DatacenterResponse
     ModelsListResponse:
       properties:
         data:
@@ -82,15 +125,6 @@ components:
       required:
       - data
       title: ModelsListResponse
-    OpenRouterMetadata:
-      properties:
-        slug:
-          type: string
-          title: Slug
-      type: object
-      required:
-      - slug
-      title: OpenRouterMetadata
     APIModelResponse:
       properties:
         id:
@@ -173,40 +207,6 @@ components:
       - context_length
       - pricing
       title: APIModelResponse
-    PricingResponse:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-        completion:
-          type: string
-          title: Completion
-        image:
-          type: string
-          title: Image
-        request:
-          type: string
-          title: Request
-        input_cache_read:
-          type: string
-          title: Input Cache Read
-      type: object
-      required:
-      - prompt
-      - completion
-      - image
-      - request
-      - input_cache_read
-      title: PricingResponse
-    DatacenterResponse:
-      properties:
-        country_code:
-          type: string
-          title: Country Code
-      type: object
-      required:
-      - country_code
-      title: DatacenterResponse
   securitySchemes:
     HTTPBearer:
       type: http

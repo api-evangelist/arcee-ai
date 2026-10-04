@@ -462,41 +462,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UpdateIntSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: integer
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: UpdateIntSettingRequest
-    ToggleAppSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: boolean
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: ToggleAppSettingRequest
     WaitlistStatus:
       type: string
       enum:
@@ -515,27 +480,15 @@ components:
       required:
       - key_id
       title: ToggleFreeKeyRequest
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      title: HTTPValidationError
     AdminChatMessageResponse:
       properties:
         id:
@@ -569,11 +522,41 @@ components:
       - content
       - created_at
       title: AdminChatMessageResponse
-    PaginatedWaitlistResponse:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    JoinWaitlistRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - email
+      title: JoinWaitlistRequest
+    PaginatedFlaggedResponsesResponse:
       properties:
         entries:
           items:
-            $ref: '#/components/schemas/WaitlistEntryResponse'
+            $ref: '#/components/schemas/FlaggedResponseEntry'
           type: array
           title: Entries
         total:
@@ -603,36 +586,7 @@ components:
       - total_pages
       - has_next
       - has_prev
-      title: PaginatedWaitlistResponse
-    UpdateTextSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: string
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: UpdateTextSettingRequest
-    UpdateWaitlistEntryStatusRequest:
-      properties:
-        entry_id:
-          type: string
-          title: Entry Id
-        email:
-          type: string
-          title: Email
-        new_status:
-          $ref: '#/components/schemas/WaitlistStatus'
-      type: object
-      required:
-      - entry_id
-      - email
-      - new_status
-      title: UpdateWaitlistEntryStatusRequest
+      title: PaginatedFlaggedResponsesResponse
     UpdateFlaggedResponseStatusRequest:
       properties:
         admin_review:
@@ -690,11 +644,11 @@ components:
       - created_at
       - admin_review
       title: FlaggedResponseEntry
-    PaginatedFlaggedResponsesResponse:
+    PaginatedWaitlistResponse:
       properties:
         entries:
           items:
-            $ref: '#/components/schemas/FlaggedResponseEntry'
+            $ref: '#/components/schemas/WaitlistEntryResponse'
           type: array
           title: Entries
         total:
@@ -724,7 +678,62 @@ components:
       - total_pages
       - has_next
       - has_prev
-      title: PaginatedFlaggedResponsesResponse
+      title: PaginatedWaitlistResponse
+    UpdateTextSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: string
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateTextSettingRequest
+    UpdateIntSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: integer
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateIntSettingRequest
+    UpdateWaitlistEntryStatusRequest:
+      properties:
+        entry_id:
+          type: string
+          title: Entry Id
+        email:
+          type: string
+          title: Email
+        new_status:
+          $ref: '#/components/schemas/WaitlistStatus'
+      type: object
+      required:
+      - entry_id
+      - email
+      - new_status
+      title: UpdateWaitlistEntryStatusRequest
+    ToggleAppSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: boolean
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: ToggleAppSettingRequest
     ToolInfoResponse:
       properties:
         id:
@@ -782,15 +791,6 @@ components:
       - created_at
       - status
       title: WaitlistEntryResponse
-    JoinWaitlistRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - email
-      title: JoinWaitlistRequest
   securitySchemes:
     HTTPBearer:
       type: http

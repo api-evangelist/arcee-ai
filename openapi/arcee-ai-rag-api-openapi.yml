@@ -317,6 +317,45 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CreateDataGroupRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_public:
+          type: boolean
+          title: Is Public
+          default: false
+      type: object
+      required:
+      - name
+      title: CreateDataGroupRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -343,45 +382,6 @@ components:
       - user_org_profile_ids
       - data_group_id
       title: AddUsersToGroupRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CreateDataGroupRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        is_public:
-          type: boolean
-          title: Is Public
-          default: false
-      type: object
-      required:
-      - name
-      title: CreateDataGroupRequest
     Body_upload_files_app_v1_files__data_group_id__post:
       properties:
         files:

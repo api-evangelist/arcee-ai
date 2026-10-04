@@ -274,48 +274,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Body_upload_chat_files_app_v1_chat_files__chat_id__post:
-      properties:
-        files:
-          items:
-            type: string
-            format: binary
-          type: array
-          title: Files
-      type: object
-      required:
-      - files
-      title: Body_upload_chat_files_app_v1_chat_files__chat_id__post
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post:
       properties:
         file:
@@ -346,6 +304,48 @@ components:
       required:
       - file
       title: Body_upload_avatar_app_v1_s3_avatar_upload_post
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_upload_chat_files_app_v1_chat_files__chat_id__post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+      type: object
+      required:
+      - files
+      title: Body_upload_chat_files_app_v1_chat_files__chat_id__post
   securitySchemes:
     HTTPBearer:
       type: http

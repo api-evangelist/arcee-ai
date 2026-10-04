@@ -872,15 +872,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Body_update_user_role_app_v1_users__user_id__role_patch:
       properties:
         role:
@@ -891,111 +882,15 @@ components:
       required:
       - role
       title: Body_update_user_role_app_v1_users__user_id__role_patch
-    ChangeUserOrgRequest:
+    SwitchUserCurrentOrgRequest:
       properties:
-        user_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: User Ids
+        organization_id:
+          type: string
+          title: Organization Id
       type: object
       required:
-      - user_ids
-      title: ChangeUserOrgRequest
-    UpdateOrgProfilesRequest:
-      properties:
-        rate_limit_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Rate Limit Profile Id
-        access_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Access Profile Id
-        no_retention:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: No Retention
-      type: object
-      title: UpdateOrgProfilesRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    Body_create_organization_app_v1_orgs_post:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-            format: binary
-          - type: 'null'
-          title: Logo
-        members:
-          type: string
-          title: Members
-          default: '[]'
-        importSettings:
-          type: string
-          title: Importsettings
-          default: 'null'
-      type: object
-      required:
-      - name
-      title: Body_create_organization_app_v1_orgs_post
-    OrganizationStatusUpdateRequest:
-      properties:
-        org_id:
-          type: string
-          title: Org Id
-        new_status:
-          type: string
-          title: New Status
-      type: object
-      required:
-      - org_id
-      - new_status
-      title: OrganizationStatusUpdateRequest
-    Body_update_user_status_app_v1_users__user_id__status_patch:
-      properties:
-        status:
-          type: string
-          title: Status
-          description: New status (active, deactivated)
-      type: object
-      required:
-      - status
-      title: Body_update_user_status_app_v1_users__user_id__status_patch
+      - organization_id
+      title: SwitchUserCurrentOrgRequest
     PaginatedOrgProfilesResponse:
       properties:
         entries:
@@ -1032,46 +927,120 @@ components:
       - has_next
       - has_prev
       title: PaginatedOrgProfilesResponse
-    Body_add_members_app_v1_members_add_post:
+    UpdateOrgProfilesRequest:
       properties:
-        emails:
+        rate_limit_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Rate Limit Profile Id
+        access_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Access Profile Id
+        no_retention:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: No Retention
+      type: object
+      title: UpdateOrgProfilesRequest
+    Body_update_user_status_app_v1_users__user_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (active, deactivated)
+      type: object
+      required:
+      - status
+      title: Body_update_user_status_app_v1_users__user_id__status_patch
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OrganizationStatusUpdateRequest:
+      properties:
+        org_id:
+          type: string
+          title: Org Id
+        new_status:
+          type: string
+          title: New Status
+      type: object
+      required:
+      - org_id
+      - new_status
+      title: OrganizationStatusUpdateRequest
+    ChangeUserOrgRequest:
+      properties:
+        user_ids:
           items:
             type: string
+            format: uuid
           type: array
-          title: Emails
-          description: List of email addresses to invite
+          title: User Ids
       type: object
       required:
-      - emails
-      title: Body_add_members_app_v1_members_add_post
-    ChangeOrganizationStatusRequest:
+      - user_ids
+      title: ChangeUserOrgRequest
+    Body_create_organization_app_v1_orgs_post:
       properties:
-        status:
+        name:
           type: string
-          title: Status
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: Logo
+        members:
+          type: string
+          title: Members
+          default: '[]'
+        importSettings:
+          type: string
+          title: Importsettings
+          default: 'null'
       type: object
       required:
-      - status
-      title: ChangeOrganizationStatusRequest
-    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
-      properties:
-        status:
-          type: string
-          title: Status
-          description: New status (pending, accepted, cancelled)
-      type: object
-      required:
-      - status
-      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
-    SwitchUserCurrentOrgRequest:
-      properties:
-        organization_id:
-          type: string
-          title: Organization Id
-      type: object
-      required:
-      - organization_id
-      title: SwitchUserCurrentOrgRequest
+      - name
+      title: Body_create_organization_app_v1_orgs_post
     UpdateOrgRequest:
       properties:
         name:
@@ -1103,6 +1072,37 @@ components:
           title: Organization Id
       type: object
       title: UpdateOrgRequest
+    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (pending, accepted, cancelled)
+      type: object
+      required:
+      - status
+      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
+    Body_add_members_app_v1_members_add_post:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+          title: Emails
+          description: List of email addresses to invite
+      type: object
+      required:
+      - emails
+      title: Body_add_members_app_v1_members_add_post
+    ChangeOrganizationStatusRequest:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: ChangeOrganizationStatusRequest
   securitySchemes:
     HTTPBearer:
       type: http

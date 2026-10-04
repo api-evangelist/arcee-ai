@@ -81,107 +81,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PaginatedPartnersResponse:
-      properties:
-        entries:
-          items:
-            $ref: '#/components/schemas/PartnerResponse'
-          type: array
-          title: Entries
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        page_size:
-          type: integer
-          title: Page Size
-        total_pages:
-          type: integer
-          title: Total Pages
-        has_next:
-          type: boolean
-          title: Has Next
-        has_prev:
-          type: boolean
-          title: Has Prev
-      type: object
-      required:
-      - entries
-      - total
-      - page
-      - page_size
-      - total_pages
-      - has_next
-      - has_prev
-      title: PaginatedPartnersResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PartnerResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        access_profile_id:
-          type: string
-          format: uuid
-          title: Access Profile Id
-        access_profile_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Access Profile Name
-        rate_limit_profile_id:
-          type: string
-          format: uuid
-          title: Rate Limit Profile Id
-        rate_limit_profile_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Rate Limit Profile Name
-      type: object
-      required:
-      - id
-      - name
-      - access_profile_id
-      - access_profile_name
-      - rate_limit_profile_id
-      - rate_limit_profile_name
-      title: PartnerResponse
     PartnerDetailResponse:
       properties:
         id:
@@ -242,6 +141,107 @@ components:
       - type
       - partner_org
       title: PartnerDetailResponse
+    PaginatedPartnersResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/PartnerResponse'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedPartnersResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PartnerResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        access_profile_id:
+          type: string
+          format: uuid
+          title: Access Profile Id
+        access_profile_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Access Profile Name
+        rate_limit_profile_id:
+          type: string
+          format: uuid
+          title: Rate Limit Profile Id
+        rate_limit_profile_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rate Limit Profile Name
+      type: object
+      required:
+      - id
+      - name
+      - access_profile_id
+      - access_profile_name
+      - rate_limit_profile_id
+      - rate_limit_profile_name
+      title: PartnerResponse
   securitySchemes:
     HTTPBearer:
       type: http

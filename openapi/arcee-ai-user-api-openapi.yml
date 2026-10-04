@@ -330,15 +330,41 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    HTTPValidationError:
+    PaginatedAppRoleResponse:
       properties:
-        detail:
+        entries:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/AppRoleEntry'
           type: array
-          title: Detail
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
       type: object
-      title: HTTPValidationError
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedAppRoleResponse
     UserUpdateRequest:
       properties:
         first_name:
@@ -378,15 +404,6 @@ components:
       required:
       - show_balance_in_sidebar
       title: BalanceVisibilityRequest
-    GitHubEmailMismatchBannerHomeRequest:
-      properties:
-        show_mismatch_banner_home:
-          type: boolean
-          title: Show Mismatch Banner Home
-      type: object
-      required:
-      - show_mismatch_banner_home
-      title: GitHubEmailMismatchBannerHomeRequest
     ValidationError:
       properties:
         loc:
@@ -408,6 +425,78 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppRole:
+      type: string
+      enum:
+      - int_user
+      - int_editor
+      - int_admin
+      - ext_user
+      - ext_tester
+      - ext_partner
+      title: AppRole
+      description: Roles for role-based access control.
+    LanguageUpdateRequest:
+      properties:
+        language:
+          type: string
+          title: Language
+      type: object
+      required:
+      - language
+      title: LanguageUpdateRequest
+    UserRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          type: string
+          title: New Role
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserRoleUpdateRequest
+    UserAppRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          $ref: '#/components/schemas/AppRole'
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserAppRoleUpdateRequest
+    GitHubEmailMismatchBannerHomeRequest:
+      properties:
+        show_mismatch_banner_home:
+          type: boolean
+          title: Show Mismatch Banner Home
+      type: object
+      required:
+      - show_mismatch_banner_home
+      title: GitHubEmailMismatchBannerHomeRequest
+    ThemeUpdateRequest:
+      properties:
+        theme:
+          type: string
+          title: Theme
+      type: object
+      required:
+      - theme
+      title: ThemeUpdateRequest
     AppRoleEntry:
       properties:
         id:
@@ -436,95 +525,6 @@ components:
       - last_name
       - app_role
       title: AppRoleEntry
-    ThemeUpdateRequest:
-      properties:
-        theme:
-          type: string
-          title: Theme
-      type: object
-      required:
-      - theme
-      title: ThemeUpdateRequest
-    AppRole:
-      type: string
-      enum:
-      - int_user
-      - int_editor
-      - int_admin
-      - ext_user
-      - ext_tester
-      - ext_partner
-      title: AppRole
-      description: Roles for role-based access control.
-    UserAppRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          $ref: '#/components/schemas/AppRole'
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserAppRoleUpdateRequest
-    LanguageUpdateRequest:
-      properties:
-        language:
-          type: string
-          title: Language
-      type: object
-      required:
-      - language
-      title: LanguageUpdateRequest
-    UserRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          type: string
-          title: New Role
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserRoleUpdateRequest
-    PaginatedAppRoleResponse:
-      properties:
-        entries:
-          items:
-            $ref: '#/components/schemas/AppRoleEntry'
-          type: array
-          title: Entries
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        page_size:
-          type: integer
-          title: Page Size
-        total_pages:
-          type: integer
-          title: Total Pages
-        has_next:
-          type: boolean
-          title: Has Next
-        has_prev:
-          type: boolean
-          title: Has Prev
-      type: object
-      required:
-      - entries
-      - total
-      - page
-      - page_size
-      - total_pages
-      - has_next
-      - has_prev
-      title: PaginatedAppRoleResponse
   securitySchemes:
     HTTPBearer:
       type: http

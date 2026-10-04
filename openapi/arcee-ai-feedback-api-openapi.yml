@@ -106,56 +106,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    ContactSupportSubmissionResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        message:
-          type: string
-          title: Message
-        support_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Support Id
-      type: object
-      required:
-      - success
-      - message
-      title: ContactSupportSubmissionResponse
-      description: Response model for contact support submission
-    FeatureRequestSubmissionRequest:
-      properties:
-        feature_title:
-          type: string
-          title: Feature Title
-        application_feature:
-          type: string
-          title: Application Feature
-        importance:
-          type: string
-          title: Importance
-        description:
-          type: string
-          title: Description
-      type: object
-      required:
-      - feature_title
-      - application_feature
-      - importance
-      - description
-      title: FeatureRequestSubmissionRequest
-      description: Request model for feature request submission
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     FeedbackSubmissionResponse:
       properties:
         success:
@@ -175,6 +125,44 @@ components:
       - message
       title: FeedbackSubmissionResponse
       description: Response model for feedback submission
+    FeatureRequestSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeatureRequestSubmissionResponse
+      description: Response model for feature request submission
+    ContactSupportSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        support_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Support Id
+      type: object
+      required:
+      - success
+      - message
+      title: ContactSupportSubmissionResponse
+      description: Response model for contact support submission
     ValidationError:
       properties:
         loc:
@@ -196,6 +184,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     FeedbackSubmissionRequest:
       properties:
         topic:
@@ -238,25 +235,28 @@ components:
       - message
       title: ContactSupportSubmissionRequest
       description: Request model for contact support submission
-    FeatureRequestSubmissionResponse:
+    FeatureRequestSubmissionRequest:
       properties:
-        success:
-          type: boolean
-          title: Success
-        message:
+        feature_title:
           type: string
-          title: Message
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Request Id
+          title: Feature Title
+        application_feature:
+          type: string
+          title: Application Feature
+        importance:
+          type: string
+          title: Importance
+        description:
+          type: string
+          title: Description
       type: object
       required:
-      - success
-      - message
-      title: FeatureRequestSubmissionResponse
-      description: Response model for feature request submission
+      - feature_title
+      - application_feature
+      - importance
+      - description
+      title: FeatureRequestSubmissionRequest
+      description: Request model for feature request submission
   securitySchemes:
     HTTPBearer:
       type: http

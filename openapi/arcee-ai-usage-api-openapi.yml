@@ -433,52 +433,6 @@ components:
       - credit_balance
       title: CreditsResponse
       description: API response model for credit balance.
-    api_external__usage__models__UsageSummaryResponse:
-      properties:
-        total_input_tokens:
-          type: integer
-          title: Total Input Tokens
-        total_output_tokens:
-          type: integer
-          title: Total Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-        total_requests:
-          type: integer
-          title: Total Requests
-        unique_users:
-          type: integer
-          title: Unique Users
-        unique_models:
-          type: integer
-          title: Unique Models
-        unique_providers:
-          type: integer
-          title: Unique Providers
-        api_usage:
-          type: integer
-          title: Api Usage
-        app_usage:
-          type: integer
-          title: App Usage
-        date_range_days:
-          type: integer
-          title: Date Range Days
-      type: object
-      required:
-      - total_input_tokens
-      - total_output_tokens
-      - total_tokens
-      - total_requests
-      - unique_users
-      - unique_models
-      - unique_providers
-      - api_usage
-      - app_usage
-      - date_range_days
-      title: UsageSummaryResponse
-      description: API response model for aggregated usage summary.
     UsageStatsResponse:
       properties:
         id:
@@ -540,6 +494,52 @@ components:
       - created_at
       title: UsageStatsResponse
       description: API response model for daily usage statistics.
+    api_external__usage__models__UsageSummaryResponse:
+      properties:
+        total_input_tokens:
+          type: integer
+          title: Total Input Tokens
+        total_output_tokens:
+          type: integer
+          title: Total Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+        total_requests:
+          type: integer
+          title: Total Requests
+        unique_users:
+          type: integer
+          title: Unique Users
+        unique_models:
+          type: integer
+          title: Unique Models
+        unique_providers:
+          type: integer
+          title: Unique Providers
+        api_usage:
+          type: integer
+          title: Api Usage
+        app_usage:
+          type: integer
+          title: App Usage
+        date_range_days:
+          type: integer
+          title: Date Range Days
+      type: object
+      required:
+      - total_input_tokens
+      - total_output_tokens
+      - total_tokens
+      - total_requests
+      - unique_users
+      - unique_models
+      - unique_providers
+      - api_usage
+      - app_usage
+      - date_range_days
+      title: UsageSummaryResponse
+      description: API response model for aggregated usage summary.
   securitySchemes:
     HTTPBearer:
       type: http
