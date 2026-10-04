@@ -1,0 +1,36 @@
+slug: arcee-ai
+provider: Arcee AI
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Keys
+  spec_file: arcee-ai-keys-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.8
+  evidence: POST /app/v1/keys 'Create Api Key'; POST /app/v1/keys/{key_id}/rotate 'Rotate Api Key'; schema
+    APIKeyStatus
+  reason: Issuance, rotation, deactivation and reactivation of API keys used to call the platform's inference
+    API is precisely developer credential stewardship. Alternative reading as generic IAM exists, hence
+    0.8 rather than 0.95.
+- tag: Rate Limit Profiles
+  spec_file: arcee-ai-rate-limit-profiles-api-openapi.yml
+  capability_id: BC-4270.50
+  capability_id_l1: BC-4270
+  capability_name: API Consumption Governance
+  confidence: 0.8
+  evidence: POST /app/v1/rate_limit_profiles 'Create Rate Limit Profile'; schema CreateRateLimitProfileRequest
+  reason: CRUD over reusable rate-limit profiles governs how much of the public API consumers may call,
+    which is the quota/rate-limit core of API consumption governance. Not mapped higher because no evidence
+    ties profiles to commercial plan tiers or usage analytics.
