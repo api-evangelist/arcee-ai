@@ -665,6 +665,8 @@ apis:
   - type: AgenticAccess
     url: agentic-access/arcee-ai-agentic-access.yml
 common:
+- type: Plans
+  url: plans/arcee-ai-plans-pricing.yml
 - type: CapabilityMap
   url: capabilities/arcee-ai-capability-edges.yml
   name: Arcee AI Business Capability Map
