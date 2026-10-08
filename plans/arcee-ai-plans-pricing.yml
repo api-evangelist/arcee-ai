@@ -1,0 +1,78 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://docs.arcee.ai/get-started/pricing
+sources:
+- https://docs.arcee.ai/get-started/pricing
+provenance:
+  tool: all/0-working/economics/harvest_pricing.py
+  run: 20261007T104522
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: per-call
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-07'
+published: true
+note: Docs pricing page listing per-1M-token input/output/cached-input prices for text models on Arcee
+  Platform; all prices in USD. No rate limits stated.
+plan_count: 8
+currency: USD
+plans:
+- name: deepseek/deepseek-v4-flash-latest
+  price_text: $0.14
+  price: 0.14
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $0.28, Cached Input $0.028
+- name: zai-org/glm-5.3-flash
+  price_text: $0.15
+  price: 0.15
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $0.50, Cached Input $0.03
+- name: trinity-large-thinking
+  price_text: $0.25
+  price: 0.25
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $0.80, Cached Input $0.06
+- name: deepseek/deepseek-v4-pro-0813
+  price_text: $1.32
+  price: 1.32
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $3.96, Cached Input $0.044
+- name: zai-org/glm-5.2
+  price_text: $1.40
+  price: 1.4
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $4.40, Cached Input $0.26
+- name: zai-org/glm-5.3
+  price_text: $1.40
+  price: 1.4
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $4.40, Cached Input $0.26
+- name: moonshotai/kimi-k3
+  price_text: $3.00
+  price: 3.0
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $15.00, Cached Input $0.30
+- name: deepseek/deepseek-v4.1-flash
+  price_text: $0.22
+  price: 0.22
+  currency: USD
+  period: per-use
+  unit: per 1M input tokens
+  overage: Output $0.66, Cached Input $0.007
