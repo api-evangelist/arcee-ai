@@ -2,6 +2,7 @@ generated: '2026-10-13'
 method: searched
 checked:
 - https://aws.amazon.com/marketplace/
+- https://openrouter.ai/api/v1/models
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -19,3 +20,49 @@ edges:
   seller_name: Arcee
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: OpenRouter
+  partner: openrouter
+  partner_match: router
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: system-coverage
+  evidence: https://openrouter.ai/api/v1/models
+  coverage_role:
+  - inference-host
+  - model-maker
+  router_signals:
+    model-maker:
+      models: 1
+      router_ids:
+      - arcee-ai
+      tools_share: 1.0
+      structured_output_share: 0.0
+    inference-host:
+      models: 1
+      router_ids:
+      - Arcee AI
+      tools_share: 1.0
+      structured_output_share: 0.0
+  matched_by: verified-token-table
+  detected_by: sweep-model-routing.py
+  first_seen: '2026-10-13'
+- partner_name: OpenAI
+  partner: openai
+  partner_match: domain
+  type: contract
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/arcee-ai/blob/main/openapi/arcee-ai-completions-api-openapi.yml#L240
+  contract_reference:
+    repo: arcee-ai
+    spec_file: arcee-ai-completions-api-openapi.yml
+    property: description
+    value: OpenAI-compatible
+    note: 'arcee-ai declares OpenAI compatibility: ''description: ''Thin OpenAI-compatible request schema. Unknown
+      fields are passed through'''
+    detected_by: sweep-model-routing.py
+    detected: '2026-10-13'
+  detected_by: sweep-model-routing.py
+  first_seen: '2026-10-13'
