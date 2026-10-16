@@ -63,6 +63,6 @@ edges:
     note: 'arcee-ai declares OpenAI compatibility: ''description: ''Thin OpenAI-compatible request schema. Unknown
       fields are passed through'''
     detected_by: sweep-model-routing.py
-    detected: '2026-10-13'
+    detected: '2026-10-15'
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'

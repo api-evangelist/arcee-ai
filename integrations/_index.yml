@@ -15,3 +15,34 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: arcee-ai-openrouter
+  label: OpenRouter
+  partner: openrouter
+  partner_name: OpenRouter
+  type: coverage
+  channel: partner-built
+  evidence: https://openrouter.ai/api/v1/models
+  source: edge
+  relationship: system-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: arcee-ai-openai
+  label: OpenAI
+  partner: openai
+  partner_name: OpenAI
+  type: contract
+  channel: provider-built
+  evidence: https://github.com/api-evangelist/arcee-ai/blob/main/openapi/arcee-ai-completions-api-openapi.yml#L240
+  source: edge
+  relationship: compatible
+  contract_reference:
+    repo: arcee-ai
+    spec_file: arcee-ai-completions-api-openapi.yml
+    property: description
+    value: OpenAI-compatible
+    note: 'arcee-ai declares OpenAI compatibility: ''description: ''Thin OpenAI-compatible request schema. Unknown
+      fields are passed through'''
+    detected_by: sweep-model-routing.py
+    detected: '2026-10-15'
+  status: not-a-workflow
+  arazzo: null
