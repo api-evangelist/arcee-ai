@@ -578,6 +578,19 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    PasswordChangeRequestModel:
+      properties:
+        password:
+          type: string
+          title: Password
+        old_password:
+          type: string
+          title: Old Password
+      type: object
+      required:
+      - password
+      - old_password
+      title: PasswordChangeRequestModel
     SignupRequest:
       properties:
         first_name:
@@ -606,23 +619,24 @@ components:
       - email
       - password
       title: SignupRequest
-    PasswordResetRequestModel:
+    UserPermissionsResponse:
       properties:
-        userId:
-          type: string
-          title: Userid
-        password:
-          type: string
-          title: Password
-        reset_token:
-          type: string
-          title: Reset Token
+        can_use_provider_switching:
+          type: boolean
+          title: Can Use Provider Switching
       type: object
       required:
-      - userId
-      - password
-      - reset_token
-      title: PasswordResetRequestModel
+      - can_use_provider_switching
+      title: UserPermissionsResponse
+    HeartbeatRequest:
+      properties:
+        route:
+          type: string
+          title: Route
+      type: object
+      required:
+      - route
+      title: HeartbeatRequest
     UpdateInvitedUserRequest:
       properties:
         user_id:
@@ -645,6 +659,66 @@ components:
       - last_name
       - new_password
       title: UpdateInvitedUserRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    GoogleOAuthRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - token
+      title: GoogleOAuthRequest
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          type: string
+          title: Password
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+      type: object
+      required:
+      - email
+      - password
+      title: LoginRequest
+    PasswordResetRequestModel:
+      properties:
+        userId:
+          type: string
+          title: Userid
+        password:
+          type: string
+          title: Password
+        reset_token:
+          type: string
+          title: Reset Token
+      type: object
+      required:
+      - userId
+      - password
+      - reset_token
+      title: PasswordResetRequestModel
     InviteRequest:
       properties:
         email:
@@ -658,24 +732,6 @@ components:
       - email
       - role
       title: InviteRequest
-    UserPermissionsResponse:
-      properties:
-        can_use_provider_switching:
-          type: boolean
-          title: Can Use Provider Switching
-      type: object
-      required:
-      - can_use_provider_switching
-      title: UserPermissionsResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -706,19 +762,6 @@ components:
       required:
       - new_email
       title: EmailChangeRequest
-    PasswordChangeRequestModel:
-      properties:
-        password:
-          type: string
-          title: Password
-        old_password:
-          type: string
-          title: Old Password
-      type: object
-      required:
-      - password
-      - old_password
-      title: PasswordChangeRequestModel
     PasswordResetEmailRequest:
       properties:
         email:
@@ -759,49 +802,6 @@ components:
       required:
       - email
       title: ResendVerificationRequest
-    HeartbeatRequest:
-      properties:
-        route:
-          type: string
-          title: Route
-      type: object
-      required:
-      - route
-      title: HeartbeatRequest
-    LoginRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        password:
-          type: string
-          title: Password
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
-      type: object
-      required:
-      - email
-      - password
-      title: LoginRequest
-    GoogleOAuthRequest:
-      properties:
-        token:
-          type: string
-          title: Token
-        preferences:
-          additionalProperties: true
-          type: object
-          title: Preferences
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
-      type: object
-      required:
-      - token
-      title: GoogleOAuthRequest
   securitySchemes:
     HTTPBearer:
       type: http

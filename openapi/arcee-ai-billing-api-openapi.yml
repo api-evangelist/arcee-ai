@@ -93,6 +93,24 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TopUpRequest:
+      properties:
+        amount:
+          type: string
+          title: Amount
+      type: object
+      required:
+      - amount
+      title: TopUpRequest
     UpdateTopUpRequest:
       properties:
         enableAutoTopUp:
@@ -135,24 +153,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TopUpRequest:
-      properties:
-        amount:
-          type: string
-          title: Amount
-      type: object
-      required:
-      - amount
-      title: TopUpRequest
   securitySchemes:
     HTTPBearer:
       type: http

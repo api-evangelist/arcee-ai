@@ -81,6 +81,51 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PartnerResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        access_profile_id:
+          type: string
+          format: uuid
+          title: Access Profile Id
+        access_profile_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Access Profile Name
+        rate_limit_profile_id:
+          type: string
+          format: uuid
+          title: Rate Limit Profile Id
+        rate_limit_profile_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rate Limit Profile Name
+      type: object
+      required:
+      - id
+      - name
+      - access_profile_id
+      - access_profile_name
+      - rate_limit_profile_id
+      - rate_limit_profile_name
+      title: PartnerResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PartnerDetailResponse:
       properties:
         id:
@@ -141,6 +186,27 @@ components:
       - type
       - partner_org
       title: PartnerDetailResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PaginatedPartnersResponse:
       properties:
         entries:
@@ -176,72 +242,6 @@ components:
       - has_next
       - has_prev
       title: PaginatedPartnersResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PartnerResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        access_profile_id:
-          type: string
-          format: uuid
-          title: Access Profile Id
-        access_profile_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Access Profile Name
-        rate_limit_profile_id:
-          type: string
-          format: uuid
-          title: Rate Limit Profile Id
-        rate_limit_profile_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Rate Limit Profile Name
-      type: object
-      required:
-      - id
-      - name
-      - access_profile_id
-      - access_profile_name
-      - rate_limit_profile_id
-      - rate_limit_profile_name
-      title: PartnerResponse
   securitySchemes:
     HTTPBearer:
       type: http

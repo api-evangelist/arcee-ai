@@ -71,15 +71,17 @@ paths:
                 detail: An internal server error occurred while processing the request
 components:
   schemas:
-    OpenRouterMetadata:
+    ModelsListResponse:
       properties:
-        slug:
-          type: string
-          title: Slug
+        data:
+          items:
+            $ref: '#/components/schemas/APIModelResponse'
+          type: array
+          title: Data
       type: object
       required:
-      - slug
-      title: OpenRouterMetadata
+      - data
+      title: ModelsListResponse
     PricingResponse:
       properties:
         prompt:
@@ -114,17 +116,6 @@ components:
       required:
       - country_code
       title: DatacenterResponse
-    ModelsListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/APIModelResponse'
-          type: array
-          title: Data
-      type: object
-      required:
-      - data
-      title: ModelsListResponse
     APIModelResponse:
       properties:
         id:
@@ -207,6 +198,15 @@ components:
       - context_length
       - pricing
       title: APIModelResponse
+    OpenRouterMetadata:
+      properties:
+        slug:
+          type: string
+          title: Slug
+      type: object
+      required:
+      - slug
+      title: OpenRouterMetadata
   securitySchemes:
     HTTPBearer:
       type: http

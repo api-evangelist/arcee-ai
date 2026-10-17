@@ -872,16 +872,18 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    Body_update_user_role_app_v1_users__user_id__role_patch:
+    ChangeUserOrgRequest:
       properties:
-        role:
-          type: string
-          title: Role
-          description: New role (user, admin)
+        user_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Ids
       type: object
       required:
-      - role
-      title: Body_update_user_role_app_v1_users__user_id__role_patch
+      - user_ids
+      title: ChangeUserOrgRequest
     SwitchUserCurrentOrgRequest:
       properties:
         organization_id:
@@ -891,6 +893,46 @@ components:
       required:
       - organization_id
       title: SwitchUserCurrentOrgRequest
+    Body_update_user_status_app_v1_users__user_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (active, deactivated)
+      type: object
+      required:
+      - status
+      title: Body_update_user_status_app_v1_users__user_id__status_patch
+    ChangeOrganizationStatusRequest:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: ChangeOrganizationStatusRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_add_members_app_v1_members_add_post:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+          title: Emails
+          description: List of email addresses to invite
+      type: object
+      required:
+      - emails
+      title: Body_add_members_app_v1_members_add_post
     PaginatedOrgProfilesResponse:
       properties:
         entries:
@@ -927,6 +969,44 @@ components:
       - has_next
       - has_prev
       title: PaginatedOrgProfilesResponse
+    Body_update_user_role_app_v1_users__user_id__role_patch:
+      properties:
+        role:
+          type: string
+          title: Role
+          description: New role (user, admin)
+      type: object
+      required:
+      - role
+      title: Body_update_user_role_app_v1_users__user_id__role_patch
+    Body_create_organization_app_v1_orgs_post:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: Logo
+        members:
+          type: string
+          title: Members
+          default: '[]'
+        importSettings:
+          type: string
+          title: Importsettings
+          default: 'null'
+      type: object
+      required:
+      - name
+      title: Body_create_organization_app_v1_orgs_post
     UpdateOrgProfilesRequest:
       properties:
         rate_limit_profile_id:
@@ -948,25 +1028,37 @@ components:
           title: No Retention
       type: object
       title: UpdateOrgProfilesRequest
-    Body_update_user_status_app_v1_users__user_id__status_patch:
+    UpdateOrgRequest:
       properties:
-        status:
-          type: string
-          title: Status
-          description: New status (active, deactivated)
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logo
+        limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Limits
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
       type: object
-      required:
-      - status
-      title: Body_update_user_status_app_v1_users__user_id__status_patch
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      title: UpdateOrgRequest
     ValidationError:
       properties:
         loc:
@@ -1001,77 +1093,6 @@ components:
       - org_id
       - new_status
       title: OrganizationStatusUpdateRequest
-    ChangeUserOrgRequest:
-      properties:
-        user_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: User Ids
-      type: object
-      required:
-      - user_ids
-      title: ChangeUserOrgRequest
-    Body_create_organization_app_v1_orgs_post:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-            format: binary
-          - type: 'null'
-          title: Logo
-        members:
-          type: string
-          title: Members
-          default: '[]'
-        importSettings:
-          type: string
-          title: Importsettings
-          default: 'null'
-      type: object
-      required:
-      - name
-      title: Body_create_organization_app_v1_orgs_post
-    UpdateOrgRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logo
-        limits:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Limits
-        organization_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Organization Id
-      type: object
-      title: UpdateOrgRequest
     Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
       properties:
         status:
@@ -1082,27 +1103,6 @@ components:
       required:
       - status
       title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
-    Body_add_members_app_v1_members_add_post:
-      properties:
-        emails:
-          items:
-            type: string
-          type: array
-          title: Emails
-          description: List of email addresses to invite
-      type: object
-      required:
-      - emails
-      title: Body_add_members_app_v1_members_add_post
-    ChangeOrganizationStatusRequest:
-      properties:
-        status:
-          type: string
-          title: Status
-      type: object
-      required:
-      - status
-      title: ChangeOrganizationStatusRequest
   securitySchemes:
     HTTPBearer:
       type: http

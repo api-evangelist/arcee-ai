@@ -317,6 +317,23 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    AddUsersToGroupRequest:
+      properties:
+        user_org_profile_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Org Profile Ids
+        data_group_id:
+          type: string
+          format: uuid
+          title: Data Group Id
+      type: object
+      required:
+      - user_org_profile_ids
+      - data_group_id
+      title: AddUsersToGroupRequest
     CreateDataGroupRequest:
       properties:
         name:
@@ -335,6 +352,27 @@ components:
       required:
       - name
       title: CreateDataGroupRequest
+    Body_upload_files_app_v1_files__data_group_id__post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+      type: object
+      required:
+      - files
+      title: Body_upload_files_app_v1_files__data_group_id__post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -356,44 +394,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AddUsersToGroupRequest:
-      properties:
-        user_org_profile_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: User Org Profile Ids
-        data_group_id:
-          type: string
-          format: uuid
-          title: Data Group Id
-      type: object
-      required:
-      - user_org_profile_ids
-      - data_group_id
-      title: AddUsersToGroupRequest
-    Body_upload_files_app_v1_files__data_group_id__post:
-      properties:
-        files:
-          items:
-            type: string
-            format: binary
-          type: array
-          title: Files
-      type: object
-      required:
-      - files
-      title: Body_upload_files_app_v1_files__data_group_id__post
   securitySchemes:
     HTTPBearer:
       type: http

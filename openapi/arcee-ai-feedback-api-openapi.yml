@@ -106,25 +106,29 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    FeedbackSubmissionResponse:
+    HTTPValidationError:
       properties:
-        success:
-          type: boolean
-          title: Success
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ContactSupportSubmissionRequest:
+      properties:
+        request_title:
+          type: string
+          title: Request Title
         message:
           type: string
           title: Message
-        feedback_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Feedback Id
       type: object
       required:
-      - success
+      - request_title
       - message
-      title: FeedbackSubmissionResponse
-      description: Response model for feedback submission
+      title: ContactSupportSubmissionRequest
+      description: Request model for contact support submission
     FeatureRequestSubmissionResponse:
       properties:
         success:
@@ -144,55 +148,6 @@ components:
       - message
       title: FeatureRequestSubmissionResponse
       description: Response model for feature request submission
-    ContactSupportSubmissionResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        message:
-          type: string
-          title: Message
-        support_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Support Id
-      type: object
-      required:
-      - success
-      - message
-      title: ContactSupportSubmissionResponse
-      description: Response model for contact support submission
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     FeedbackSubmissionRequest:
       properties:
         topic:
@@ -221,20 +176,27 @@ components:
       - description
       title: FeedbackSubmissionRequest
       description: Request model for feedback submission
-    ContactSupportSubmissionRequest:
+    ValidationError:
       properties:
-        request_title:
-          type: string
-          title: Request Title
-        message:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
           title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - request_title
-      - message
-      title: ContactSupportSubmissionRequest
-      description: Request model for contact support submission
+      - loc
+      - msg
+      - type
+      title: ValidationError
     FeatureRequestSubmissionRequest:
       properties:
         feature_title:
@@ -257,6 +219,44 @@ components:
       - description
       title: FeatureRequestSubmissionRequest
       description: Request model for feature request submission
+    ContactSupportSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        support_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Support Id
+      type: object
+      required:
+      - success
+      - message
+      title: ContactSupportSubmissionResponse
+      description: Response model for contact support submission
+    FeedbackSubmissionResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+        feedback_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Id
+      type: object
+      required:
+      - success
+      - message
+      title: FeedbackSubmissionResponse
+      description: Response model for feedback submission
   securitySchemes:
     HTTPBearer:
       type: http

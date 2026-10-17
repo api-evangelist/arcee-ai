@@ -288,6 +288,24 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIKeyStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - deactivated
+      - expired
+      - cooldown
+      title: APIKeyStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UpdateAPIKeyRequest:
       properties:
         name:
@@ -327,71 +345,6 @@ components:
           title: Data Retention Days
       type: object
       title: UpdateAPIKeyRequest
-    CreateAPIKeyRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Token Limit
-        request_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Request Limit
-        data_retention_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Data Retention Days
-      type: object
-      required:
-      - name
-      title: CreateAPIKeyRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIKeyResponse:
       properties:
         id:
@@ -485,15 +438,62 @@ components:
       - expires_at
       - status
       title: APIKeyResponse
-    APIKeyStatus:
-      type: string
-      enum:
-      - active
-      - inactive
-      - deactivated
-      - expired
-      - cooldown
-      title: APIKeyStatus
+    CreateAPIKeyRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        request_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Request Limit
+        data_retention_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Data Retention Days
+      type: object
+      required:
+      - name
+      title: CreateAPIKeyRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

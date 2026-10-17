@@ -156,6 +156,64 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    DeviceDenyResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          default: denied
+      type: object
+      title: DeviceDenyResponse
+    DeviceApproveResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          default: approved
+        workspace_name:
+          type: string
+          title: Workspace Name
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+      type: object
+      required:
+      - workspace_name
+      - organization_id
+      title: DeviceApproveResponse
+    DeviceApproveRequest:
+      properties:
+        user_code:
+          type: string
+          title: User Code
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+      type: object
+      required:
+      - user_code
+      - organization_id
+      title: DeviceApproveRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DeviceDenyRequest:
+      properties:
+        user_code:
+          type: string
+          title: User Code
+      type: object
+      required:
+      - user_code
+      title: DeviceDenyRequest
     DeviceCodeResponse:
       properties:
         device_code:
@@ -185,24 +243,15 @@ components:
       - interval
       - expires_in
       title: DeviceCodeResponse
-    DeviceApproveResponse:
+    DeviceCodeRequest:
       properties:
-        status:
+        client_id:
           type: string
-          title: Status
-          default: approved
-        workspace_name:
-          type: string
-          title: Workspace Name
-        organization_id:
-          type: string
-          format: uuid
-          title: Organization Id
+          title: Client Id
       type: object
       required:
-      - workspace_name
-      - organization_id
-      title: DeviceApproveResponse
+      - client_id
+      title: DeviceCodeRequest
     DeviceInfoResponse:
       properties:
         client_id:
@@ -224,89 +273,6 @@ components:
       - status
       - expires_in
       title: DeviceInfoResponse
-    DeviceDenyResponse:
-      properties:
-        status:
-          type: string
-          title: Status
-          default: denied
-      type: object
-      title: DeviceDenyResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DeviceTokenRequest:
-      properties:
-        device_code:
-          type: string
-          title: Device Code
-        client_id:
-          type: string
-          title: Client Id
-      type: object
-      required:
-      - device_code
-      - client_id
-      title: DeviceTokenRequest
-    DeviceDenyRequest:
-      properties:
-        user_code:
-          type: string
-          title: User Code
-      type: object
-      required:
-      - user_code
-      title: DeviceDenyRequest
-    DeviceApproveRequest:
-      properties:
-        user_code:
-          type: string
-          title: User Code
-        organization_id:
-          type: string
-          format: uuid
-          title: Organization Id
-      type: object
-      required:
-      - user_code
-      - organization_id
-      title: DeviceApproveRequest
-    DeviceCodeRequest:
-      properties:
-        client_id:
-          type: string
-          title: Client Id
-      type: object
-      required:
-      - client_id
-      title: DeviceCodeRequest
     DeviceTokenSuccess:
       properties:
         api_key:
@@ -350,6 +316,40 @@ components:
       description: 'RFC 8628 OAuth-style error body returned (with HTTP 400) by the
 
         unauthenticated device endpoints.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DeviceTokenRequest:
+      properties:
+        device_code:
+          type: string
+          title: Device Code
+        client_id:
+          type: string
+          title: Client Id
+      type: object
+      required:
+      - device_code
+      - client_id
+      title: DeviceTokenRequest
   securitySchemes:
     HTTPBearer:
       type: http
