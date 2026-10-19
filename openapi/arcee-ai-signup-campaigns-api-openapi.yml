@@ -1,0 +1,640 @@
+openapi: 3.2.0
+info:
+  title: AFM Signup Campaigns API
+  version: 0.1.0
+tags:
+- name: Signup Campaigns
+paths:
+  /app/v1/signup-campaigns/_font:
+    get:
+      tags:
+      - Signup Campaigns
+      summary: Get Signup Campaign Font
+      description: Serve an uploaded font from an origin that sends CORS headers.
+      operationId: get_signup_campaign_font_app_v1_signup_campaigns__font_get
+      parameters:
+      - name: src
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Src
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/signup-campaigns/{slug}:
+    get:
+      tags:
+      - Signup Campaigns
+      summary: Get Public Signup Campaign
+      operationId: get_public_signup_campaign_app_v1_signup_campaigns__slug__get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupCampaignPublic'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/signup-campaigns:
+    get:
+      tags:
+      - Signup Campaigns
+      summary: List Admin Signup Campaigns
+      operationId: list_admin_signup_campaigns_app_v1_arcee_admin_signup_campaigns_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SignupCampaignAdmin'
+                type: array
+                title: Response List Admin Signup Campaigns App V1 Arcee Admin Signup Campaigns Get
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - Signup Campaigns
+      summary: Create Admin Signup Campaign
+      operationId: create_admin_signup_campaign_app_v1_arcee_admin_signup_campaigns_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSignupCampaignRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupCampaignAdmin'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/arcee-admin/signup-campaigns/{campaign_id}:
+    get:
+      tags:
+      - Signup Campaigns
+      summary: Get Admin Signup Campaign
+      operationId: get_admin_signup_campaign_app_v1_arcee_admin_signup_campaigns__campaign_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Campaign Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupCampaignAdmin'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Signup Campaigns
+      summary: Update Admin Signup Campaign
+      operationId: update_admin_signup_campaign_app_v1_arcee_admin_signup_campaigns__campaign_id__put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Campaign Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSignupCampaignRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupCampaignAdmin'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Signup Campaigns
+      summary: Delete Admin Signup Campaign
+      operationId: delete_admin_signup_campaign_app_v1_arcee_admin_signup_campaigns__campaign_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Campaign Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    SignupCampaignPublic:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        name:
+          type: string
+          title: Name
+        discount:
+          type: integer
+          title: Discount
+        content:
+          type: string
+          title: Content
+        assets:
+          $ref: '#/components/schemas/SignupCampaignAssets'
+        colors:
+          $ref: '#/components/schemas/SignupCampaignColors'
+        additional_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Additional Css
+        background_assets:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Background Assets
+        partner_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Partner Url
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      - discount
+      - content
+      title: SignupCampaignPublic
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SignupCampaignFonts:
+      properties:
+        display_font:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Font
+        normal_font:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Normal Font
+        medium_font:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Medium Font
+        bold_font:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bold Font
+      type: object
+      title: SignupCampaignFonts
+    SignupCampaignAssets:
+      properties:
+        logo:
+          anyOf:
+          - type: string
+            maxLength: 200000
+          - type: 'null'
+          title: Logo
+        favicon:
+          anyOf:
+          - type: string
+            maxLength: 2048
+          - type: 'null'
+          title: Favicon
+        email_confirmation_img:
+          anyOf:
+          - type: string
+            maxLength: 2048
+          - type: 'null'
+          title: Email Confirmation Img
+        fonts:
+          $ref: '#/components/schemas/SignupCampaignFonts'
+      type: object
+      title: SignupCampaignAssets
+      description: 'Everything the page renders from an upload: branding images and fonts.'
+    UpdateSignupCampaignRequest:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        name:
+          type: string
+          maxLength: 120
+          minLength: 1
+          title: Name
+        discount:
+          type: integer
+          maximum: 99.0
+          minimum: 1.0
+          title: Discount
+        content:
+          type: string
+          maxLength: 20000
+          minLength: 1
+          title: Content
+        assets:
+          $ref: '#/components/schemas/SignupCampaignAssets'
+        colors:
+          $ref: '#/components/schemas/SignupCampaignColors'
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        additional_css:
+          anyOf:
+          - type: string
+            maxLength: 50000
+          - type: 'null'
+          title: Additional Css
+        background_assets:
+          anyOf:
+          - type: string
+            maxLength: 50000
+          - type: 'null'
+          title: Background Assets
+        partner_url:
+          anyOf:
+          - type: string
+            maxLength: 2048
+          - type: 'null'
+          title: Partner Url
+        report_enabled:
+          type: boolean
+          title: Report Enabled
+          default: false
+        report_emails:
+          type: string
+          maxLength: 4000
+          title: Report Emails
+          default: ''
+        report_cadence:
+          type: string
+          title: Report Cadence
+          default: weekly
+        webhook_enabled:
+          type: boolean
+          title: Webhook Enabled
+          default: false
+        webhook_secret:
+          anyOf:
+          - type: string
+            maxLength: 512
+          - type: 'null'
+          title: Webhook Secret
+        webhook_signature_header:
+          type: string
+          maxLength: 128
+          title: Webhook Signature Header
+          default: X-Webhook-Signature
+        webhook_email_path:
+          type: string
+          maxLength: 128
+          title: Webhook Email Path
+          default: email
+        webhook_id_path:
+          type: string
+          maxLength: 128
+          title: Webhook Id Path
+          default: id
+        slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+          - type: 'null'
+          title: Slug
+      type: object
+      required:
+      - name
+      - discount
+      - content
+      title: UpdateSignupCampaignRequest
+    CreateSignupCampaignRequest:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        name:
+          type: string
+          maxLength: 120
+          minLength: 1
+          title: Name
+        discount:
+          type: integer
+          maximum: 99.0
+          minimum: 1.0
+          title: Discount
+        content:
+          type: string
+          maxLength: 20000
+          minLength: 1
+          title: Content
+        assets:
+          $ref: '#/components/schemas/SignupCampaignAssets'
+        colors:
+          $ref: '#/components/schemas/SignupCampaignColors'
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        additional_css:
+          anyOf:
+          - type: string
+            maxLength: 50000
+          - type: 'null'
+          title: Additional Css
+        background_assets:
+          anyOf:
+          - type: string
+            maxLength: 50000
+          - type: 'null'
+          title: Background Assets
+        partner_url:
+          anyOf:
+          - type: string
+            maxLength: 2048
+          - type: 'null'
+          title: Partner Url
+        report_enabled:
+          type: boolean
+          title: Report Enabled
+          default: false
+        report_emails:
+          type: string
+          maxLength: 4000
+          title: Report Emails
+          default: ''
+        report_cadence:
+          type: string
+          title: Report Cadence
+          default: weekly
+        webhook_enabled:
+          type: boolean
+          title: Webhook Enabled
+          default: false
+        webhook_secret:
+          anyOf:
+          - type: string
+            maxLength: 512
+          - type: 'null'
+          title: Webhook Secret
+        webhook_signature_header:
+          type: string
+          maxLength: 128
+          title: Webhook Signature Header
+          default: X-Webhook-Signature
+        webhook_email_path:
+          type: string
+          maxLength: 128
+          title: Webhook Email Path
+          default: email
+        webhook_id_path:
+          type: string
+          maxLength: 128
+          title: Webhook Id Path
+          default: id
+        slug:
+          type: string
+          maxLength: 64
+          minLength: 2
+          title: Slug
+      type: object
+      required:
+      - name
+      - discount
+      - content
+      - slug
+      title: CreateSignupCampaignRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SignupCampaignColors:
+      properties:
+        brand_color:
+          type: string
+          title: Brand Color
+          default: '#6d6137'
+        background_color:
+          type: string
+          title: Background Color
+          default: '#000000'
+        is_inversed:
+          type: boolean
+          title: Is Inversed
+          default: false
+      type: object
+      title: SignupCampaignColors
+    SignupCampaignAdmin:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        name:
+          type: string
+          title: Name
+        discount:
+          type: integer
+          title: Discount
+        content:
+          type: string
+          title: Content
+        assets:
+          $ref: '#/components/schemas/SignupCampaignAssets'
+        colors:
+          $ref: '#/components/schemas/SignupCampaignColors'
+        additional_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Additional Css
+        background_assets:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Background Assets
+        partner_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Partner Url
+        enabled:
+          type: boolean
+          title: Enabled
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        report_enabled:
+          type: boolean
+          title: Report Enabled
+        report_emails:
+          type: string
+          title: Report Emails
+          default: ''
+        report_cadence:
+          type: string
+          title: Report Cadence
+        report_last_sent:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Report Last Sent
+        webhook_enabled:
+          type: boolean
+          title: Webhook Enabled
+          default: false
+        webhook_secret_set:
+          type: boolean
+          title: Webhook Secret Set
+          default: false
+        webhook_signature_header:
+          type: string
+          title: Webhook Signature Header
+          default: X-Webhook-Signature
+        webhook_email_path:
+          type: string
+          title: Webhook Email Path
+          default: email
+        webhook_id_path:
+          type: string
+          title: Webhook Id Path
+          default: id
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      - discount
+      - content
+      - enabled
+      - report_enabled
+      - report_cadence
+      title: SignupCampaignAdmin
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

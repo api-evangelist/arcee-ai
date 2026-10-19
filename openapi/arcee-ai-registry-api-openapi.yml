@@ -5,57 +5,121 @@ info:
 tags:
 - name: Registry
 paths:
-  /app/v1/models/sync:
-    post:
+  /app/v1/tokenizer-artifacts:
+    get:
       tags:
       - Registry
-      summary: Sync Models
-      description: Sync Arcee AI models from Together AI API to the database.
-      operationId: sync_models_app_v1_models_sync_post
+      summary: List Tokenizer Artifacts
+      operationId: list_tokenizer_artifacts_app_v1_tokenizer_artifacts_get
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SyncResponse'
+                items:
+                  $ref: '#/components/schemas/TokenizerArtifactResponse'
+                type: array
+                title: Response List Tokenizer Artifacts App V1 Tokenizer Artifacts Get
       security:
       - HTTPBearer: []
-  /app/v1/models/sync-from-providers:
     post:
       tags:
       - Registry
-      summary: Sync From Providers
-      description: 'Sync models from providers (Together AI, Clarifai) to the database.
-
-        - Adds new models with pricing = 0.0
-
-        - Updates existing models (only context_length, type, hugging_face_url)
-
-        - Preserves pricing, base_model_name, display_name
-
-        - Does NOT sync to Lago'
-      operationId: sync_from_providers_app_v1_models_sync_from_providers_post
+      summary: Create Tokenizer Artifact
+      description: Mirror and validate a Hugging Face tokenizer before a model is enabled.
+      operationId: create_tokenizer_artifact_app_v1_tokenizer_artifacts_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenizerArtifactCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizerArtifactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/model-tokenizer-assignments:
+    get:
+      tags:
+      - Registry
+      summary: List Model Tokenizer Assignments
+      operationId: list_model_tokenizer_assignments_app_v1_model_tokenizer_assignments_get
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SyncResponse'
+                items:
+                  $ref: '#/components/schemas/ModelTokenizerAssignmentResponse'
+                type: array
+                title: Response List Model Tokenizer Assignments App V1 Model Tokenizer Assignments Get
       security:
       - HTTPBearer: []
-  /app/v1/models/sync-to-lago:
+    put:
+      tags:
+      - Registry
+      summary: Assign Model Tokenizer
+      operationId: assign_model_tokenizer_app_v1_model_tokenizer_assignments_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelTokenizerAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/ModelTokenizerAssignmentResponse'
+                - type: 'null'
+                title: Response Assign Model Tokenizer App V1 Model Tokenizer Assignments Put
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/models/discover:
     post:
       tags:
       - Registry
-      summary: Sync To Lago
-      description: 'Sync all models from the database to Lago.
-
-        - Adds models to billable metrics
-
-        - Creates/updates plan charges with pricing'
-      operationId: sync_to_lago_app_v1_models_sync_to_lago_post
+      summary: Discover Models From Providers
+      description: Fetch active providers' model inventories without mutating the registry.
+      operationId: discover_models_from_providers_app_v1_models_discover_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelDiscoveryResponse'
+      security:
+      - HTTPBearer: []
+  /app/v1/models/sync-pricing:
+    post:
+      tags:
+      - Registry
+      summary: Sync Model Pricing All
+      description: Sync pricing for all models from the database to the billing provider.
+      operationId: sync_model_pricing_all_app_v1_models_sync_pricing_post
       responses:
         '200':
           description: Successful Response
@@ -64,6 +128,36 @@ paths:
               schema: {}
       security:
       - HTTPBearer: []
+  /app/v1/models/sync-provider-fields:
+    post:
+      tags:
+      - Registry
+      summary: Sync Provider Model Fields
+      description: Refresh normalized provider /models fields for existing deployments.
+      operationId: sync_provider_model_fields_app_v1_models_sync_provider_fields_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: provider_name
+        in: query
+        required: false
+        schema:
+          type: string
+          default: openrouter
+          title: Provider Name
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderModelSyncResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /app/v1/models:
     get:
       tags:
@@ -205,234 +299,104 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/model-providers:
+    get:
+      tags:
+      - Registry
+      summary: Get All Model Providers
+      description: Get all model providers from the database.
+      operationId: get_all_model_providers_app_v1_model_providers_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ModelProviderResponse'
+                type: array
+                title: Response Get All Model Providers App V1 Model Providers Get
+      security:
+      - HTTPBearer: []
+  /app/v1/model-providers/{provider_id}:
+    patch:
+      tags:
+      - Registry
+      summary: Update Model Provider
+      description: 'Toggle a model provider''s is_active flag. Invalidates the router and
+
+        provider-lookup caches so all pods pick up the change immediately.'
+      operationId: update_model_provider_app_v1_model_providers__provider_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: provider_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Provider Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelProviderActiveUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelProviderResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    ModelTokenizerAssignmentResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        base_model_name:
+          type: string
+          title: Base Model Name
+        tokenizer:
+          $ref: '#/components/schemas/TokenizerArtifactResponse'
       type: object
-      title: HTTPValidationError
-    SyncResponse:
+      required:
+      - base_model_name
+      - tokenizer
+      title: ModelTokenizerAssignmentResponse
+    ProviderModelSyncResponse:
       properties:
-        synced:
+        provider_name:
+          type: string
+          title: Provider Name
+        discovered:
           type: integer
-          title: Synced
-          description: Number of new models synced
+          title: Discovered
+        matched:
+          type: integer
+          title: Matched
         updated:
           type: integer
           title: Updated
-          description: Number of existing models updated
-        deactivated:
-          type: integer
-          title: Deactivated
-          description: Number of models deactivated (not found in Together AI)
-        available_models:
+        unmatched_model_ids:
           items:
             type: string
           type: array
-          title: Available Models
-          description: List of available model IDs after sync
+          title: Unmatched Model Ids
       type: object
       required:
-      - synced
+      - provider_name
+      - discovered
+      - matched
       - updated
-      - deactivated
-      - available_models
-      title: SyncResponse
-      description: Response model for sync operation.
-    ModelResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        model_id:
-          type: string
-          title: Model Id
-        display_name:
-          type: string
-          title: Display Name
-        organization:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Organization
-        provider_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Provider Name
-        type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Type
-        context_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Context Length
-        pricing:
-          $ref: '#/components/schemas/PricingModel'
-        status:
-          type: boolean
-          title: Status
-          default: true
-        is_public:
-          type: boolean
-          title: Is Public
-          default: false
-        is_active:
-          type: boolean
-          title: Is Active
-          default: true
-        is_app_enabled:
-          type: boolean
-          title: Is App Enabled
-          default: false
-        is_api_enabled:
-          type: boolean
-          title: Is Api Enabled
-          default: false
-        hugging_face_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hugging Face Url
-        model_provider_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Model Provider Id
-        base_model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Base Model Name
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-        top_p:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Top P
-        top_k:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Top K
-        min_p:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Min P
-        routing_weight:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Routing Weight
-        quantization:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Quantization
-        max_output_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Output Length
-        supported_sampling_parameters:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Sampling Parameters
-        supported_features:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Features
-        input_modalities:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Input Modalities
-        output_modalities:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Output Modalities
-        datacenters:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Datacenters
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        created_at:
-          type: string
-          title: Created At
-        updated_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Updated At
-      type: object
-      required:
-      - id
-      - model_id
-      - display_name
-      - pricing
-      - created_at
-      title: ModelResponse
-      description: Response model for Arcee AI model data.
-    PricingModel:
-      properties:
-        input:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Input
-        cached_input:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Cached Input
-        output:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Output
-      type: object
-      title: PricingModel
-      description: Pricing information for a model.
+      title: ProviderModelSyncResponse
+      description: Result of refreshing normalized fields for one provider's deployments.
     ModelUpdateRequest:
       properties:
         display_name:
@@ -480,11 +444,6 @@ components:
           - type: boolean
           - type: 'null'
           title: Is Api Enabled
-        hugging_face_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hugging Face Url
         pricing:
           anyOf:
           - $ref: '#/components/schemas/PricingModel'
@@ -501,6 +460,40 @@ components:
             type: object
           - type: 'null'
           title: Meta
+        canonical_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Slug
+        hugging_face_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Id
+        created:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Created
+        architecture:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Architecture
+        per_request_limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Per Request Limits
+        supported_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Parameters
         temperature:
           anyOf:
           - type: number
@@ -528,59 +521,92 @@ components:
             minimum: 0.0
           - type: 'null'
           title: Min P
+        frequency_penalty:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: -2.0
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: -2.0
+          - type: 'null'
+          title: Presence Penalty
+        repetition_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Repetition Penalty
+        max_tokens:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Max Tokens
         routing_weight:
           anyOf:
           - type: integer
             minimum: 1.0
           - type: 'null'
           title: Routing Weight
-        quantization:
+        routing_tier:
           anyOf:
-          - type: string
+          - type: integer
+            minimum: 0.0
           - type: 'null'
-          title: Quantization
+          title: Routing Tier
+        minimum_tps:
+          anyOf:
+          - type: number
+            exclusiveMinimum: 0.0
+          - type: 'null'
+          title: Minimum Tps
+        maximum_ttft_seconds:
+          anyOf:
+          - type: number
+            exclusiveMinimum: 0.0
+          - type: 'null'
+          title: Maximum Ttft Seconds
         max_output_length:
           anyOf:
           - type: integer
             minimum: 1.0
           - type: 'null'
           title: Max Output Length
-        supported_sampling_parameters:
+        supported_reasoning_efforts:
           anyOf:
           - items:
               type: string
+              enum:
+              - minimal
+              - low
+              - medium
+              - high
+              - xhigh
+              - max
             type: array
           - type: 'null'
-          title: Supported Sampling Parameters
-        supported_features:
+          title: Supported Reasoning Efforts
+        reasoning_default_enabled:
           anyOf:
-          - items:
-              type: string
-            type: array
+          - type: boolean
           - type: 'null'
-          title: Supported Features
-        input_modalities:
+          title: Reasoning Default Enabled
+        reasoning_default_effort:
           anyOf:
-          - items:
-              type: string
-            type: array
+          - type: string
+            enum:
+            - minimal
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
           - type: 'null'
-          title: Input Modalities
-        output_modalities:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Output Modalities
-        datacenters:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Datacenters
+          title: Reasoning Default Effort
         description:
           anyOf:
           - type: string
@@ -589,11 +615,278 @@ components:
       type: object
       title: ModelUpdateRequest
       description: Request model for updating an Arcee AI model.
+    DiscoveredProviderModel:
+      properties:
+        provider_id:
+          type: string
+          format: uuid
+          title: Provider Id
+        provider_name:
+          type: string
+          title: Provider Name
+        provider_display_name:
+          type: string
+          title: Provider Display Name
+        model_id:
+          type: string
+          title: Model Id
+        maker:
+          type: string
+          title: Maker
+        display_name:
+          type: string
+          title: Display Name
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        context_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Context Length
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        canonical_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Slug
+        hugging_face_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Id
+        created:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Created
+        architecture:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Architecture
+        per_request_limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Per Request Limits
+        supported_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Parameters
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+        repetition_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Repetition Penalty
+        supported_reasoning_efforts:
+          anyOf:
+          - items:
+              type: string
+              enum:
+              - minimal
+              - low
+              - medium
+              - high
+              - xhigh
+              - max
+            type: array
+          - type: 'null'
+          title: Supported Reasoning Efforts
+        reasoning_default_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Reasoning Default Enabled
+        reasoning_default_effort:
+          anyOf:
+          - type: string
+            enum:
+            - minimal
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+          - type: 'null'
+          title: Reasoning Default Effort
+        already_imported:
+          type: boolean
+          title: Already Imported
+          default: false
+      type: object
+      required:
+      - provider_id
+      - provider_name
+      - provider_display_name
+      - model_id
+      - maker
+      - display_name
+      title: DiscoveredProviderModel
+      description: One selectable upstream deployment returned by a provider's /models API.
+    ModelTokenizerAssignmentRequest:
+      properties:
+        base_model_name:
+          type: string
+          minLength: 1
+          title: Base Model Name
+        tokenizer_artifact_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Tokenizer Artifact Id
+      type: object
+      required:
+      - base_model_name
+      title: ModelTokenizerAssignmentRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TokenizerArtifactFile:
+      properties:
+        path:
+          type: string
+          minLength: 1
+          title: Path
+        sha256:
+          type: string
+          maxLength: 64
+          minLength: 64
+          title: Sha256
+        size:
+          type: integer
+          minimum: 0.0
+          title: Size
+      type: object
+      required:
+      - path
+      - sha256
+      - size
+      title: TokenizerArtifactFile
+    PricingModel:
+      properties:
+        input:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Input
+        cached_input:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cached Input
+        output:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Output
+      type: object
+      title: PricingModel
+      description: Pricing information for a model.
+    ModelProviderResponse:
+      properties:
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        base_url:
+          type: string
+          title: Base Url
+        api_key_env_var:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key Env Var
+        priority:
+          type: integer
+          title: Priority
+          default: 100
+        is_active:
+          type: boolean
+          title: Is Active
+          default: true
+        id:
+          type: string
+          format: uuid
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      required:
+      - name
+      - display_name
+      - base_url
+      - id
+      - created_at
+      title: ModelProviderResponse
     ModelCreateRequest:
       properties:
         id:
           type: string
           title: Id
+        base_model_name:
+          type: string
+          minLength: 1
+          title: Base Model Name
         display_name:
           type: string
           title: Display Name
@@ -643,11 +936,6 @@ components:
           - type: 'null'
           title: Is Api Enabled
           default: false
-        hugging_face_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hugging Face Url
         pricing:
           anyOf:
           - $ref: '#/components/schemas/PricingModel'
@@ -663,6 +951,45 @@ components:
             type: object
           - type: 'null'
           title: Meta
+        canonical_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Slug
+        hugging_face_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Id
+        created:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Created
+        architecture:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Architecture
+        per_request_limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Per Request Limits
+        supported_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Parameters
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
         temperature:
           anyOf:
           - type: number
@@ -690,15 +1017,93 @@ components:
             minimum: 0.0
           - type: 'null'
           title: Min P
+        frequency_penalty:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: -2.0
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: -2.0
+          - type: 'null'
+          title: Presence Penalty
+        repetition_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Repetition Penalty
+        max_tokens:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Max Tokens
         routing_weight:
           anyOf:
           - type: integer
             minimum: 1.0
           - type: 'null'
           title: Routing Weight
+        routing_tier:
+          type: integer
+          minimum: 0.0
+          title: Routing Tier
+          default: 0
+        minimum_tps:
+          anyOf:
+          - type: number
+            exclusiveMinimum: 0.0
+          - type: 'null'
+          title: Minimum Tps
+        maximum_ttft_seconds:
+          anyOf:
+          - type: number
+            exclusiveMinimum: 0.0
+          - type: 'null'
+          title: Maximum Ttft Seconds
+        supported_reasoning_efforts:
+          anyOf:
+          - items:
+              type: string
+              enum:
+              - minimal
+              - low
+              - medium
+              - high
+              - xhigh
+              - max
+            type: array
+          - type: 'null'
+          title: Supported Reasoning Efforts
+        reasoning_default_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Reasoning Default Enabled
+        reasoning_default_effort:
+          anyOf:
+          - type: string
+            enum:
+            - minimal
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+          - type: 'null'
+          title: Reasoning Default Effort
+        preserve_model_id_case:
+          type: boolean
+          title: Preserve Model Id Case
+          default: false
       type: object
       required:
       - id
+      - base_model_name
       - display_name
       - model_provider_id
       title: ModelCreateRequest
@@ -724,6 +1129,343 @@ components:
       - msg
       - type
       title: ValidationError
+    ProviderDiscoveryFailure:
+      properties:
+        provider_id:
+          type: string
+          format: uuid
+          title: Provider Id
+        provider_name:
+          type: string
+          title: Provider Name
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - provider_id
+      - provider_name
+      - detail
+      title: ProviderDiscoveryFailure
+    ModelResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        model_id:
+          type: string
+          title: Model Id
+        display_name:
+          type: string
+          title: Display Name
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+        provider_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Name
+        provider_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Slug
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        context_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Context Length
+        pricing:
+          $ref: '#/components/schemas/PricingModel'
+        status:
+          type: boolean
+          title: Status
+          default: true
+        is_public:
+          type: boolean
+          title: Is Public
+          default: false
+        is_active:
+          type: boolean
+          title: Is Active
+          default: true
+        is_app_enabled:
+          type: boolean
+          title: Is App Enabled
+          default: false
+        is_api_enabled:
+          type: boolean
+          title: Is Api Enabled
+          default: false
+        model_provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Model Provider Id
+        base_model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Model Name
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        canonical_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Slug
+        hugging_face_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hugging Face Id
+        created:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Created
+        architecture:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Architecture
+        per_request_limits:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Per Request Limits
+        supported_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Parameters
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+        min_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min P
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+        repetition_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Repetition Penalty
+        max_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Tokens
+        routing_weight:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Routing Weight
+        routing_tier:
+          type: integer
+          title: Routing Tier
+          default: 0
+        minimum_tps:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Minimum Tps
+        maximum_ttft_seconds:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Maximum Ttft Seconds
+        max_output_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Length
+        supported_reasoning_efforts:
+          anyOf:
+          - items:
+              type: string
+              enum:
+              - minimal
+              - low
+              - medium
+              - high
+              - xhigh
+              - max
+            type: array
+          - type: 'null'
+          title: Supported Reasoning Efforts
+        reasoning_default_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Reasoning Default Enabled
+        reasoning_default_effort:
+          anyOf:
+          - type: string
+            enum:
+            - minimal
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+          - type: 'null'
+          title: Reasoning Default Effort
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+      type: object
+      required:
+      - id
+      - model_id
+      - display_name
+      - pricing
+      - created_at
+      title: ModelResponse
+      description: Response model for Arcee AI model data.
+    ModelDiscoveryResponse:
+      properties:
+        models:
+          items:
+            $ref: '#/components/schemas/DiscoveredProviderModel'
+          type: array
+          title: Models
+        failures:
+          items:
+            $ref: '#/components/schemas/ProviderDiscoveryFailure'
+          type: array
+          title: Failures
+      type: object
+      required:
+      - models
+      title: ModelDiscoveryResponse
+      description: Read-only provider inventory used by the admin import flow.
+    TokenizerArtifactResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        hugging_face_repo:
+          type: string
+          title: Hugging Face Repo
+        requested_revision:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Requested Revision
+        resolved_revision:
+          type: string
+          title: Resolved Revision
+        version:
+          type: integer
+          title: Version
+        public_url:
+          type: string
+          title: Public Url
+        checksum:
+          type: string
+          title: Checksum
+        files:
+          items:
+            $ref: '#/components/schemas/TokenizerArtifactFile'
+          type: array
+          title: Files
+      type: object
+      required:
+      - id
+      - hugging_face_repo
+      - resolved_revision
+      - version
+      - public_url
+      - checksum
+      - files
+      title: TokenizerArtifactResponse
+    TokenizerArtifactCreateRequest:
+      properties:
+        hugging_face_repo:
+          type: string
+          minLength: 3
+          title: Hugging Face Repo
+        revision:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Revision
+      type: object
+      required:
+      - hugging_face_repo
+      title: TokenizerArtifactCreateRequest
+    ModelProviderActiveUpdate:
+      properties:
+        is_active:
+          type: boolean
+          title: Is Active
+      additionalProperties: false
+      type: object
+      required:
+      - is_active
+      title: ModelProviderActiveUpdate
+      description: 'Payload for the admin toggle endpoint.
+
+
+        Deliberately strict: ``is_active`` is required (so an empty ``{}`` body is a
+
+        422, not a no-op commit + cache invalidation) and any other field is
+
+        rejected, since this endpoint only toggles the active flag.'
   securitySchemes:
     HTTPBearer:
       type: http

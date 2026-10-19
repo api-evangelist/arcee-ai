@@ -5,19 +5,75 @@ info:
 tags:
 - name: Webhooks
 paths:
-  /webhooks/lago:
+  /webhooks/metronome:
     post:
       tags:
       - Webhooks
-      summary: Lago Webhook
-      operationId: lago_webhook_webhooks_lago_post
+      summary: Metronome Webhook
+      operationId: metronome_webhook_webhooks_metronome_post
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema: {}
+  /webhooks/signup-campaigns/{slug}:
+    post:
+      tags:
+      - Webhooks
+      summary: Signup Campaign Webhook
+      operationId: signup_campaign_webhook_webhooks_signup_campaigns__slug__post
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

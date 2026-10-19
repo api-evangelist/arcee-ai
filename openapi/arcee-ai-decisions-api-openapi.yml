@@ -1,0 +1,295 @@
+openapi: 3.2.0
+info:
+  title: AFM Decisions API
+  version: 0.1.0
+tags:
+- name: Decisions
+paths:
+  /api/alpha/decisions:
+    post:
+      tags:
+      - Decisions
+      summary: Create Decisions
+      description: Submit an OpenRouter-compatible structured Decisions request.
+      operationId: create_decisions_api_alpha_decisions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /alpha/decisions:
+    post:
+      tags:
+      - Decisions
+      summary: Create Decisions
+      description: Submit an OpenRouter-compatible structured Decisions request.
+      operationId: create_decisions_alpha_decisions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    DecisionsNoulCriteria:
+      properties:
+        'true':
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          title: 'True'
+        'false':
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          title: 'False'
+      additionalProperties: false
+      type: object
+      required:
+      - 'true'
+      - 'false'
+      title: DecisionsNoulCriteria
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DecisionsScoreQuestion:
+      properties:
+        type:
+          type: string
+          const: score
+          title: Type
+        instructions:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          title: Instructions
+        criteria:
+          items:
+            anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+          type: array
+          minItems: 1
+          title: Criteria
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      - instructions
+      - criteria
+      title: DecisionsScoreQuestion
+    DecisionsNoulQuestion:
+      properties:
+        type:
+          type: string
+          const: noul
+          title: Type
+        instructions:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          title: Instructions
+        criteria:
+          anyOf:
+          - $ref: '#/components/schemas/DecisionsNoulCriteria'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      - instructions
+      title: DecisionsNoulQuestion
+    DecisionsTraceConfig:
+      properties:
+        trace_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Trace Id
+        trace_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Trace Name
+        span_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Span Name
+        generation_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generation Name
+        parent_span_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Span Id
+      additionalProperties: true
+      type: object
+      title: DecisionsTraceConfig
+      description: OpenRouter trace metadata, including destination-specific custom keys.
+    DecisionsRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        state:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          title: State
+        questions:
+          additionalProperties:
+            oneOf:
+            - $ref: '#/components/schemas/DecisionsNoulQuestion'
+            - $ref: '#/components/schemas/DecisionsChoiceQuestion'
+            - $ref: '#/components/schemas/DecisionsScoreQuestion'
+            discriminator:
+              propertyName: type
+              mapping:
+                choice: '#/components/schemas/DecisionsChoiceQuestion'
+                noul: '#/components/schemas/DecisionsNoulQuestion'
+                score: '#/components/schemas/DecisionsScoreQuestion'
+          type: object
+          minProperties: 1
+          title: Questions
+        provider:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Provider
+        session_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Session Id
+        trace:
+          anyOf:
+          - $ref: '#/components/schemas/DecisionsTraceConfig'
+          - type: 'null'
+        user:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: User
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      - state
+      - questions
+      title: DecisionsRequest
+      description: Request contract for OpenRouter's ``POST /api/alpha/decisions``.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DecisionsChoiceQuestion:
+      properties:
+        type:
+          type: string
+          const: choice
+          title: Type
+        instructions:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          title: Instructions
+        criteria:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+            - type: 'null'
+          type: object
+          minProperties: 1
+          title: Criteria
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      - instructions
+      - criteria
+      title: DecisionsChoiceQuestion
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

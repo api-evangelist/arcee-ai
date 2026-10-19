@@ -263,161 +263,39 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    TriggerRunRequest:
-      properties:
-        report_type:
-          type: string
-          title: Report Type
-        iso_week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Iso Week
-        time_frame:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Time Frame
-        start_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Start Date
-        end_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: End Date
-        usage_scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Usage Scope
-        api_key_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Api Key Id
-      type: object
-      required:
-      - report_type
-      title: TriggerRunRequest
-    ScheduleItem:
+    ApiKeyPickerItem:
       properties:
         id:
           type: string
           format: uuid
           title: Id
         name:
+          type: string
+          title: Name
+        label_key:
           anyOf:
           - type: string
           - type: 'null'
-          title: Name
-        enabled:
-          type: boolean
-          title: Enabled
-        schedule_cron:
-          type: string
-          title: Schedule Cron
-        schedule_description:
-          type: string
-          title: Schedule Description
-        report_type:
-          type: string
-          title: Report Type
-        time_frame:
-          type: string
-          title: Time Frame
-        usage_scope:
-          type: string
-          title: Usage Scope
-      type: object
-      required:
-      - id
-      - enabled
-      - schedule_cron
-      - schedule_description
-      - report_type
-      - time_frame
-      - usage_scope
-      title: ScheduleItem
-    TriggerRunResponse:
-      properties:
-        run_id:
+          title: Label Key
+        organization_id:
           type: string
           format: uuid
-          title: Run Id
-        report_type:
-          type: string
-          title: Report Type
-        iso_week:
-          type: string
-          title: Iso Week
+          title: Organization Id
+        owner_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Email
         status:
           type: string
           title: Status
-          default: running
       type: object
       required:
-      - run_id
-      - report_type
-      - iso_week
-      title: TriggerRunResponse
-    AutomatedReportsConfigPatch:
-      properties:
-        enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Enabled
-      type: object
-      title: AutomatedReportsConfigPatch
-    ScheduleUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Name
-        enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Enabled
-        schedule_cron:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Schedule Cron
-        report_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Report Type
-        time_frame:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Time Frame
-        usage_scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Usage Scope
-      type: object
-      title: ScheduleUpdate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - id
+      - name
+      - organization_id
+      - status
+      title: ApiKeyPickerItem
     AutomatedReportsConfig:
       properties:
         enabled:
@@ -433,59 +311,6 @@ components:
       - enabled
       - schedules
       title: AutomatedReportsConfig
-    ScheduleCreate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Name
-        enabled:
-          type: boolean
-          title: Enabled
-          default: true
-        schedule_cron:
-          type: string
-          maxLength: 200
-          title: Schedule Cron
-        report_type:
-          type: string
-          title: Report Type
-          default: usage
-        time_frame:
-          type: string
-          title: Time Frame
-        usage_scope:
-          type: string
-          title: Usage Scope
-          default: both
-      type: object
-      required:
-      - schedule_cron
-      - time_frame
-      title: ScheduleCreate
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     AutomatedReportRunResponse:
       properties:
         id:
@@ -549,39 +374,214 @@ components:
       - started_at
       - status
       title: AutomatedReportRunResponse
-    ApiKeyPickerItem:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AutomatedReportsConfigPatch:
+      properties:
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+      type: object
+      title: AutomatedReportsConfigPatch
+    TriggerRunResponse:
+      properties:
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        report_type:
+          type: string
+          title: Report Type
+        iso_week:
+          type: string
+          title: Iso Week
+        status:
+          type: string
+          title: Status
+          default: running
+      type: object
+      required:
+      - run_id
+      - report_type
+      - iso_week
+      title: TriggerRunResponse
+    TriggerRunRequest:
+      properties:
+        report_type:
+          type: string
+          title: Report Type
+        iso_week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Iso Week
+        time_frame:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Time Frame
+        start_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: End Date
+        usage_scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Usage Scope
+        api_key_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Api Key Id
+      type: object
+      required:
+      - report_type
+      title: TriggerRunRequest
+    ScheduleUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Name
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+        schedule_cron:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Schedule Cron
+        report_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Report Type
+        time_frame:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Time Frame
+        usage_scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Usage Scope
+      type: object
+      title: ScheduleUpdate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ScheduleItem:
       properties:
         id:
           type: string
           format: uuid
           title: Id
         name:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Name
-        label_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label Key
-        organization_id:
+        enabled:
+          type: boolean
+          title: Enabled
+        schedule_cron:
           type: string
-          format: uuid
-          title: Organization Id
-        owner_email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Owner Email
-        status:
+          title: Schedule Cron
+        schedule_description:
           type: string
-          title: Status
+          title: Schedule Description
+        report_type:
+          type: string
+          title: Report Type
+        time_frame:
+          type: string
+          title: Time Frame
+        usage_scope:
+          type: string
+          title: Usage Scope
       type: object
       required:
       - id
-      - name
-      - organization_id
-      - status
-      title: ApiKeyPickerItem
+      - enabled
+      - schedule_cron
+      - schedule_description
+      - report_type
+      - time_frame
+      - usage_scope
+      title: ScheduleItem
+    ScheduleCreate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Name
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        schedule_cron:
+          type: string
+          maxLength: 200
+          title: Schedule Cron
+        report_type:
+          type: string
+          title: Report Type
+          default: usage
+        time_frame:
+          type: string
+          title: Time Frame
+        usage_scope:
+          type: string
+          title: Usage Scope
+          default: both
+      type: object
+      required:
+      - schedule_cron
+      - time_frame
+      title: ScheduleCreate
   securitySchemes:
     HTTPBearer:
       type: http

@@ -833,6 +833,113 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/{org_id}/billing-discounts:
+    get:
+      tags:
+      - Organizations
+      summary: List Organization Billing Discounts
+      operationId: list_organization_billing_discounts_app_v1_orgs__org_id__billing_discounts_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Organization Billing Discounts App V1 Orgs  Org Id  Billing Discounts Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Organizations
+      summary: Set Organization Billing Discount
+      operationId: set_organization_billing_discount_app_v1_orgs__org_id__billing_discounts_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetOrgBillingDiscountRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Set Organization Billing Discount App V1 Orgs  Org Id  Billing Discounts Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/{org_id}/billing-discounts/{discount_id}:
+    delete:
+      tags:
+      - Organizations
+      summary: End Organization Billing Discount
+      operationId: end_organization_billing_discount_app_v1_orgs__org_id__billing_discounts__discount_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      - name: discount_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Discount Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response End Organization Billing Discount App V1 Orgs  Org Id  Billing Discounts  Discount Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /app/v1/orgs/profiles/{org_id}:
     patch:
       tags:
@@ -870,20 +977,73 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/{org_id}/admin-billing:
+    get:
+      tags:
+      - Organizations
+      summary: Get Admin Organization Billing
+      operationId: get_admin_organization_billing_app_v1_orgs__org_id__admin_billing_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Admin Organization Billing App V1 Orgs  Org Id  Admin Billing Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/orgs/{org_id}/admin-credits:
+    post:
+      tags:
+      - Organizations
+      summary: Grant Admin Organization Credit
+      operationId: grant_admin_organization_credit_app_v1_orgs__org_id__admin_credits_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Org Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminOrganizationCreditGrantRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ChangeUserOrgRequest:
-      properties:
-        user_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: User Ids
-      type: object
-      required:
-      - user_ids
-      title: ChangeUserOrgRequest
     SwitchUserCurrentOrgRequest:
       properties:
         organization_id:
@@ -893,46 +1053,6 @@ components:
       required:
       - organization_id
       title: SwitchUserCurrentOrgRequest
-    Body_update_user_status_app_v1_users__user_id__status_patch:
-      properties:
-        status:
-          type: string
-          title: Status
-          description: New status (active, deactivated)
-      type: object
-      required:
-      - status
-      title: Body_update_user_status_app_v1_users__user_id__status_patch
-    ChangeOrganizationStatusRequest:
-      properties:
-        status:
-          type: string
-          title: Status
-      type: object
-      required:
-      - status
-      title: ChangeOrganizationStatusRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Body_add_members_app_v1_members_add_post:
-      properties:
-        emails:
-          items:
-            type: string
-          type: array
-          title: Emails
-          description: List of email addresses to invite
-      type: object
-      required:
-      - emails
-      title: Body_add_members_app_v1_members_add_post
     PaginatedOrgProfilesResponse:
       properties:
         entries:
@@ -969,6 +1089,29 @@ components:
       - has_next
       - has_prev
       title: PaginatedOrgProfilesResponse
+    SetOrgBillingDiscountRequest:
+      properties:
+        discount_percent:
+          type: number
+          exclusiveMaximum: 100.0
+          exclusiveMinimum: 0.0
+          title: Discount Percent
+        starts_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Starts At
+        reason:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - discount_percent
+      title: SetOrgBillingDiscountRequest
     Body_update_user_role_app_v1_users__user_id__role_patch:
       properties:
         role:
@@ -979,55 +1122,18 @@ components:
       required:
       - role
       title: Body_update_user_role_app_v1_users__user_id__role_patch
-    Body_create_organization_app_v1_orgs_post:
+    ChangeUserOrgRequest:
       properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        logo:
-          anyOf:
-          - type: string
-            format: binary
-          - type: 'null'
-          title: Logo
-        members:
-          type: string
-          title: Members
-          default: '[]'
-        importSettings:
-          type: string
-          title: Importsettings
-          default: 'null'
+        user_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: User Ids
       type: object
       required:
-      - name
-      title: Body_create_organization_app_v1_orgs_post
-    UpdateOrgProfilesRequest:
-      properties:
-        rate_limit_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Rate Limit Profile Id
-        access_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Access Profile Id
-        no_retention:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: No Retention
-      type: object
-      title: UpdateOrgProfilesRequest
+      - user_ids
+      title: ChangeUserOrgRequest
     UpdateOrgRequest:
       properties:
         name:
@@ -1059,6 +1165,96 @@ components:
           title: Organization Id
       type: object
       title: UpdateOrgRequest
+    OrganizationStatusUpdateRequest:
+      properties:
+        org_id:
+          type: string
+          title: Org Id
+        new_status:
+          type: string
+          title: New Status
+      type: object
+      required:
+      - org_id
+      - new_status
+      title: OrganizationStatusUpdateRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_create_organization_app_v1_orgs_post:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        logo:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: Logo
+        members:
+          type: string
+          title: Members
+          default: '[]'
+        importSettings:
+          type: string
+          title: Importsettings
+          default: 'null'
+      type: object
+      required:
+      - name
+      title: Body_create_organization_app_v1_orgs_post
+    Body_add_members_app_v1_members_add_post:
+      properties:
+        emails:
+          items:
+            type: string
+          type: array
+          title: Emails
+          description: List of email addresses to invite
+      type: object
+      required:
+      - emails
+      title: Body_add_members_app_v1_members_add_post
+    AdminOrganizationCreditGrantRequest:
+      properties:
+        amount:
+          anyOf:
+          - type: number
+            exclusiveMinimum: 0.0
+          - type: string
+          title: Amount
+        idempotency_key:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Idempotency Key
+      type: object
+      required:
+      - amount
+      - idempotency_key
+      title: AdminOrganizationCreditGrantRequest
+    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (pending, accepted, cancelled)
+      type: object
+      required:
+      - status
+      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
     ValidationError:
       properties:
         loc:
@@ -1080,29 +1276,46 @@ components:
       - msg
       - type
       title: ValidationError
-    OrganizationStatusUpdateRequest:
+    UpdateOrgProfilesRequest:
       properties:
-        org_id:
-          type: string
-          title: Org Id
-        new_status:
-          type: string
-          title: New Status
+        rate_limit_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Rate Limit Profile Id
+        access_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Access Profile Id
+        no_retention:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: No Retention
       type: object
-      required:
-      - org_id
-      - new_status
-      title: OrganizationStatusUpdateRequest
-    Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch:
+      title: UpdateOrgProfilesRequest
+    ChangeOrganizationStatusRequest:
       properties:
         status:
           type: string
           title: Status
-          description: New status (pending, accepted, cancelled)
       type: object
       required:
       - status
-      title: Body_update_invitation_status_app_v1_invitations__invitation_id__status_patch
+      title: ChangeOrganizationStatusRequest
+    Body_update_user_status_app_v1_users__user_id__status_patch:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: New status (active, deactivated)
+      type: object
+      required:
+      - status
+      title: Body_update_user_status_app_v1_users__user_id__status_patch
   securitySchemes:
     HTTPBearer:
       type: http

@@ -582,6 +582,89 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DeleteMessageResponse:
+      properties:
+        deleted_message_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Deleted Message Ids
+        success:
+          type: boolean
+          title: Success
+      type: object
+      required:
+      - deleted_message_ids
+      - success
+      title: DeleteMessageResponse
+      description: Response model for deleting a message and its corresponding response.
+    ChatCreate:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 600
+          - type: 'null'
+          title: Title
+          description: Chat title (max 600 characters)
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        messages:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Messages
+        initialMessage:
+          anyOf:
+          - type: string
+            maxLength: 1000000
+          - type: 'null'
+          title: Initialmessage
+          description: Initial message (max 1,000,000 characters)
+        user_org_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Org Profile Id
+      type: object
+      title: ChatCreate
+      description: Model for creating a new chat.
+    ChatUpdate:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 600
+          - type: 'null'
+          title: Title
+          description: Chat title (max 600 characters)
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      title: ChatUpdate
+      description: Update a chat session with optional fields.
     ChatResponse:
       properties:
         id:
@@ -620,109 +703,16 @@ components:
       - created_at
       title: ChatResponse
       description: Chat response with database fields.
-    ChatMessageResponse:
+    PromptCreate:
       properties:
-        content:
+        prompt:
           type: string
-          maxLength: 1000000
-          title: Content
-          description: Message content (max 1,000,000 characters, supports base64 images)
-        reasoning_content:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Reasoning Content
-          description: Reasoning trace for the assistant message (separate from content).
-        tool_calls:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Tool Calls
-          description: 'Server-side tool execution results: list of {tool_call_id, name, arguments, result|error, duration_ms, agent_iteration, content_offset_at_call, reasoning_offset_at_call} entries. The three trailing fields are character indices into `content` / `reasoning_content` at the moment the tool was invoked; the frontend uses them on reload to splice tool segments back into the natural interleaved order. NULL on rows persisted before the offset columns were added; consumers should fall back to clumped rendering in that case. Sourced from the `tool_executions` table via the `tool_calls` @property on the SQLAlchemy ChatMessage. Callers must `selectinload` the `tool_executions` relationship before serializing; otherwise the field will be None even when executions exist.'
-        role:
-          $ref: '#/components/schemas/MessageRole'
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        id:
-          type: string
-          format: uuid
-          title: Id
-        session_id:
-          type: string
-          format: uuid
-          title: Session Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
+          title: Prompt
       type: object
       required:
-      - content
-      - role
-      - id
-      - session_id
-      - created_at
-      title: ChatMessageResponse
-      description: Chat message with database fields.
-    ChatHistoryResponse:
-      properties:
-        session_id:
-          type: string
-          format: uuid
-          title: Session Id
-        messages:
-          items:
-            $ref: '#/components/schemas/ChatMessageResponse'
-          type: array
-          title: Messages
-      type: object
-      required:
-      - session_id
-      - messages
-      title: ChatHistoryResponse
-    MessageRole:
-      type: string
-      enum:
-      - user
-      - assistant
-      - system
-      title: MessageRole
-    ChatModelsResponse:
-      properties:
-        models:
-          items:
-            $ref: '#/components/schemas/ChatModelResponse'
-          type: array
-          title: Models
-        tools:
-          items:
-            $ref: '#/components/schemas/ChatToolResponse'
-          type: array
-          title: Tools
-      type: object
-      required:
-      - models
-      - tools
-      title: ChatModelsResponse
-      description: Response model for chat models and tools endpoint.
-    PromptSetActiveRequest:
-      properties:
-        prompt_id:
-          type: string
-          format: uuid
-          title: Prompt Id
-      type: object
-      required:
-      - prompt_id
-      title: PromptSetActiveRequest
-      description: Set a prompt as the active prompt for the user.
+      - prompt
+      title: PromptCreate
+      description: Model for creating a new prompt.
     MessageMetaUpdate:
       properties:
         meta:
@@ -734,6 +724,92 @@ components:
       - meta
       title: MessageMetaUpdate
       description: Model for updating message meta.
+    PromptUpdate:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+      type: object
+      required:
+      - prompt
+      title: PromptUpdate
+      description: Update an existing prompt.
+    ChatListResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+        offset:
+          type: integer
+          title: Offset
+        limit:
+          type: integer
+          title: Limit
+        content:
+          items:
+            $ref: '#/components/schemas/ChatResponse'
+          type: array
+          title: Content
+      type: object
+      required:
+      - total
+      - offset
+      - limit
+      - content
+      title: ChatListResponse
+      description: Paginated chat list response.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatToolResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        icon:
+          type: string
+          title: Icon
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        activeStateLabel:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Activestatelabel
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - icon
+      title: ChatToolResponse
+      description: Tool response for chat models endpoint.
     ChatModelResponse:
       properties:
         id:
@@ -787,113 +863,24 @@ components:
       - base_model_name
       title: ChatModelResponse
       description: Model response for chat models endpoint.
-    DeleteMessageResponse:
+    MessageRole:
+      type: string
+      enum:
+      - user
+      - assistant
+      - system
+      title: MessageRole
+    PromptSetActiveRequest:
       properties:
-        deleted_message_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Deleted Message Ids
-        success:
-          type: boolean
-          title: Success
+        prompt_id:
+          type: string
+          format: uuid
+          title: Prompt Id
       type: object
       required:
-      - deleted_message_ids
-      - success
-      title: DeleteMessageResponse
-      description: Response model for deleting a message and its corresponding response.
-    PromptUpdate:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-      type: object
-      required:
-      - prompt
-      title: PromptUpdate
-      description: Update an existing prompt.
-    ChatToolResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        icon:
-          type: string
-          title: Icon
-        enabled:
-          type: boolean
-          title: Enabled
-          default: true
-        activeStateLabel:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Activestatelabel
-      type: object
-      required:
-      - id
-      - name
-      - description
-      - icon
-      title: ChatToolResponse
-      description: Tool response for chat models endpoint.
-    PromptCreate:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-      type: object
-      required:
-      - prompt
-      title: PromptCreate
-      description: Model for creating a new prompt.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ChatUpdate:
-      properties:
-        title:
-          anyOf:
-          - type: string
-            maxLength: 600
-          - type: 'null'
-          title: Title
-          description: Chat title (max 600 characters)
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-      type: object
-      title: ChatUpdate
-      description: Update a chat session with optional fields.
+      - prompt_id
+      title: PromptSetActiveRequest
+      description: Set a prompt as the active prompt for the user.
     FlagResponseRequest:
       properties:
         message_id:
@@ -924,78 +911,91 @@ components:
       - session_id
       - reason
       title: FlagResponseRequest
-    ChatListResponse:
+    ChatMessageResponse:
       properties:
-        total:
-          type: integer
-          title: Total
-        offset:
-          type: integer
-          title: Offset
-        limit:
-          type: integer
-          title: Limit
         content:
-          items:
-            $ref: '#/components/schemas/ChatResponse'
-          type: array
+          type: string
+          maxLength: 1000000
           title: Content
-      type: object
-      required:
-      - total
-      - offset
-      - limit
-      - content
-      title: ChatListResponse
-      description: Paginated chat list response.
-    ChatCreate:
-      properties:
-        title:
+          description: Message content (max 1,000,000 characters, supports base64 images)
+        reasoning_content:
           anyOf:
           - type: string
-            maxLength: 600
           - type: 'null'
-          title: Title
-          description: Chat title (max 600 characters)
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        messages:
+          title: Reasoning Content
+          description: Reasoning trace for the assistant message (separate from content).
+        tool_calls:
           anyOf:
           - items:
               additionalProperties: true
               type: object
             type: array
           - type: 'null'
-          title: Messages
-        initialMessage:
+          title: Tool Calls
+          description: 'Server-side tool execution results: list of {tool_call_id, name, arguments, result|error, duration_ms, agent_iteration, content_offset_at_call, reasoning_offset_at_call} entries. The three trailing fields are character indices into `content` / `reasoning_content` at the moment the tool was invoked; the frontend uses them on reload to splice tool segments back into the natural interleaved order. NULL on rows persisted before the offset columns were added; consumers should fall back to clumped rendering in that case. Sourced from the `tool_executions` table via the `tool_calls` @property on the SQLAlchemy ChatMessage. Callers must `selectinload` the `tool_executions` relationship before serializing; otherwise the field will be None even when executions exist.'
+        role:
+          $ref: '#/components/schemas/MessageRole'
+        meta:
           anyOf:
-          - type: string
-            maxLength: 1000000
+          - additionalProperties: true
+            type: object
           - type: 'null'
-          title: Initialmessage
-          description: Initial message (max 1,000,000 characters)
-        user_org_profile_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: User Org Profile Id
+          title: Meta
+        id:
+          type: string
+          format: uuid
+          title: Id
+        session_id:
+          type: string
+          format: uuid
+          title: Session Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
       type: object
-      title: ChatCreate
-      description: Model for creating a new chat.
-    HTTPValidationError:
+      required:
+      - content
+      - role
+      - id
+      - session_id
+      - created_at
+      title: ChatMessageResponse
+      description: Chat message with database fields.
+    ChatModelsResponse:
       properties:
-        detail:
+        models:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/ChatModelResponse'
           type: array
-          title: Detail
+          title: Models
+        tools:
+          items:
+            $ref: '#/components/schemas/ChatToolResponse'
+          type: array
+          title: Tools
       type: object
-      title: HTTPValidationError
+      required:
+      - models
+      - tools
+      title: ChatModelsResponse
+      description: Response model for chat models and tools endpoint.
+    ChatHistoryResponse:
+      properties:
+        session_id:
+          type: string
+          format: uuid
+          title: Session Id
+        messages:
+          items:
+            $ref: '#/components/schemas/ChatMessageResponse'
+          type: array
+          title: Messages
+      type: object
+      required:
+      - session_id
+      - messages
+      title: ChatHistoryResponse
     PromptResponse:
       properties:
         id:

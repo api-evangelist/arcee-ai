@@ -251,6 +251,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
   /app/v1/password-reset/validate:
     get:
       tags:
@@ -578,6 +580,33 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    GoogleOAuthRequest:
+      properties:
+        invite_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Invite Token
+        token:
+          type: string
+          title: Token
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
+        signup_campaign:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Campaign
+      type: object
+      required:
+      - token
+      title: GoogleOAuthRequest
     PasswordChangeRequestModel:
       properties:
         password:
@@ -591,117 +620,19 @@ components:
       - password
       - old_password
       title: PasswordChangeRequestModel
-    SignupRequest:
-      properties:
-        first_name:
-          type: string
-          title: First Name
-        last_name:
-          type: string
-          title: Last Name
-        email:
-          type: string
-          title: Email
-        password:
-          type: string
-          title: Password
-        preferences:
-          additionalProperties: true
-          type: object
-          title: Preferences
-        waitlist_token:
-          type: string
-          title: Waitlist Token
-      type: object
-      required:
-      - first_name
-      - last_name
-      - email
-      - password
-      title: SignupRequest
-    UserPermissionsResponse:
-      properties:
-        can_use_provider_switching:
-          type: boolean
-          title: Can Use Provider Switching
-      type: object
-      required:
-      - can_use_provider_switching
-      title: UserPermissionsResponse
-    HeartbeatRequest:
-      properties:
-        route:
-          type: string
-          title: Route
-      type: object
-      required:
-      - route
-      title: HeartbeatRequest
-    UpdateInvitedUserRequest:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        first_name:
-          type: string
-          title: First Name
-        last_name:
-          type: string
-          title: Last Name
-        new_password:
-          type: string
-          title: New Password
-      type: object
-      required:
-      - user_id
-      - first_name
-      - last_name
-      - new_password
-      title: UpdateInvitedUserRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    GoogleOAuthRequest:
-      properties:
-        token:
-          type: string
-          title: Token
-        preferences:
-          additionalProperties: true
-          type: object
-          title: Preferences
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
-      type: object
-      required:
-      - token
-      title: GoogleOAuthRequest
-    LoginRequest:
+    InviteRequest:
       properties:
         email:
           type: string
           title: Email
-        password:
+        role:
           type: string
-          title: Password
-        remember_me:
-          type: boolean
-          title: Remember Me
-          default: false
+          title: Role
       type: object
       required:
       - email
-      - password
-      title: LoginRequest
+      - role
+      title: InviteRequest
     PasswordResetRequestModel:
       properties:
         userId:
@@ -719,49 +650,76 @@ components:
       - password
       - reset_token
       title: PasswordResetRequestModel
-    InviteRequest:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HeartbeatRequest:
+      properties:
+        route:
+          type: string
+          title: Route
+      type: object
+      required:
+      - route
+      title: HeartbeatRequest
+    ResendVerificationRequest:
       properties:
         email:
           type: string
           title: Email
-        role:
-          type: string
-          title: Role
       type: object
       required:
       - email
-      - role
-      title: InviteRequest
-    ValidationError:
+      title: ResendVerificationRequest
+    UpdateInvitedUserRequest:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        old_password:
           type: string
-          title: Message
-        type:
+          title: Old Password
+        user_id:
           type: string
-          title: Error Type
+          format: uuid
+          title: User Id
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
+        new_password:
+          type: string
+          title: New Password
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    EmailChangeRequest:
+      - old_password
+      - user_id
+      - first_name
+      - last_name
+      - new_password
+      title: UpdateInvitedUserRequest
+    LoginRequest:
       properties:
-        new_email:
+        email:
           type: string
-          title: New Email
+          title: Email
+        password:
+          type: string
+          title: Password
+        remember_me:
+          type: boolean
+          title: Remember Me
+          default: false
       type: object
       required:
-      - new_email
-      title: EmailChangeRequest
+      - email
+      - password
+      title: LoginRequest
     PasswordResetEmailRequest:
       properties:
         email:
@@ -788,20 +746,88 @@ components:
           type: boolean
           title: Remember Me
           default: false
+        signup_campaign:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Campaign
       type: object
       required:
       - code
       - redirect_uri
       title: GitHubOAuthRequest
-    ResendVerificationRequest:
+    ValidationError:
       properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SignupRequest:
+      properties:
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          type: string
+          title: Last Name
         email:
           type: string
           title: Email
+        password:
+          type: string
+          title: Password
+        preferences:
+          additionalProperties: true
+          type: object
+          title: Preferences
+        waitlist_token:
+          type: string
+          title: Waitlist Token
+        signup_campaign:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Campaign
       type: object
       required:
+      - first_name
+      - last_name
       - email
-      title: ResendVerificationRequest
+      - password
+      title: SignupRequest
+    EmailChangeRequest:
+      properties:
+        new_email:
+          type: string
+          title: New Email
+      type: object
+      required:
+      - new_email
+      title: EmailChangeRequest
+    UserPermissionsResponse:
+      properties:
+        can_use_provider_switching:
+          type: boolean
+          title: Can Use Provider Switching
+      type: object
+      required:
+      - can_use_provider_switching
+      title: UserPermissionsResponse
   securitySchemes:
     HTTPBearer:
       type: http

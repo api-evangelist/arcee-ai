@@ -246,6 +246,16 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    DevSessionUpdateTitle:
+      properties:
+        title:
+          type: string
+          title: Title
+      type: object
+      required:
+      - title
+      title: DevSessionUpdateTitle
+      description: Request body for updating dev session title.
     HTTPValidationError:
       properties:
         detail:
@@ -255,28 +265,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ChatCompletionRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-        messages:
-          items: {}
-          type: array
-          title: Messages
-        stream:
-          type: boolean
-          title: Stream
-          default: false
-      additionalProperties: true
-      type: object
-      required:
-      - model
-      - messages
-      title: ChatCompletionRequest
-      description: 'Thin OpenAI-compatible request schema. Unknown fields are passed through
-
-        to litellm without validation so schema maintenance is not required.'
     ValidationError:
       properties:
         loc:
@@ -298,16 +286,114 @@ components:
       - msg
       - type
       title: ValidationError
-    DevSessionUpdateTitle:
+    ChatCompletionRequest:
       properties:
-        title:
+        model:
           type: string
-          title: Title
+          minLength: 1
+          title: Model
+        messages:
+          items: {}
+          type: array
+          minItems: 1
+          title: Messages
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+        temperature:
+          title: Temperature
+        top_p:
+          title: Top P
+        top_k:
+          title: Top K
+        min_p:
+          title: Min P
+        n:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: N
+          description: Kept structural because response accounting requires the expected choice count.
+        stop:
+          title: Stop
+        seed:
+          title: Seed
+        max_tokens:
+          title: Max Tokens
+        max_completion_tokens:
+          title: Max Completion Tokens
+        presence_penalty:
+          title: Presence Penalty
+        frequency_penalty:
+          title: Frequency Penalty
+        logit_bias:
+          title: Logit Bias
+        logprobs:
+          title: Logprobs
+        top_logprobs:
+          title: Top Logprobs
+        tools:
+          title: Tools
+        tool_choice:
+          title: Tool Choice
+        parallel_tool_calls:
+          title: Parallel Tool Calls
+        functions:
+          title: Functions
+        function_call:
+          title: Function Call
+        reasoning_effort:
+          title: Reasoning Effort
+        reasoning:
+          title: Reasoning
+        response_format:
+          title: Response Format
+        stream_options:
+          title: Stream Options
+        user:
+          title: User
+        metadata:
+          title: Metadata
+        cache_control:
+          title: Cache Control
+        image_config:
+          title: Image Config
+        modalities:
+          title: Modalities
+        prediction:
+          title: Prediction
+        prompt_cache_key:
+          title: Prompt Cache Key
+        prompt_cache_options:
+          title: Prompt Cache Options
+        repetition_penalty:
+          title: Repetition Penalty
+        top_a:
+          title: Top A
+        trace:
+          title: Trace
+      additionalProperties: false
       type: object
       required:
-      - title
-      title: DevSessionUpdateTitle
-      description: Request body for updating dev session title.
+      - model
+      - messages
+      title: ChatCompletionRequest
+      description: 'Supported public OpenAI-compatible request fields.
+
+
+        This is deliberately a positive allowlist. LiteLLM mixes user-facing
+
+        fields with credentials, URLs, retry knobs, fallback controls, and testing
+
+        hooks in one loose kwargs surface; accepting arbitrary extras would let a
+
+        caller take ownership of server-side routing and transport policy. Values
+
+        inside the safe inference allowlist intentionally remain untyped so the
+
+        selected provider owns request validation.'
   securitySchemes:
     HTTPBearer:
       type: http

@@ -10,7 +10,7 @@ paths:
       tags:
       - Models
       summary: Get Models
-      description: Get all models according to OpenRouter provider spec.
+      description: Get the models the caller's access profile permits, per OpenRouter provider spec.
       operationId: get_models_api_v1_models_get
       responses:
         '200':
@@ -42,7 +42,7 @@ paths:
       tags:
       - Models
       summary: Get Models
-      description: Get all models according to OpenRouter provider spec.
+      description: Get the models the caller's access profile permits, per OpenRouter provider spec.
       operationId: get_models_v1_models_get
       responses:
         '200':
@@ -82,47 +82,18 @@ components:
       required:
       - data
       title: ModelsListResponse
-    PricingResponse:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-        completion:
-          type: string
-          title: Completion
-        image:
-          type: string
-          title: Image
-        request:
-          type: string
-          title: Request
-        input_cache_read:
-          type: string
-          title: Input Cache Read
-      type: object
-      required:
-      - prompt
-      - completion
-      - image
-      - request
-      - input_cache_read
-      title: PricingResponse
-    DatacenterResponse:
-      properties:
-        country_code:
-          type: string
-          title: Country Code
-      type: object
-      required:
-      - country_code
-      title: DatacenterResponse
     APIModelResponse:
       properties:
         id:
           type: string
           title: Id
-        hugging_face_id:
+        canonical_slug:
           type: string
+          title: Canonical Slug
+        hugging_face_id:
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Hugging Face Id
         name:
           type: string
@@ -130,83 +101,56 @@ components:
         created:
           type: integer
           title: Created
-        context_length:
-          type: integer
-          title: Context Length
-        pricing:
-          $ref: '#/components/schemas/PricingResponse'
-        input_modalities:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Input Modalities
-        output_modalities:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Output Modalities
-        quantization:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Quantization
-        max_output_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Output Length
-        supported_sampling_parameters:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Sampling Parameters
-        supported_features:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Features
         description:
           anyOf:
           - type: string
           - type: 'null'
           title: Description
-        openrouter:
+        context_length:
           anyOf:
-          - $ref: '#/components/schemas/OpenRouterMetadata'
+          - type: integer
           - type: 'null'
-        datacenters:
+          title: Context Length
+        architecture:
+          additionalProperties: true
+          type: object
+          title: Architecture
+        pricing:
+          additionalProperties: true
+          type: object
+          title: Pricing
+        per_request_limits:
           anyOf:
-          - items:
-              $ref: '#/components/schemas/DatacenterResponse'
-            type: array
+          - additionalProperties: true
+            type: object
           - type: 'null'
-          title: Datacenters
+          title: Per Request Limits
+        supported_parameters:
+          items:
+            type: string
+          type: array
+          title: Supported Parameters
+        default_parameters:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Default Parameters
+        reasoning:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Reasoning
+      additionalProperties: false
       type: object
       required:
       - id
-      - hugging_face_id
+      - canonical_slug
       - name
       - created
-      - context_length
-      - pricing
       title: APIModelResponse
-    OpenRouterMetadata:
-      properties:
-        slug:
-          type: string
-          title: Slug
-      type: object
-      required:
-      - slug
-      title: OpenRouterMetadata
+      description: OpenRouter-compatible model metadata backed by normalized fields.
   securitySchemes:
     HTTPBearer:
       type: http

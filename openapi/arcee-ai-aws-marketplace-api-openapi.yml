@@ -1,0 +1,318 @@
+openapi: 3.2.0
+info:
+  title: AFM AWS Marketplace API
+  version: 0.1.0
+tags:
+- name: AWS Marketplace
+paths:
+  /app/v1/aws-marketplace/link:
+    post:
+      tags:
+      - AWS Marketplace
+      summary: Link Aws Marketplace Subscription
+      operationId: link_aws_marketplace_subscription_app_v1_aws_marketplace_link_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AWSMarketplaceLinkRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AWSMarketplaceLinkResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/aws-marketplace/link/preview:
+    post:
+      tags:
+      - AWS Marketplace
+      summary: Preview Aws Marketplace Subscription Link
+      operationId: preview_aws_marketplace_subscription_link_app_v1_aws_marketplace_link_preview_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AWSMarketplaceLinkPreviewRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AWSMarketplaceLinkPreviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/aws-marketplace/status:
+    get:
+      tags:
+      - AWS Marketplace
+      summary: Get Aws Marketplace Status
+      operationId: get_aws_marketplace_status_app_v1_aws_marketplace_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AWSMarketplaceStatusResponse'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    AWSMarketplaceLinkResponse:
+      properties:
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        aws_agreement_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Agreement Id
+        aws_customer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Customer Id
+        aws_product_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Product Code
+        entitlement_dimension:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entitlement Dimension
+        granted_credit_amount:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Granted Credit Amount
+        credit_expires_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credit Expires At
+        connected:
+          type: boolean
+          title: Connected
+        subscription_count:
+          type: integer
+          title: Subscription Count
+          default: 0
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/AWSMarketplaceSubscriptionStatus'
+          type: array
+          title: Subscriptions
+        credits_granted:
+          type: string
+          title: Credits Granted
+      type: object
+      required:
+      - connected
+      - credits_granted
+      title: AWSMarketplaceLinkResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AWSMarketplaceSubscriptionStatus:
+      properties:
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        aws_agreement_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Agreement Id
+        aws_customer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Customer Id
+        aws_product_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Product Code
+        entitlement_dimension:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entitlement Dimension
+        granted_credit_amount:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Granted Credit Amount
+        credit_expires_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credit Expires At
+      type: object
+      title: AWSMarketplaceSubscriptionStatus
+    AWSMarketplaceLinkPreviewRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: AWSMarketplaceLinkPreviewRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AWSMarketplaceLinkPreviewResponse:
+      properties:
+        already_connected:
+          type: boolean
+          title: Already Connected
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        organization_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization Name
+        granted_credit_amount:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Granted Credit Amount
+        credit_expires_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credit Expires At
+      type: object
+      required:
+      - already_connected
+      title: AWSMarketplaceLinkPreviewResponse
+    AWSMarketplaceStatusResponse:
+      properties:
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        aws_agreement_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Agreement Id
+        aws_customer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Customer Id
+        aws_product_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Product Code
+        entitlement_dimension:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entitlement Dimension
+        granted_credit_amount:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Granted Credit Amount
+        credit_expires_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credit Expires At
+        connected:
+          type: boolean
+          title: Connected
+        subscription_count:
+          type: integer
+          title: Subscription Count
+          default: 0
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/AWSMarketplaceSubscriptionStatus'
+          type: array
+          title: Subscriptions
+      type: object
+      required:
+      - connected
+      title: AWSMarketplaceStatusResponse
+    AWSMarketplaceLinkRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+      type: object
+      required:
+      - token
+      title: AWSMarketplaceLinkRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -664,6 +664,46 @@ apis:
     url: data-model/arcee-ai-data-model.yml
   - type: AgenticAccess
     url: agentic-access/arcee-ai-agentic-access.yml
+- aid: arcee-ai:arcee-ai-aws-marketplace-api
+  name: Arcee AI AWS Marketplace API
+  description: The AWS Marketplace API from Arcee AI — 3 operation(s) for aws marketplace.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - AWS Marketplace
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-aws-marketplace-api-openapi.yml
+- aid: arcee-ai:arcee-ai-decisions-api
+  name: Arcee AI Decisions API
+  description: The Decisions API from Arcee AI — 2 operation(s) for decisions.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Decisions
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-decisions-api-openapi.yml
+- aid: arcee-ai:arcee-ai-responses-api
+  name: Arcee AI Responses API
+  description: The Responses API from Arcee AI — 4 operation(s) for responses.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Responses
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-responses-api-openapi.yml
+- aid: arcee-ai:arcee-ai-signup-campaigns-api
+  name: Arcee AI Signup Campaigns API
+  description: The Signup Campaigns API from Arcee AI — 4 operation(s) for signup campaigns.
+  humanURL: https://docs.arcee.ai/
+  baseURL: https://api.arcee.ai
+  tags:
+  - Signup Campaigns
+  properties:
+  - type: OpenAPI
+    url: openapi/arcee-ai-signup-campaigns-api-openapi.yml
 common:
 - type: Plans
   url: plans/arcee-ai-plans-pricing.yml

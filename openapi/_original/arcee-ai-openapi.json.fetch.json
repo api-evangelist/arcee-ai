@@ -1,0 +1,12 @@
+{
+ "url": "https://api.arcee.ai/openapi.json",
+ "final": "https://api.arcee.ai/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 352305,
+ "sha256": "c950116d20ff23c6fd1f42e5645f8bfbc8c2a95532f76c94b005edc5520bf30d",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

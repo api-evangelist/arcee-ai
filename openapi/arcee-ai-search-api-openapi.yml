@@ -35,50 +35,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SearchRequest:
-      properties:
-        query:
-          type: string
-          title: Query
-        recency_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Recency Days
-      type: object
-      required:
-      - query
-      title: SearchRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     AISearchResponse:
       properties:
         query:
@@ -102,6 +58,50 @@ components:
       - sources
       - search_time
       title: AISearchResponse
+    SearchRequest:
+      properties:
+        query:
+          type: string
+          title: Query
+        recency_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Recency Days
+      type: object
+      required:
+      - query
+      title: SearchRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

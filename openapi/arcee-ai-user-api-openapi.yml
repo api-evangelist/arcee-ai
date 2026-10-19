@@ -10,7 +10,7 @@ paths:
       tags:
       - User
       summary: Update User Password
-      description: Update a user's information, requires admin privileges
+      description: Update your own profile. Password changes use /change-password.
       operationId: update_user_password_app_v1_users__user_id__put
       security:
       - HTTPBearer: []
@@ -61,7 +61,9 @@ paths:
       summary: Get Users App Roles Entries
       description: 'Get paginated list of users with their app roles, requires admin privileges
 
-        include_deleted: If True, includes deleted/anonymized accounts (default: False)'
+        include_deleted: If True, includes deleted/anonymized accounts (default: False)
+
+        signup_campaign: Repeatable; keeps only users who signed up via one of those campaign slugs'
       operationId: get_users_app_roles_entries_app_v1_users_app_roles_get
       security:
       - HTTPBearer: []
@@ -95,6 +97,16 @@ paths:
           type: boolean
           default: false
           title: Include Deleted
+      - name: signup_campaign
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
+          title: Signup Campaign
       responses:
         '200':
           description: Successful Response
@@ -102,6 +114,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAppRoleResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/users/{user_id}/admin-details:
+    get:
+      tags:
+      - User
+      summary: Get Admin User Details
+      operationId: get_admin_user_details_app_v1_users__user_id__admin_details_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserDetailsResponse'
         '422':
           description: Validation Error
           content:
@@ -311,6 +351,34 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
       - HTTPBearer: []
+  /app/v1/users/ui-retention-acknowledgement:
+    put:
+      tags:
+      - User
+      summary: Acknowledge Ui Retention
+      description: Acknowledge, for the active organization, that UI activity is retained.
+      operationId: acknowledge_ui_retention_app_v1_users_ui_retention_acknowledgement_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UIRetentionAcknowledgementRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UIRetentionAcknowledgementResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
   /app/v1/delete-my-account:
     delete:
       tags:
@@ -330,65 +398,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    UserUpdateRequest:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        preferences:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Preferences
-        password:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Password
-      type: object
-      required:
-      - first_name
-      - last_name
-      - preferences
-      - password
-      title: UserUpdateRequest
-    AppRole:
-      type: string
-      enum:
-      - int_user
-      - int_editor
-      - int_admin
-      - ext_user
-      - ext_tester
-      - ext_partner
-      title: AppRole
-      description: Roles for role-based access control.
-    LanguageUpdateRequest:
-      properties:
-        language:
-          type: string
-          title: Language
-      type: object
-      required:
-      - language
-      title: LanguageUpdateRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PaginatedAppRoleResponse:
       properties:
         entries:
@@ -424,28 +433,6 @@ components:
       - has_next
       - has_prev
       title: PaginatedAppRoleResponse
-    ThemeUpdateRequest:
-      properties:
-        theme:
-          type: string
-          title: Theme
-      type: object
-      required:
-      - theme
-      title: ThemeUpdateRequest
-    UserRoleUpdateRequest:
-      properties:
-        user_id:
-          type: string
-          title: User Id
-        new_role:
-          type: string
-          title: New Role
-      type: object
-      required:
-      - user_id
-      - new_role
-      title: UserRoleUpdateRequest
     UserAppRoleUpdateRequest:
       properties:
         user_id:
@@ -458,27 +445,63 @@ components:
       - user_id
       - new_role
       title: UserAppRoleUpdateRequest
-    ValidationError:
+    UIRetentionAcknowledgementResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        success:
+          type: boolean
+          title: Success
+        ui_retention_notice_version:
+          type: integer
+          title: Ui Retention Notice Version
+        active_profile_id:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          format: uuid
+          title: Active Profile Id
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - success
+      - ui_retention_notice_version
+      - active_profile_id
+      title: UIRetentionAcknowledgementResponse
+    BalanceVisibilityRequest:
+      properties:
+        show_balance_in_sidebar:
+          type: boolean
+          title: Show Balance In Sidebar
+      type: object
+      required:
+      - show_balance_in_sidebar
+      title: BalanceVisibilityRequest
+    UserUpdateRequest:
+      properties:
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        preferences:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Preferences
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+      type: object
+      required:
+      - first_name
+      - last_name
+      - preferences
+      - password
+      title: UserUpdateRequest
     GitHubEmailMismatchBannerHomeRequest:
       properties:
         show_mismatch_banner_home:
@@ -488,6 +511,44 @@ components:
       required:
       - show_mismatch_banner_home
       title: GitHubEmailMismatchBannerHomeRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LanguageUpdateRequest:
+      properties:
+        language:
+          type: string
+          title: Language
+      type: object
+      required:
+      - language
+      title: LanguageUpdateRequest
+    ThemeUpdateRequest:
+      properties:
+        theme:
+          type: string
+          title: Theme
+      type: object
+      required:
+      - theme
+      title: ThemeUpdateRequest
+    AppRole:
+      type: string
+      enum:
+      - int_user
+      - int_editor
+      - int_admin
+      - ext_user
+      - ext_tester
+      - ext_partner
+      title: AppRole
+      description: Roles for role-based access control.
     AppRoleEntry:
       properties:
         id:
@@ -516,15 +577,118 @@ components:
       - last_name
       - app_role
       title: AppRoleEntry
-    BalanceVisibilityRequest:
+    ValidationError:
       properties:
-        show_balance_in_sidebar:
-          type: boolean
-          title: Show Balance In Sidebar
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - show_balance_in_sidebar
-      title: BalanceVisibilityRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UIRetentionAcknowledgementRequest:
+      properties:
+        active_profile_id:
+          type: string
+          format: uuid
+          title: Active Profile Id
+      type: object
+      required:
+      - active_profile_id
+      title: UIRetentionAcknowledgementRequest
+    AdminUserOrganization:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        role:
+          $ref: '#/components/schemas/UserRole'
+        is_primary:
+          type: boolean
+          title: Is Primary
+      type: object
+      required:
+      - id
+      - name
+      - role
+      - is_primary
+      title: AdminUserOrganization
+    UserRoleUpdateRequest:
+      properties:
+        user_id:
+          type: string
+          title: User Id
+        new_role:
+          type: string
+          title: New Role
+      type: object
+      required:
+      - user_id
+      - new_role
+      title: UserRoleUpdateRequest
+    AdminUserDetailsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          type: string
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        app_role:
+          type: string
+          title: App Role
+        organizations:
+          items:
+            $ref: '#/components/schemas/AdminUserOrganization'
+          type: array
+          title: Organizations
+      type: object
+      required:
+      - id
+      - email
+      - first_name
+      - last_name
+      - created_at
+      - app_role
+      - organizations
+      title: AdminUserDetailsResponse
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - user
+      - viewer
+      - owner
+      title: UserRole
   securitySchemes:
     HTTPBearer:
       type: http

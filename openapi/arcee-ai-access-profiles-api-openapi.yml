@@ -224,27 +224,63 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AccessProfileModelJoinResponse:
+    CreateAccessProfileRequest:
       properties:
-        access_profile_id:
+        name:
           type: string
-          format: uuid
-          title: Access Profile Id
-        model_id:
-          type: string
-          format: uuid
-          title: Model Id
-        rate_limit_profile_id:
+          title: Name
+        description:
           anyOf:
           - type: string
-            format: uuid
           - type: 'null'
-          title: Rate Limit Profile Id
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        model_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Model Ids
       type: object
       required:
-      - access_profile_id
-      - model_id
-      title: AccessProfileModelJoinResponse
+      - name
+      title: CreateAccessProfileRequest
+    UpdateAccessProfileRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      title: UpdateAccessProfileRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     AccessProfileResponse:
       properties:
         id:
@@ -296,63 +332,6 @@ components:
       - is_external_default
       - is_internal_default
       title: AccessProfileResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UpdateAccessProfileRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-      type: object
-      title: UpdateAccessProfileRequest
-    CreateAccessProfileRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
-        model_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid
-            type: array
-          - type: 'null'
-          title: Model Ids
-      type: object
-      required:
-      - name
-      title: CreateAccessProfileRequest
     ValidationError:
       properties:
         loc:
@@ -374,6 +353,27 @@ components:
       - msg
       - type
       title: ValidationError
+    AccessProfileModelJoinResponse:
+      properties:
+        access_profile_id:
+          type: string
+          format: uuid
+          title: Access Profile Id
+        model_id:
+          type: string
+          format: uuid
+          title: Model Id
+        rate_limit_profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Rate Limit Profile Id
+      type: object
+      required:
+      - access_profile_id
+      - model_id
+      title: AccessProfileModelJoinResponse
   securitySchemes:
     HTTPBearer:
       type: http

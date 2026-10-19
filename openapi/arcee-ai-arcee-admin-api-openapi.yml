@@ -149,6 +149,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/responses/connections:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Responses Connections
+      description: 'Live Responses WebSocket connections across every pod.
+
+
+        Read-only. Each pod publishes its own connections on a heartbeat; this
+
+        merges them. `heartbeat_seconds` is returned so callers can poll at the
+
+        publish cadence instead of hardcoding it — polling faster only re-reads the
+
+        same blob.'
+      operationId: get_responses_connections_app_v1_responses_connections_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Get Responses Connections App V1 Responses Connections Get
+      security:
+      - HTTPBearer: []
   /app/v1/app-settings:
     get:
       tags:
@@ -228,6 +255,84 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateIntSettingRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/app-settings/banner:
+    put:
+      tags:
+      - Arcee-Admin
+      summary: Update Banner Settings
+      operationId: update_banner_settings_app_v1_app_settings_banner_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBannerSettingsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/app-settings/signup-slack-report:
+    put:
+      tags:
+      - Arcee-Admin
+      summary: Update Signup Slack Report Settings
+      operationId: update_signup_slack_report_settings_app_v1_app_settings_signup_slack_report_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSignupSlackReportSettingsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /app/v1/app-settings/completion:
+    put:
+      tags:
+      - Arcee-Admin
+      summary: Update Completion Settings
+      operationId: update_completion_settings_app_v1_app_settings_completion_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCompletionSettingsRequest'
         required: true
       responses:
         '200':
@@ -434,6 +539,127 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/aws-marketplace/subscriptions:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Aws Marketplace Subscriptions
+      operationId: get_aws_marketplace_subscriptions_app_v1_arcee_admin_aws_marketplace_subscriptions_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Page Size
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAWSMarketplaceSubscriptionsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/aws-marketplace/reviews:
+    get:
+      tags:
+      - Arcee-Admin
+      summary: Get Aws Marketplace Billing Reviews
+      operationId: get_aws_marketplace_billing_reviews_app_v1_arcee_admin_aws_marketplace_reviews_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Page Size
+      - name: review_status
+        in: query
+        required: false
+        schema:
+          type: string
+          default: pending_review
+          title: Review Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAWSMarketplaceBillingReviewsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/arcee-admin/aws-marketplace/reviews/{review_id}:
+    patch:
+      tags:
+      - Arcee-Admin
+      summary: Update Aws Marketplace Billing Review
+      operationId: update_aws_marketplace_billing_review_app_v1_arcee_admin_aws_marketplace_reviews__review_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: review_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Review Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAWSMarketplaceBillingReviewRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /app/v1/toggle-free-key:
     post:
       tags:
@@ -462,39 +688,52 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    AdminChatMessageResponse:
+    HTTPValidationError:
       properties:
-        id:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateTextSettingRequest:
+      properties:
+        setting_name:
           type: string
-          format: uuid
-          title: Id
-        session_id:
+          title: Setting Name
+        new_value:
           type: string
-          format: uuid
-          title: Session Id
-        role:
-          type: string
-          title: Role
-        content:
-          type: string
-          title: Content
-        created_at:
-          type: string
-          title: Created At
-        meta:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Meta
+          title: New Value
       type: object
       required:
-      - id
-      - session_id
-      - role
-      - content
-      - created_at
-      title: AdminChatMessageResponse
+      - setting_name
+      - new_value
+      title: UpdateTextSettingRequest
+    UpdateBannerSettingsRequest:
+      properties:
+        show_banner:
+          type: boolean
+          title: Show Banner
+        title:
+          type: string
+          maxLength: 200
+          title: Title
+        description:
+          type: string
+          maxLength: 500
+          title: Description
+        banner_url:
+          type: string
+          maxLength: 2048
+          title: Banner Url
+      type: object
+      required:
+      - show_banner
+      - title
+      - description
+      - banner_url
+      title: UpdateBannerSettingsRequest
     FlaggedResponseEntry:
       properties:
         id:
@@ -543,16 +782,126 @@ components:
       - created_at
       - admin_review
       title: FlaggedResponseEntry
-    ToggleFreeKeyRequest:
+    UpdateFlaggedResponseStatusRequest:
       properties:
-        key_id:
+        admin_review:
           type: string
-          format: uuid
-          title: Key Id
+          title: Admin Review
       type: object
       required:
-      - key_id
-      title: ToggleFreeKeyRequest
+      - admin_review
+      title: UpdateFlaggedResponseStatusRequest
+    ToggleAppSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: boolean
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: ToggleAppSettingRequest
+    UpdateIntSettingRequest:
+      properties:
+        setting_name:
+          type: string
+          title: Setting Name
+        new_value:
+          type: integer
+          title: New Value
+      type: object
+      required:
+      - setting_name
+      - new_value
+      title: UpdateIntSettingRequest
+    AWSMarketplaceSubscriptionEntry:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        organization_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization Name
+        aws_customer_id:
+          type: string
+          title: Aws Customer Id
+        aws_product_code:
+          type: string
+          title: Aws Product Code
+        aws_license_arn:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws License Arn
+        aws_agreement_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Agreement Id
+        entitlement_dimension:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entitlement Dimension
+        entitlement_quantity:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Entitlement Quantity
+        granted_credit_amount_cents:
+          type: integer
+          title: Granted Credit Amount Cents
+        credit_expires_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credit Expires At
+        granted_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Granted At
+        last_entitlement_checked_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Entitlement Checked At
+        status:
+          type: string
+          title: Status
+        linked_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linked At
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+      type: object
+      required:
+      - id
+      - aws_customer_id
+      - aws_product_code
+      - granted_credit_amount_cents
+      - status
+      - created_at
+      - updated_at
+      title: AWSMarketplaceSubscriptionEntry
     JoinWaitlistRequest:
       properties:
         email:
@@ -562,15 +911,6 @@ components:
       required:
       - email
       title: JoinWaitlistRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     UpdateWaitlistEntryStatusRequest:
       properties:
         entry_id:
@@ -587,119 +927,41 @@ components:
       - email
       - new_status
       title: UpdateWaitlistEntryStatusRequest
-    UpdateFlaggedResponseStatusRequest:
+    PaginatedAWSMarketplaceBillingReviewsResponse:
       properties:
-        admin_review:
-          type: string
-          title: Admin Review
-      type: object
-      required:
-      - admin_review
-      title: UpdateFlaggedResponseStatusRequest
-    WaitlistEntryResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        email:
-          type: string
-          title: Email
-        created_at:
-          type: string
-          title: Created At
-        status:
-          $ref: '#/components/schemas/WaitlistStatus'
-        token_expiration:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Token Expiration
-        approved_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Approved Date
-      type: object
-      required:
-      - id
-      - email
-      - created_at
-      - status
-      title: WaitlistEntryResponse
-    ToolInfoResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        icon_name:
-          type: string
-          title: Icon Name
-        active_state_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Active State Label
-      type: object
-      required:
-      - id
-      - name
-      - description
-      - icon_name
-      title: ToolInfoResponse
-    UpdateIntSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: integer
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: UpdateIntSettingRequest
-    ToggleAppSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: boolean
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: ToggleAppSettingRequest
-    ValidationError:
-      properties:
-        loc:
+        entries:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/AWSMarketplaceBillingReviewEntry'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedAWSMarketplaceBillingReviewsResponse
     WaitlistStatus:
       type: string
       enum:
@@ -708,6 +970,41 @@ components:
       - rejected
       - completed
       title: WaitlistStatus
+    PaginatedAWSMarketplaceSubscriptionsResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/AWSMarketplaceSubscriptionEntry'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_pages:
+          type: integer
+          title: Total Pages
+        has_next:
+          type: boolean
+          title: Has Next
+        has_prev:
+          type: boolean
+          title: Has Prev
+      type: object
+      required:
+      - entries
+      - total
+      - page
+      - page_size
+      - total_pages
+      - has_next
+      - has_prev
+      title: PaginatedAWSMarketplaceSubscriptionsResponse
     PaginatedWaitlistResponse:
       properties:
         entries:
@@ -743,19 +1040,6 @@ components:
       - has_next
       - has_prev
       title: PaginatedWaitlistResponse
-    UpdateTextSettingRequest:
-      properties:
-        setting_name:
-          type: string
-          title: Setting Name
-        new_value:
-          type: string
-          title: New Value
-      type: object
-      required:
-      - setting_name
-      - new_value
-      title: UpdateTextSettingRequest
     PaginatedFlaggedResponsesResponse:
       properties:
         entries:
@@ -791,6 +1075,303 @@ components:
       - has_next
       - has_prev
       title: PaginatedFlaggedResponsesResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ToolInfoResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        icon_name:
+          type: string
+          title: Icon Name
+        active_state_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Active State Label
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - icon_name
+      title: ToolInfoResponse
+    UpdateCompletionSettingsRequest:
+      properties:
+        settings:
+          additionalProperties:
+            type: string
+          type: object
+          title: Settings
+      type: object
+      required:
+      - settings
+      title: UpdateCompletionSettingsRequest
+    WaitlistEntryResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        email:
+          type: string
+          title: Email
+        created_at:
+          type: string
+          title: Created At
+        status:
+          $ref: '#/components/schemas/WaitlistStatus'
+        token_expiration:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Expiration
+        approved_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Approved Date
+      type: object
+      required:
+      - id
+      - email
+      - created_at
+      - status
+      title: WaitlistEntryResponse
+    UpdateAWSMarketplaceBillingReviewRequest:
+      properties:
+        review_status:
+          type: string
+          title: Review Status
+      type: object
+      required:
+      - review_status
+      title: UpdateAWSMarketplaceBillingReviewRequest
+    UpdateSignupSlackReportSettingsRequest:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+        channel:
+          type: string
+          maxLength: 80
+          title: Channel
+        cadence:
+          type: string
+          title: Cadence
+      type: object
+      required:
+      - enabled
+      - channel
+      - cadence
+      title: UpdateSignupSlackReportSettingsRequest
+    ToggleFreeKeyRequest:
+      properties:
+        key_id:
+          type: string
+          format: uuid
+          title: Key Id
+      type: object
+      required:
+      - key_id
+      title: ToggleFreeKeyRequest
+    AdminChatMessageResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        session_id:
+          type: string
+          format: uuid
+          title: Session Id
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+        created_at:
+          type: string
+          title: Created At
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+      type: object
+      required:
+      - id
+      - session_id
+      - role
+      - content
+      - created_at
+      title: AdminChatMessageResponse
+    AWSMarketplaceBillingReviewEntry:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        subscription_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Subscription Id
+        organization_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Organization Id
+        organization_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization Name
+        metronome_customer_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metronome Customer Id
+        aws_agreement_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Agreement Id
+        event_id:
+          type: string
+          title: Event Id
+        detail_type:
+          type: string
+          title: Detail Type
+        adjustment_request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Adjustment Request Id
+        adjustment_amount:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Adjustment Amount
+        currency_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Currency Code
+        adjustment_reason_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Adjustment Reason Code
+        original_invoice_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Original Invoice Id
+        review_status:
+          type: string
+          title: Review Status
+        granted_credit_amount_cents:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Granted Credit Amount Cents
+        credit_expires_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credit Expires At
+        entitlement_dimension:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entitlement Dimension
+        entitlement_quantity:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Entitlement Quantity
+        subscription_status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Subscription Status
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        aws_request_status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Aws Request Status
+        status_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status Message
+        request_created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Created At
+        request_updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Updated At
+        raw_event:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Raw Event
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+      type: object
+      required:
+      - id
+      - event_id
+      - detail_type
+      - review_status
+      - created_at
+      - updated_at
+      title: AWSMarketplaceBillingReviewEntry
   securitySchemes:
     HTTPBearer:
       type: http

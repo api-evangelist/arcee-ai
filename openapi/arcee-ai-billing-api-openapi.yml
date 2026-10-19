@@ -22,6 +22,37 @@ paths:
               schema: {}
       security:
       - HTTPBearer: []
+  /app/v1/billing/invoices:
+    get:
+      tags:
+      - Billing
+      summary: List Billing Invoices
+      description: 'List finalized invoices for the active organization, newest first.
+
+        Uses primary DB to match the other billing reads.'
+      operationId: list_billing_invoices_app_v1_billing_invoices_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /app/v1/billing/promotions/nac-launch:
+    post:
+      tags:
+      - Billing
+      summary: Grant Nac Launch Promotion
+      operationId: grant_nac_launch_promotion_app_v1_billing_promotions_nac_launch_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
   /app/v1/billing/link:
     get:
       tags:
@@ -107,6 +138,11 @@ components:
         amount:
           type: string
           title: Amount
+        idempotency_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Idempotency Key
       type: object
       required:
       - amount
@@ -129,8 +165,6 @@ components:
       type: object
       required:
       - enableAutoTopUp
-      - topUpAmount
-      - topUpThreshold
       title: UpdateTopUpRequest
     ValidationError:
       properties:

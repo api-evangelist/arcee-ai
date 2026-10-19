@@ -42,7 +42,7 @@ paths:
       tags:
       - Device Auth
       summary: Poll Device Token
-      description: Poll for the authorization result. Returns the API key once approved.
+      description: Poll for the authorization result. Returns access + refresh tokens once approved.
       operationId: poll_device_token_app_v1_device_token_post
       requestBody:
         content:
@@ -57,6 +57,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeviceTokenSuccess'
+        '400':
+          description: OAuth-style error (e.g. authorization_pending, slow_down, access_denied).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAuthErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/device/refresh:
+    post:
+      tags:
+      - Device Auth
+      summary: Refresh Device Token
+      description: Exchange a refresh token for a new short-lived access token.
+      operationId: refresh_device_token_app_v1_device_refresh_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceRefreshRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceRefreshResponse'
         '400':
           description: OAuth-style error (e.g. authorization_pending, slow_down, access_denied).
           content:
@@ -103,7 +135,7 @@ paths:
       tags:
       - Device Auth
       summary: Approve Device
-      description: 'Approve a device authorization: mint an API key scoped to the chosen workspace.'
+      description: 'Approve a device authorization: mint an access/refresh grant scoped to the chosen workspace.'
       operationId: approve_device_app_v1_device_approve_post
       requestBody:
         content:
@@ -154,48 +186,150 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
       - HTTPBearer: []
+  /app/v1/device/grants:
+    get:
+      tags:
+      - Device Auth
+      summary: List Connected Apps
+      description: 'List live device-auth grants: the caller''s own, or a whole workspace''s (admin/owner).'
+      operationId: list_connected_apps_app_v1_device_grants_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: organization_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: Workspace to list clients for (admin/owner only). Omit for the caller's own grants.
+          title: Organization Id
+        description: Workspace to list clients for (admin/owner only). Omit for the caller's own grants.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectedAppGrant'
+                title: Response List Connected Apps App V1 Device Grants Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/device/grants/{grant_id}/revoke:
+    post:
+      tags:
+      - Device Auth
+      summary: Revoke Connected App
+      description: Revoke one of the current user's grants; the token stops working within seconds.
+      operationId: revoke_connected_app_app_v1_device_grants__grant_id__revoke_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: grant_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Grant Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DeviceDenyResponse:
+    ConnectedAppGrant:
       properties:
-        status:
+        id:
           type: string
-          title: Status
-          default: denied
-      type: object
-      title: DeviceDenyResponse
-    DeviceApproveResponse:
-      properties:
-        status:
+          format: uuid
+          title: Id
+        client_id:
           type: string
-          title: Status
-          default: approved
+          title: Client Id
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        token_suffix:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Suffix
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
         workspace_name:
           type: string
           title: Workspace Name
-        organization_id:
-          type: string
-          format: uuid
-          title: Organization Id
+        authorized_by_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorized By Email
+        authorized_by_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorized By Name
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+        last_used_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Used At
+        is_valid:
+          type: boolean
+          title: Is Valid
       type: object
       required:
+      - id
+      - client_id
+      - organization_id
       - workspace_name
-      - organization_id
-      title: DeviceApproveResponse
-    DeviceApproveRequest:
+      - is_valid
+      title: ConnectedAppGrant
+      description: A live device-auth grant, shown on the Connected apps / authorized clients UI.
+    DeviceInfoResponse:
       properties:
-        user_code:
+        client_id:
           type: string
-          title: User Code
-        organization_id:
+          title: Client Id
+        client_display_name:
           type: string
-          format: uuid
-          title: Organization Id
+          title: Client Display Name
+        status:
+          type: string
+          title: Status
+        expires_in:
+          type: integer
+          title: Expires In
       type: object
       required:
-      - user_code
-      - organization_id
-      title: DeviceApproveRequest
+      - client_id
+      - client_display_name
+      - status
+      - expires_in
+      title: DeviceInfoResponse
     HTTPValidationError:
       properties:
         detail:
@@ -205,15 +339,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    DeviceDenyRequest:
-      properties:
-        user_code:
-          type: string
-          title: User Code
-      type: object
-      required:
-      - user_code
-      title: DeviceDenyRequest
     DeviceCodeResponse:
       properties:
         device_code:
@@ -252,53 +377,71 @@ components:
       required:
       - client_id
       title: DeviceCodeRequest
-    DeviceInfoResponse:
+    DeviceRefreshRequest:
       properties:
+        refresh_token:
+          type: string
+          title: Refresh Token
         client_id:
           type: string
           title: Client Id
-        client_display_name:
+      type: object
+      required:
+      - refresh_token
+      - client_id
+      title: DeviceRefreshRequest
+    DeviceTokenRequest:
+      properties:
+        device_code:
           type: string
-          title: Client Display Name
+          title: Device Code
+        client_id:
+          type: string
+          title: Client Id
+      type: object
+      required:
+      - device_code
+      - client_id
+      title: DeviceTokenRequest
+    DeviceApproveResponse:
+      properties:
         status:
           type: string
           title: Status
+          default: approved
+        workspace_name:
+          type: string
+          title: Workspace Name
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+      type: object
+      required:
+      - workspace_name
+      - organization_id
+      title: DeviceApproveResponse
+    DeviceRefreshResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        refresh_token:
+          type: string
+          title: Refresh Token
+        token_type:
+          type: string
+          title: Token Type
+          default: bearer
         expires_in:
           type: integer
           title: Expires In
       type: object
       required:
-      - client_id
-      - client_display_name
-      - status
+      - access_token
+      - refresh_token
       - expires_in
-      title: DeviceInfoResponse
-    DeviceTokenSuccess:
-      properties:
-        api_key:
-          type: string
-          title: Api Key
-        base_url:
-          type: string
-          title: Base Url
-        organization_id:
-          type: string
-          format: uuid
-          title: Organization Id
-        workspace_name:
-          type: string
-          title: Workspace Name
-        token_type:
-          type: string
-          title: Token Type
-          default: api_key
-      type: object
-      required:
-      - api_key
-      - base_url
-      - organization_id
-      - workspace_name
-      title: DeviceTokenSuccess
+      title: DeviceRefreshResponse
     DeviceAuthErrorResponse:
       properties:
         error:
@@ -316,6 +459,48 @@ components:
       description: 'RFC 8628 OAuth-style error body returned (with HTTP 400) by the
 
         unauthenticated device endpoints.'
+    DeviceDenyResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          default: denied
+      type: object
+      title: DeviceDenyResponse
+    DeviceTokenSuccess:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        refresh_token:
+          type: string
+          title: Refresh Token
+        token_type:
+          type: string
+          title: Token Type
+          default: bearer
+        expires_in:
+          type: integer
+          title: Expires In
+        base_url:
+          type: string
+          title: Base Url
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+        workspace_name:
+          type: string
+          title: Workspace Name
+      type: object
+      required:
+      - access_token
+      - refresh_token
+      - expires_in
+      - base_url
+      - organization_id
+      - workspace_name
+      title: DeviceTokenSuccess
     ValidationError:
       properties:
         loc:
@@ -337,19 +522,29 @@ components:
       - msg
       - type
       title: ValidationError
-    DeviceTokenRequest:
+    DeviceDenyRequest:
       properties:
-        device_code:
+        user_code:
           type: string
-          title: Device Code
-        client_id:
-          type: string
-          title: Client Id
+          title: User Code
       type: object
       required:
-      - device_code
-      - client_id
-      title: DeviceTokenRequest
+      - user_code
+      title: DeviceDenyRequest
+    DeviceApproveRequest:
+      properties:
+        user_code:
+          type: string
+          title: User Code
+        organization_id:
+          type: string
+          format: uuid
+          title: Organization Id
+      type: object
+      required:
+      - user_code
+      - organization_id
+      title: DeviceApproveRequest
   securitySchemes:
     HTTPBearer:
       type: http

@@ -272,8 +272,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /app/v1/s3/signup-campaign/{kind}/upload:
+    post:
+      tags:
+      - S3
+      summary: Upload Signup Campaign Asset
+      description: 'Upload a signup-page logo, favicon, or font to the public S3 bucket and return the URL.
+
+        The URL must be saved on the campaign separately (same pattern as model logos).'
+      operationId: upload_signup_campaign_asset_app_v1_s3_signup_campaign__kind__upload_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          type: string
+          description: logo, favicon, email_confirmation_img, display_font, normal_font, medium_font, or bold_font
+          title: Kind
+        description: logo, favicon, email_confirmation_img, display_font, normal_font, medium_font, or bold_font
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_signup_campaign_asset_app_v1_s3_signup_campaign__kind__upload_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    Body_upload_signup_campaign_asset_app_v1_s3_signup_campaign__kind__upload_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_signup_campaign_asset_app_v1_s3_signup_campaign__kind__upload_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post
     Body_upload_avatar_app_v1_s3_avatar_upload_post:
       properties:
         file:
@@ -294,15 +361,6 @@ components:
       required:
       - file
       title: Body_upload_org_logo_app_v1_s3_organization__org_id__logo_upload_post
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -336,16 +394,6 @@ components:
       required:
       - files
       title: Body_upload_chat_files_app_v1_chat_files__chat_id__post
-    Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post:
-      properties:
-        file:
-          type: string
-          format: binary
-          title: File
-      type: object
-      required:
-      - file
-      title: Body_upload_model_logo_app_v1_s3_model__base_model_name__logo_upload_post
   securitySchemes:
     HTTPBearer:
       type: http

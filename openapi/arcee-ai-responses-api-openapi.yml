@@ -1,0 +1,234 @@
+openapi: 3.2.0
+info:
+  title: AFM Responses API
+  version: 0.1.0
+tags:
+- name: Responses
+paths:
+  /api/v1/responses:
+    post:
+      tags:
+      - Responses
+      summary: Create Response
+      operationId: create_response_api_v1_responses_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/responses/compact:
+    post:
+      tags:
+      - Responses
+      summary: Compact Response
+      operationId: compact_response_api_v1_responses_compact_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompactResponseRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/responses:
+    post:
+      tags:
+      - Responses
+      summary: Create Response
+      operationId: create_response_v1_responses_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/responses/compact:
+    post:
+      tags:
+      - Responses
+      summary: Compact Response
+      operationId: compact_response_v1_responses_compact_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompactResponseRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ResponseCreateRequest:
+      properties:
+        model:
+          type: string
+          minLength: 1
+          title: Model
+        input:
+          title: Input
+        previous_response_id:
+          title: Previous Response Id
+        include:
+          title: Include
+        tools:
+          title: Tools
+        tool_choice:
+          title: Tool Choice
+        metadata:
+          title: Metadata
+        text:
+          title: Text
+        temperature:
+          title: Temperature
+        top_p:
+          title: Top P
+        presence_penalty:
+          title: Presence Penalty
+        frequency_penalty:
+          title: Frequency Penalty
+        parallel_tool_calls:
+          title: Parallel Tool Calls
+        stream:
+          type: boolean
+          title: Stream
+          default: false
+        stream_options:
+          title: Stream Options
+        background:
+          type: boolean
+          title: Background
+          default: false
+        max_output_tokens:
+          title: Max Output Tokens
+        max_tool_calls:
+          title: Max Tool Calls
+        reasoning:
+          title: Reasoning
+        safety_identifier:
+          title: Safety Identifier
+        prompt_cache_key:
+          title: Prompt Cache Key
+        truncation:
+          title: Truncation
+        instructions:
+          title: Instructions
+        store:
+          type: boolean
+          title: Store
+          default: false
+        service_tier:
+          title: Service Tier
+        top_logprobs:
+          title: Top Logprobs
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      - input
+      title: ResponseCreateRequest
+      description: 'Pinned, safe Open Responses create request.
+
+
+        The field names are pinned to Open Responses 2026-04-24. Inference values
+
+        intentionally remain loose so OpenRouter owns their semantic validation;
+
+        structural and server-owned routing fields are still rejected here.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CompactResponseRequest:
+      properties:
+        model:
+          type: string
+          minLength: 1
+          title: Model
+        input:
+          title: Input
+        previous_response_id:
+          title: Previous Response Id
+        instructions:
+          title: Instructions
+        prompt_cache_key:
+          title: Prompt Cache Key
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      title: CompactResponseRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
