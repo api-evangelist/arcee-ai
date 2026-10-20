@@ -54,7 +54,7 @@ edges:
   channel: provider-built
   relationship: compatible
   direction: provider-built
-  evidence: https://github.com/api-evangelist/arcee-ai/blob/main/openapi/arcee-ai-completions-api-openapi.yml#L240
+  evidence: https://github.com/api-evangelist/arcee-ai/blob/main/openapi/_superseded/2026-10-19-stale/arcee-ai-completions-api-openapi.yml#L448
   contract_reference:
     repo: arcee-ai
     spec_file: arcee-ai-completions-api-openapi.yml
@@ -63,6 +63,6 @@ edges:
     note: 'arcee-ai declares OpenAI compatibility: ''description: ''Thin OpenAI-compatible request schema. Unknown
       fields are passed through'''
     detected_by: sweep-model-routing.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'
