@@ -3,6 +3,7 @@ method: searched
 checked:
 - https://aws.amazon.com/marketplace/
 - https://openrouter.ai/api/v1/models
+- hugging-face/integrations/hugging-face-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -66,3 +67,46 @@ edges:
     detected: '2026-10-19'
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/arcee-ai
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - arcee-ai/distilabel-intel-orca-dpo-pairs-binarized
+  - arcee-ai/LLama-405B-Logits
+  - arcee-ai/DeepSeek-MixedModeReasoning-Logits-Packed-16384
+  - arcee-ai/agent-data
+  - arcee-ai/Qwen3-235B-Logits-Packed-8192
+  - arcee-ai/The-Tome
+  - arcee-ai/BAAI-Infinity-Instruct-System
+  - arcee-ai/OpenHermesPreferences-binarized
+  - arcee-ai/Llama-3-SEC-Chat-GGUF
+  - arcee-ai/Trinity-Mini
+  - arcee-ai/AFM-4.5B
+  - arcee-ai/Trinity-Nano-Preview
+  - arcee-ai/Trinity-Nano-Preview-GGUF
+  - arcee-ai/Trinity-Mini-GGUF
+  - arcee-ai/AFM-4.5B-Base
+  - arcee-ai/Trinity-Large-Thinking
+  - arcee-ai/mergekit-gui
+  - arcee-ai/mergekit-config-generator
+  - arcee-ai/Arcee-Spark
+  - arcee-ai/Arcee-Scribe
+  - arcee-ai/raspberry-3b
+  - arcee-ai/Llama-3-SEC
+  - arcee-ai/Biomistral-Zephyr-Merge
+  listing_count: 3
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub datasets
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
+source:
+- hugging-face/integrations/hugging-face-integration-edges.yml
